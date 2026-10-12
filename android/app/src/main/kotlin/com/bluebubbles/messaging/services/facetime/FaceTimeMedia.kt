@@ -365,6 +365,8 @@ class FaceTimeMedia(
     // ---- audio ----
     private var record: AudioRecord? = null
     private var track: AudioTrack? = null
+    // held so they aren't GC'd: an effect's finalizer releases it, silently turning AEC off mid-call
+    private var effects: List<android.media.audiofx.AudioEffect> = emptyList()
     @Volatile private var audioRunning = false
 
     enum class AudioRoute(val label: String) { BLUETOOTH("Bluetooth"), WIRED("Headset"), SPEAKER("Speaker"), EARPIECE("Earpiece") }
@@ -439,8 +441,11 @@ class FaceTimeMedia(
         val minRec = AudioRecord.getMinBufferSize(AUDIO_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
         val rec = AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, AUDIO_RATE, AudioFormat.CHANNEL_IN_MONO,
             AudioFormat.ENCODING_PCM_16BIT, maxOf(minRec, AUDIO_FRAME_BYTES * 4))
-        if (AcousticEchoCanceler.isAvailable()) AcousticEchoCanceler.create(rec.audioSessionId)?.enabled = true
-        if (NoiseSuppressor.isAvailable()) NoiseSuppressor.create(rec.audioSessionId)?.enabled = true
+        effects = listOfNotNull(
+            if (AcousticEchoCanceler.isAvailable()) AcousticEchoCanceler.create(rec.audioSessionId) else null,
+            if (NoiseSuppressor.isAvailable()) NoiseSuppressor.create(rec.audioSessionId) else null,
+        ).onEach { it.enabled = true }
+        Log.i(TAG, "audio effects ${effects.map { "${it.descriptor.name}=${it.enabled}" }}")
         record = rec
 
         val minPlay = AudioTrack.getMinBufferSize(AUDIO_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
@@ -456,6 +461,7 @@ class FaceTimeMedia(
                 .build())
             .setBufferSizeInBytes(maxOf(minPlay, AUDIO_FRAME_BYTES * 8))
             .setTransferMode(AudioTrack.MODE_STREAM)
+            .setSessionId(rec.audioSessionId) // same session gives the echo canceller the far-end reference
             .build()
             .apply { play() }
 
@@ -503,6 +509,8 @@ class FaceTimeMedia(
     fun release() {
         audioRunning = false
         orientationListener.disable()
+        effects.forEach { it.release() }
+        effects = emptyList()
         record?.let { runCatching { it.stop() }; it.release() }
         record = null
         track?.let { runCatching { it.stop() }; it.release() }
