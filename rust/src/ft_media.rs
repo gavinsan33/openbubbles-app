@@ -216,6 +216,12 @@ impl FtCall {
             },
         };
         info!("FT senders video={} audio={}", video.is_some(), audio.is_some());
+        if video.is_some() {
+            // tell the peer our camera is on now rather than waiting for it to fetch our state
+            if let Err(e) = self.av.set_video_enabled(true).await {
+                warn!("FT announcing video failed {e}");
+            }
+        }
         let mut senders = self.senders.lock().unwrap();
         senders.video = video;
         senders.audio = audio;

@@ -47,6 +47,9 @@ private const val AUDIO_FRAME_BYTES = 480 * 2
 // The camera picks the closest 16:9 size it supports at or below this.
 private const val VIDEO_MAX_WIDTH = 1280
 private const val VIDEO_INITIAL_BITRATE = 1_000_000
+// rustpush's rate control keeps climbing (seen 8.5Mbps); past ~2.5Mbps 720p HEVC gains nothing
+// and the receiver starts freezing on lost packets
+private const val VIDEO_MAX_BITRATE = 2_500_000
 
 /**
  * Native FaceTime media for one call. Rust (FtCall) owns the protocol; this owns the
@@ -58,6 +61,8 @@ class FaceTimeMedia(
     private val localView: TextureView,
     // clockwise degrees the UI is rotated from the display's natural orientation
     private val displayRotation: () -> Int,
+    // foldables: the inner screen is in use (picks which front camera to default to)
+    private val isUnfolded: () -> Boolean,
     private val onEnded: () -> Unit,
 ) : FtMediaSink {
     var call: FtCall? = null
@@ -82,7 +87,29 @@ class FaceTimeMedia(
             }
         }
     }
-    private var cameraIndex = 0
+    private var cameraIndex = -1 // pick a default for the current fold state when the camera opens
+
+    private val prefs get() = context.getSharedPreferences("facetime", Context.MODE_PRIVATE)
+    private fun postureKey() = if (isUnfolded()) "camera_unfolded" else "camera_folded"
+
+    // the camera last flipped to in this fold state, else the first front camera folded and the
+    // second (usually the inner screen's) unfolded
+    private fun defaultCameraIndex(): Int {
+        prefs.getString(postureKey(), null)?.let { saved -> cameraIds.indexOf(saved).takeIf { it >= 0 }?.let { return it } }
+        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val fronts = cameraIds.filter { manager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT }
+        val pick = fronts.getOrNull(if (isUnfolded() && fronts.size > 1) 1 else 0) ?: return 0
+        return cameraIds.indexOf(pick)
+    }
+
+    /** Fold state changed mid-call: move to that posture's camera. */
+    fun postureChanged() {
+        handler.post {
+            cameraIndex = defaultCameraIndex()
+            stopCamera()
+            if (!cameraOff) openCamera()
+        }
+    }
     var frontCamera = true
         private set
     private var videoWidth = 1280
@@ -169,6 +196,7 @@ class FaceTimeMedia(
     fun flipCamera() {
         handler.post {
             cameraIndex = (cameraIndex + 1) % maxOf(cameraIds.size, 1)
+            cameraIds.getOrNull(cameraIndex)?.let { prefs.edit().putString(postureKey(), it).apply() }
             stopCamera()
             if (!cameraOff) openCamera()
         }
@@ -179,6 +207,7 @@ class FaceTimeMedia(
         handler.post {
             if (camera != null || cameraOff) return@post
             val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (cameraIndex < 0) cameraIndex = defaultCameraIndex()
             val id = cameraIds.getOrNull(cameraIndex) ?: return@post
             val chars = manager.getCameraCharacteristics(id)
             frontCamera = chars.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT
@@ -282,7 +311,7 @@ class FaceTimeMedia(
                 }
                 override fun onOutputFormatChanged(codec: MediaCodec, format: MediaFormat) {
                     decodedSize = Pair(format.getInteger(MediaFormat.KEY_WIDTH), format.getInteger(MediaFormat.KEY_HEIGHT))
-                    updateRemoteTransform()
+                    fitRemote()
                 }
             }, handler)
             mc.configure(format, Surface(texture), null, 0)
@@ -302,7 +331,7 @@ class FaceTimeMedia(
                 Log.i(TAG, "remote rotation $rotation mirrored $mirrored")
                 remoteRotation = rotation
                 remoteMirrored = mirrored
-                updateRemoteTransform()
+                fitRemote()
             }
         }
     }
@@ -324,7 +353,8 @@ class FaceTimeMedia(
         }
     }
 
-    private fun updateRemoteTransform() {
+    /** Center-crop the remote video to fill the view; also called when the view resizes (unfolding). */
+    fun fitRemote() {
         val (w, h) = decodedSize
         if (w == 0) return
         val rotation = maxOf(remoteRotation, 0)
@@ -457,8 +487,9 @@ class FaceTimeMedia(
 
     override fun setBitrate(bps: ULong) {
         handler.post {
-            Log.i(TAG, "bitrate $bps")
-            encoder?.setParameters(Bundle().apply { putInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE, bps.toInt()) })
+            val capped = minOf(bps.toLong(), VIDEO_MAX_BITRATE.toLong()).toInt()
+            Log.i(TAG, "bitrate $bps -> $capped")
+            encoder?.setParameters(Bundle().apply { putInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE, capped) })
         }
     }
 

@@ -2729,6 +2729,7 @@ class RustPushService extends GetxService {
       "url": link,
       "callUuid": outgoingguid,
       "state": "ringing",
+      "outgoing": true,
     });
 
     outgoingCallMeta = {

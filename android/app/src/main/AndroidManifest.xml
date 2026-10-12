@@ -92,7 +92,7 @@
 
         <activity
             android:name=".services.facetime.FaceTimeActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|density|uiMode|keyboardHidden"
             android:exported="false"
             android:supportsPictureInPicture="true"
             android:taskAffinity=".FaceTime"

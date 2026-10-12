@@ -123,7 +123,7 @@ class FaceTimeActivity : Activity() {
         whenTextureReady(binding.remoteVideo) {
             whenTextureReady(binding.localVideo) {
                 val guid = callUuid ?: return@whenTextureReady
-                val m = FaceTimeMedia(this, binding.remoteVideo, binding.localVideo, ::displayRotationDegrees) { endCall() }
+                val m = FaceTimeMedia(this, binding.remoteVideo, binding.localVideo, ::displayRotationDegrees, ::isUnfolded) { endCall() }
                 media = m
                 val client = APNClient(applicationContext)
                 client.bind { service: APNService ->
@@ -163,9 +163,24 @@ class FaceTimeActivity : Activity() {
         }
     }
 
+    // inner screen of a foldable (or any tablet-sized display)
+    private fun isUnfolded() = resources.configuration.smallestScreenWidthDp >= 600
+    private var wasUnfolded = false
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val unfolded = isUnfolded()
+        if (unfolded != wasUnfolded) {
+            wasUnfolded = unfolded
+            media?.postureChanged()
+        }
+    }
+
     private fun setupControls() {
-        // rotating, folding and unfolding all resize the preview without recreating us
+        wasUnfolded = isUnfolded()
+        // rotating, folding and unfolding all resize the views without recreating us
         binding.localVideo.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> media?.fitLocalPreview() }
+        binding.remoteVideo.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> media?.fitRemote() }
 
         binding.endButton.setOnClickListener { endCall() }
         binding.muteButton.setOnClickListener {
@@ -189,6 +204,8 @@ class FaceTimeActivity : Activity() {
         binding = ActivityFaceTimeBinding.inflate(layoutInflater)
 
         activeFaceTimeActivity = this
+        // an answered outgoing call lands here
+        Ringback.stop()
 
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
