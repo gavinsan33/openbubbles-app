@@ -25,11 +25,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.SystemClock
 import android.util.Log
 import android.util.Range
 import android.view.OrientationEventListener
 import android.view.Surface
 import android.view.TextureView
+import android.view.View
+import android.view.ViewGroup
 import uniffi.rust_lib_bluebubbles.FtCall
 import uniffi.rust_lib_bluebubbles.FtMediaSink
 import uniffi.rust_lib_bluebubbles.FtVideoCodec
@@ -41,7 +44,11 @@ private const val TAG = "FaceTimeMedia"
 
 // must match rust ft_media: AAC-ELD 24kHz mono, 480 sample frames
 private const val AUDIO_RATE = 24000
-private const val AUDIO_FRAME_BYTES = 480 * 2
+private const val AUDIO_FRAME_SAMPLES = 480
+private const val AUDIO_FRAME_BYTES = AUDIO_FRAME_SAMPLES * 2
+// per participant: frames to buffer before playing them (absorbs network jitter), and the most kept
+private const val AUDIO_JITTER_FRAMES = 3
+private const val AUDIO_MAX_QUEUED = 10
 
 // camera buffers are landscape; orientation travels as per-frame metadata.
 // The camera picks the closest 16:9 size it supports at or below this.
@@ -57,7 +64,7 @@ private const val VIDEO_MAX_BITRATE = 2_500_000
  */
 class FaceTimeMedia(
     private val context: Context,
-    private val remoteView: TextureView,
+    private val remoteGrid: ViewGroup,
     private val localView: TextureView,
     // clockwise degrees the UI is rotated from the display's natural orientation
     private val displayRotation: () -> Int,
@@ -270,82 +277,134 @@ class FaceTimeMedia(
     }
 
     // ---- incoming video ----
-    private class DecoderState(val codec: MediaCodec, val mime: String, val csd: ByteArray) {
+    // one tile per remote participant, each with its own view and decoder; handler thread only
+    private class Tile(val view: TextureView) {
+        var surface: SurfaceTexture? = null
+        var codec: MediaCodec? = null
+        var config: Triple<FtVideoCodec, ByteArray, Pair<Int, Int>>? = null
         val frames = ArrayDeque<Pair<ByteArray, Long>>()
         val inputs = ArrayDeque<Int>()
+        var decodedSize = Pair(0, 0)
+        var rotation = -1
+        var mirrored = false
+        var lastFrame = SystemClock.elapsedRealtime()
+        var shown = true
     }
-    private var decoder: DecoderState? = null
-    private var decodedSize = Pair(0, 0)
-    private var remoteRotation = -1
-    private var remoteMirrored = false
+    private val tiles = HashMap<ULong, Tile>()
+
+    private fun tile(participant: ULong): Tile = tiles.getOrPut(participant) {
+        val view = TextureView(context)
+        val tile = Tile(view)
+        view.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+                handler.post { tile.surface = surface; startDecoder(tile) }
+            }
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture) = true
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {}
+        }
+        view.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> handler.post { fit(tile) } }
+        remoteGrid.post { remoteGrid.addView(view) }
+        Log.i(TAG, "video tile for $participant")
+        tile
+    }
+
+    // participants who stop sending (left, camera off) give their space back until they resume
+    private val sweep = object : Runnable {
+        override fun run() {
+            val now = SystemClock.elapsedRealtime()
+            tiles.values.filter { it.shown && now - it.lastFrame > 3000 }.forEach { setShown(it, false) }
+            handler.postDelayed(this, 1000)
+        }
+    }
+    init { handler.post(sweep) }
+
+    private fun setShown(tile: Tile, shown: Boolean) {
+        tile.shown = shown
+        tile.view.post { tile.view.visibility = if (shown) View.VISIBLE else View.GONE }
+    }
 
     override fun videoConfig(participant: ULong, codec: FtVideoCodec, csd: ByteArray, width: Int, height: Int) {
         handler.post {
-            val mime = if (codec == FtVideoCodec.H264) MediaFormat.MIMETYPE_VIDEO_AVC else MediaFormat.MIMETYPE_VIDEO_HEVC
-            val current = decoder
-            if (current != null && current.mime == mime && current.csd.contentEquals(csd)) return@post
-            current?.codec?.let { runCatching { it.stop(); it.release() } }
-            decoder = null
-            val texture = remoteView.surfaceTexture ?: return@post
-            val format = MediaFormat.createVideoFormat(mime, maxOf(width, 16), maxOf(height, 16))
-            if (codec == FtVideoCodec.H264) {
-                // AVC wants SPS and PPS split
-                val nals = splitAnnexB(csd)
-                nals.getOrNull(0)?.let { format.setByteBuffer("csd-0", ByteBuffer.wrap(it)) }
-                nals.getOrNull(1)?.let { format.setByteBuffer("csd-1", ByteBuffer.wrap(it)) }
-            } else {
-                format.setByteBuffer("csd-0", ByteBuffer.wrap(csd))
-            }
-            val mc = MediaCodec.createDecoderByType(mime)
-            val state = DecoderState(mc, mime, csd)
-            mc.setCallback(object : MediaCodec.Callback() {
-                override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {
-                    state.inputs.add(index)
-                    feed(state)
-                }
-                override fun onOutputBufferAvailable(codec: MediaCodec, index: Int, info: MediaCodec.BufferInfo) {
-                    codec.releaseOutputBuffer(index, true)
-                }
-                override fun onError(codec: MediaCodec, e: MediaCodec.CodecException) {
-                    Log.e(TAG, "decoder error", e)
-                }
-                override fun onOutputFormatChanged(codec: MediaCodec, format: MediaFormat) {
-                    decodedSize = Pair(format.getInteger(MediaFormat.KEY_WIDTH), format.getInteger(MediaFormat.KEY_HEIGHT))
-                    fitRemote()
-                }
-            }, handler)
-            mc.configure(format, Surface(texture), null, 0)
-            mc.start()
-            decoder = state
-            Log.i(TAG, "decoder $mime ${width}x$height")
+            val tile = tile(participant)
+            val current = tile.config
+            if (tile.codec != null && current != null && current.first == codec && current.second.contentEquals(csd)) return@post
+            tile.config = Triple(codec, csd, Pair(width, height))
+            startDecoder(tile)
         }
+    }
+
+    // (re)starts the tile's decoder once it has both a config and a surface
+    private fun startDecoder(tile: Tile) {
+        val (codec, csd, size) = tile.config ?: return
+        val texture = tile.surface ?: return
+        tile.codec?.let { runCatching { it.stop(); it.release() } }
+        tile.codec = null
+        tile.inputs.clear()
+        val mime = if (codec == FtVideoCodec.H264) MediaFormat.MIMETYPE_VIDEO_AVC else MediaFormat.MIMETYPE_VIDEO_HEVC
+        val format = MediaFormat.createVideoFormat(mime, maxOf(size.first, 16), maxOf(size.second, 16))
+        if (codec == FtVideoCodec.H264) {
+            // AVC wants SPS and PPS split
+            val nals = splitAnnexB(csd)
+            nals.getOrNull(0)?.let { format.setByteBuffer("csd-0", ByteBuffer.wrap(it)) }
+            nals.getOrNull(1)?.let { format.setByteBuffer("csd-1", ByteBuffer.wrap(it)) }
+        } else {
+            format.setByteBuffer("csd-0", ByteBuffer.wrap(csd))
+        }
+        val mc = MediaCodec.createDecoderByType(mime)
+        mc.setCallback(object : MediaCodec.Callback() {
+            override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {
+                if (tile.codec !== codec) return
+                tile.inputs.add(index)
+                feed(tile)
+            }
+            override fun onOutputBufferAvailable(codec: MediaCodec, index: Int, info: MediaCodec.BufferInfo) {
+                codec.releaseOutputBuffer(index, true)
+            }
+            override fun onError(codec: MediaCodec, e: MediaCodec.CodecException) {
+                Log.e(TAG, "decoder error", e)
+            }
+            override fun onOutputFormatChanged(codec: MediaCodec, format: MediaFormat) {
+                tile.decodedSize = Pair(format.getInteger(MediaFormat.KEY_WIDTH), format.getInteger(MediaFormat.KEY_HEIGHT))
+                fit(tile)
+            }
+        }, handler)
+        tile.codec = mc
+        mc.configure(format, Surface(texture), null, 0)
+        mc.start()
+        Log.i(TAG, "decoder $mime ${size.first}x${size.second}")
     }
 
     override fun videoFrame(participant: ULong, data: ByteArray, timestampUs: ULong, rotation: Int, mirrored: Boolean) {
         handler.post {
-            val state = decoder ?: return@post
-            if (state.frames.size > 30) state.frames.clear() // fell behind, wait for a fresh run
-            state.frames.add(Pair(data, timestampUs.toLong()))
-            feed(state)
-            if (rotation != remoteRotation || mirrored != remoteMirrored) {
-                Log.i(TAG, "remote rotation $rotation mirrored $mirrored")
-                remoteRotation = rotation
-                remoteMirrored = mirrored
-                fitRemote()
+            // frames before a config are undecodable; rust asks the sender for a keyframe
+            val tile = tiles[participant]?.takeIf { it.config != null } ?: return@post
+            tile.lastFrame = SystemClock.elapsedRealtime()
+            if (!tile.shown) setShown(tile, true)
+            // queued while the surface is coming up too, so the keyframe isn't lost
+            if (tile.frames.size > 30) tile.frames.clear() // fell behind, wait for a fresh run
+            tile.frames.add(Pair(data, timestampUs.toLong()))
+            feed(tile)
+            if (rotation != tile.rotation || mirrored != tile.mirrored) {
+                Log.i(TAG, "remote $participant rotation $rotation mirrored $mirrored")
+                tile.rotation = rotation
+                tile.mirrored = mirrored
+                fit(tile)
             }
         }
     }
 
     // runs on handler thread
-    private fun feed(state: DecoderState) {
-        while (state.frames.isNotEmpty() && state.inputs.isNotEmpty()) {
-            val (data, ts) = state.frames.poll()!!
-            val index = state.inputs.poll()!!
+    private fun feed(tile: Tile) {
+        val codec = tile.codec ?: return
+        while (tile.frames.isNotEmpty() && tile.inputs.isNotEmpty()) {
+            val (data, ts) = tile.frames.poll()!!
+            val index = tile.inputs.poll()!!
             try {
-                val buf = state.codec.getInputBuffer(index) ?: continue
+                val buf = codec.getInputBuffer(index) ?: continue
                 buf.clear()
                 buf.put(data, 0, minOf(data.size, buf.capacity()))
-                state.codec.queueInputBuffer(index, 0, minOf(data.size, buf.capacity()), ts, 0)
+                codec.queueInputBuffer(index, 0, minOf(data.size, buf.capacity()), ts, 0)
             } catch (e: IllegalStateException) {
                 Log.w(TAG, "decoder gone", e)
                 return
@@ -353,18 +412,21 @@ class FaceTimeMedia(
         }
     }
 
-    /** Center-crop the remote video to fill the view; also called when the view resizes (unfolding). */
-    fun fitRemote() {
-        val (w, h) = decodedSize
+    /** Center-crop a participant's video to fill their tile; also runs when the tile resizes. */
+    private fun fit(tile: Tile) {
+        val (w, h) = tile.decodedSize
         if (w == 0) return
-        val rotation = maxOf(remoteRotation, 0)
-        val mirrored = remoteMirrored
-        remoteView.post { fitTexture(remoteView, w, h, rotation, mirrored) }
+        val rotation = maxOf(tile.rotation, 0)
+        val mirrored = tile.mirrored
+        tile.view.post { fitTexture(tile.view, w, h, rotation, mirrored) }
     }
 
     // ---- audio ----
     private var record: AudioRecord? = null
     private var track: AudioTrack? = null
+    // each participant's decoded frames, mixed by the speaker thread
+    private class AudioQueue { val frames = ArrayDeque<ShortArray>(); var playing = false }
+    private val audioQueues = HashMap<ULong, AudioQueue>()
     // held so they aren't GC'd: an effect's finalizer releases it, silently turning AEC off mid-call
     private var effects: List<android.media.audiofx.AudioEffect> = emptyList()
     @Volatile private var audioRunning = false
@@ -407,7 +469,7 @@ class FaceTimeMedia(
         }
         audioRoute = route
         Log.i(TAG, "audio route $route")
-        remoteView.post { onAudioRouteChanged(route) }
+        remoteGrid.post { onAudioRouteChanged(route) }
     }
 
     fun nextAudioRoute() {
@@ -449,7 +511,7 @@ class FaceTimeMedia(
         record = rec
 
         val minPlay = AudioTrack.getMinBufferSize(AUDIO_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
-        track = AudioTrack.Builder()
+        val player = AudioTrack.Builder()
             .setAudioAttributes(AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -459,11 +521,12 @@ class FaceTimeMedia(
                 .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
                 .build())
-            .setBufferSizeInBytes(maxOf(minPlay, AUDIO_FRAME_BYTES * 8))
+            .setBufferSizeInBytes(maxOf(minPlay, AUDIO_FRAME_BYTES * 4))
             .setTransferMode(AudioTrack.MODE_STREAM)
             .setSessionId(rec.audioSessionId) // same session gives the echo canceller the far-end reference
             .build()
-            .apply { play() }
+            .also { it.play() }
+        track = player
 
         audioRunning = true
         rec.startRecording()
@@ -479,11 +542,37 @@ class FaceTimeMedia(
                 if (read == frame.size && !micMuted) call?.sendAudio(frame.copyOf())
             }
         }
+        // the blocking write paces this loop at the speaker's real rate: one 20ms frame from everyone per pass
+        thread(name = "FaceTimeSpeaker") {
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO)
+            val sum = IntArray(AUDIO_FRAME_SAMPLES)
+            val out = ShortArray(AUDIO_FRAME_SAMPLES)
+            while (audioRunning) {
+                sum.fill(0)
+                synchronized(audioQueues) {
+                    for (q in audioQueues.values) {
+                        if (!q.playing) continue
+                        val frame = q.frames.poll()
+                        if (frame == null) { q.playing = false; continue } // ran dry, rebuffer
+                        for (i in 0 until minOf(frame.size, AUDIO_FRAME_SAMPLES)) sum[i] += frame[i]
+                    }
+                }
+                for (i in out.indices) out[i] = sum[i].coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt()).toShort()
+                if (player.write(out, 0, out.size, AudioTrack.WRITE_BLOCKING) < 0) break
+            }
+        }
     }
 
     override fun audioFrame(participant: ULong, pcm: ByteArray) {
         // called on rust's audio thread, never block it
-        track?.write(pcm, 0, pcm.size, AudioTrack.WRITE_NON_BLOCKING)
+        val samples = ShortArray(pcm.size / 2)
+        ByteBuffer.wrap(pcm).order(java.nio.ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(samples)
+        synchronized(audioQueues) {
+            val q = audioQueues.getOrPut(participant) { AudioQueue() }
+            q.frames.add(samples)
+            while (q.frames.size > AUDIO_MAX_QUEUED) q.frames.poll() // fell behind, drop the oldest
+            if (q.frames.size >= AUDIO_JITTER_FRAMES) q.playing = true
+        }
     }
 
     // ---- control from rust ----
@@ -503,7 +592,7 @@ class FaceTimeMedia(
     }
 
     override fun ended() {
-        remoteView.post { onEnded() }
+        remoteGrid.post { onEnded() }
     }
 
     fun release() {
@@ -523,9 +612,10 @@ class FaceTimeMedia(
         handler.post {
             session?.close(); camera?.close()
             encoder?.let { runCatching { it.stop() }; it.release() }
-            decoder?.codec?.let { runCatching { it.stop() }; it.release() }
+            tiles.values.forEach { t -> t.codec?.let { runCatching { it.stop() }; it.release() } }
+            tiles.clear()
             encoderSurface?.release()
-            encoder = null; decoder = null; camera = null; session = null
+            encoder = null; camera = null; session = null
             worker.quitSafely()
         }
     }

@@ -132,46 +132,44 @@ class FaceTimeActivity : Activity() {
     private fun startMedia() {
         if (media != null) return
         startService()
-        // decoders and the camera preview need their surfaces before rust starts sending
-        whenTextureReady(binding.remoteVideo) {
-            whenTextureReady(binding.localVideo) {
-                val guid = callUuid ?: return@whenTextureReady
-                val m = FaceTimeMedia(this, binding.remoteVideo, binding.localVideo, ::displayRotationDegrees, ::isUnfolded) { endCall() }
-                media = m
-                val client = APNClient(applicationContext)
-                client.bind { service: APNService ->
-                    thread(name = "FaceTimeStart") {
-                        // blocks while joining the call
-                        val call = service.pushState?.startFacetime(guid, m)
-                        client.destroy()
-                        runOnUiThread {
-                            if (ended) {
-                                call?.leave()
-                                return@runOnUiThread
-                            }
-                            if (call == null) {
-                                binding.callStatus.text = "Couldn't connect"
-                                binding.root.postDelayed({ endCall() }, 2000)
-                                return@runOnUiThread
-                            }
-                            val video = call.isVideo()
-                            binding.callStatus.text = if (video) "" else "$callDesc\nFaceTime Audio"
-                            if (!video) {
-                                binding.localVideo.visibility = View.GONE
-                                binding.cameraButton.visibility = View.GONE
-                                binding.flipButton.visibility = View.GONE
-                                val power = getSystemService(POWER_SERVICE) as PowerManager
-                                if (power.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
-                                    proximityLock = power.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "openbubbles:facetime")
-                                }
-                            }
-                            m.call = call
-                            m.onAudioRouteChanged = {
-                                binding.speakerButton.text = it.label
-                                updateProximity(it)
-                            }
-                            m.startAudio(video)
+        // the camera preview needs its surface before rust starts sending; remote tiles wait for their own
+        whenTextureReady(binding.localVideo) {
+            val guid = callUuid ?: return@whenTextureReady
+            val m = FaceTimeMedia(this, binding.remoteVideo, binding.localVideo, ::displayRotationDegrees, ::isUnfolded) { endCall() }
+            media = m
+            val client = APNClient(applicationContext)
+            client.bind { service: APNService ->
+                thread(name = "FaceTimeStart") {
+                    // blocks while joining the call
+                    val call = service.pushState?.startFacetime(guid, m)
+                    client.destroy()
+                    runOnUiThread {
+                        if (ended) {
+                            call?.leave()
+                            return@runOnUiThread
                         }
+                        if (call == null) {
+                            binding.callStatus.text = "Couldn't connect"
+                            binding.root.postDelayed({ endCall() }, 2000)
+                            return@runOnUiThread
+                        }
+                        val video = call.isVideo()
+                        binding.callStatus.text = if (video) "" else "$callDesc\nFaceTime Audio"
+                        if (!video) {
+                            binding.localVideo.visibility = View.GONE
+                            binding.cameraButton.visibility = View.GONE
+                            binding.flipButton.visibility = View.GONE
+                            val power = getSystemService(POWER_SERVICE) as PowerManager
+                            if (power.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
+                                proximityLock = power.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "openbubbles:facetime")
+                            }
+                        }
+                        m.call = call
+                        m.onAudioRouteChanged = {
+                            binding.speakerButton.text = it.label
+                            updateProximity(it)
+                        }
+                        m.startAudio(video)
                     }
                 }
             }
@@ -206,7 +204,6 @@ class FaceTimeActivity : Activity() {
         wasUnfolded = isUnfolded()
         // rotating, folding and unfolding all resize the views without recreating us
         binding.localVideo.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> media?.fitLocalPreview() }
-        binding.remoteVideo.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> media?.fitRemote() }
 
         binding.endButton.setOnClickListener { endCall() }
         binding.muteButton.setOnClickListener {

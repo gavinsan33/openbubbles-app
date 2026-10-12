@@ -16,7 +16,7 @@
         android:fitsSystemWindows="true"
         android:visibility="invisible">
 
-        <TextureView
+        <com.bluebubbles.messaging.services.facetime.VideoGrid
             android:id="@+id/remoteVideo"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
