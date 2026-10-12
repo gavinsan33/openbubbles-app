@@ -2711,7 +2711,7 @@ class RustPushService extends GetxService {
   Timer? outgoingCallTimer;
   Map<String, dynamic> outgoingCallMeta = {};
   RxString? currentOutgoingCall;
-  Future<void> placeOutgoingCall(String caller, List<String> targets) async {
+  Future<void> placeOutgoingCall(String caller, List<String> targets, {bool video = true}) async {
 
     var outgoingguid = uuid.v4().toUpperCase();
 
@@ -2764,7 +2764,7 @@ class RustPushService extends GetxService {
     }
 
     showOutgoingFaceTimeOverlay(currentOutgoingCall!, desc, caller, targets, icon, link, poster);
-    await api.createFacetime(facetime: pushService.state!.ftClient, uuid: outgoingguid, handle: caller, participants: targets);
+    await api.createFacetime(facetime: pushService.state!.ftClient, uuid: outgoingguid, handle: caller, participants: targets, isVideo: video);
   }
 
   // returns handle to show poster of
@@ -3313,6 +3313,7 @@ class RustPushService extends GetxService {
           "link": link,
           "icon": icon,
           "poster": myPoster,
+          "audio": sessions.firstWhereOrNull((s) => s.groupId == ring)?.isVideo == false,
         });
       }
 

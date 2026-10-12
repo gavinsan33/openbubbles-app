@@ -253,10 +253,10 @@ class NotificationsService extends GetxService {
     }
   }
 
-  Future<void> createIncomingFaceTimeNotification(String? callUuid, String caller, String link, Uint8List? chatIcon, String? poster) async {
+  Future<void> createIncomingFaceTimeNotification(String? callUuid, String caller, String link, Uint8List? chatIcon, String? poster, {bool audio = false}) async {
     // Set some notification defaults
     String title = caller;
-    String text = "${callUuid == null ? "Incoming" : "Answer"} FaceTime Call";
+    String text = "${callUuid == null ? "Incoming" : "Answer"} FaceTime ${audio ? "Audio" : "Call"}";
     chatIcon ??= (await rootBundle.load("assets/images/person64.png")).buffer.asUint8List();
 
     if (kIsWeb && Notification.permission == "granted") {

@@ -15,6 +15,7 @@ import android.graphics.SurfaceTexture
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.util.Rational
 import android.view.Surface
@@ -40,6 +41,18 @@ class FaceTimeActivity : Activity() {
     var callUuid: String? = null
 
     private var media: FaceTimeMedia? = null
+    private var callDesc = "FaceTime"
+    // audio calls: screen off at the ear while on the earpiece
+    private var proximityLock: PowerManager.WakeLock? = null
+
+    private fun updateProximity(route: FaceTimeMedia.AudioRoute) {
+        val lock = proximityLock ?: return
+        if (route == FaceTimeMedia.AudioRoute.EARPIECE) {
+            if (!lock.isHeld) lock.acquire(4 * 60 * 60 * 1000L)
+        } else if (lock.isHeld) {
+            lock.release()
+        }
+    }
     private var ended = false
 
     companion object {
@@ -141,10 +154,23 @@ class FaceTimeActivity : Activity() {
                                 binding.root.postDelayed({ endCall() }, 2000)
                                 return@runOnUiThread
                             }
-                            binding.callStatus.text = ""
+                            val video = call.isVideo()
+                            binding.callStatus.text = if (video) "" else "$callDesc\nFaceTime Audio"
+                            if (!video) {
+                                binding.localVideo.visibility = View.GONE
+                                binding.cameraButton.visibility = View.GONE
+                                binding.flipButton.visibility = View.GONE
+                                val power = getSystemService(POWER_SERVICE) as PowerManager
+                                if (power.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
+                                    proximityLock = power.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "openbubbles:facetime")
+                                }
+                            }
                             m.call = call
-                            m.onAudioRouteChanged = { binding.speakerButton.text = it.label }
-                            m.startAudio()
+                            m.onAudioRouteChanged = {
+                                binding.speakerButton.text = it.label
+                                updateProximity(it)
+                            }
+                            m.startAudio(video)
                         }
                     }
                 }
@@ -271,6 +297,7 @@ class FaceTimeActivity : Activity() {
         }
         media?.release()
         media = null
+        proximityLock?.let { if (it.isHeld) it.release() }
 
         stopService(Intent(this, FaceTimeInCallService::class.java))
         serviceStarted = false
@@ -280,6 +307,7 @@ class FaceTimeActivity : Activity() {
     private fun handleConfig(extras: Bundle) {
         // sanitize desc
         val desc = extras.getString("desc")?.replace("[^a-zA-Z0-9, +.@:&]+".toRegex(), "") ?: "FaceTime Call"
+        callDesc = desc
         val isAnsweringCall = extras.containsKey("answer")
         notificationId = extras.getString("notificationId")?.toInt() ?: 0
         callUuid = extras.getString("callUuid")

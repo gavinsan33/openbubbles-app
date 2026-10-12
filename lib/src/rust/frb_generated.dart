@@ -263,7 +263,8 @@ abstract class RustLibApi extends BaseApi {
       {required ArcFtClient facetime,
       required String uuid,
       required String handle,
-      required List<String> participants});
+      required List<String> participants,
+      required bool isVideo});
 
   Future<String> crateApiApiCreateGroup(
       {required ArcPasswordManagerDefaultAnisetteProvider passwords,
@@ -2979,7 +2980,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       {required ArcFtClient facetime,
       required String uuid,
       required String handle,
-      required List<String> participants}) {
+      required List<String> participants,
+      required bool isVideo}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -2988,6 +2990,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(uuid, serializer);
         sse_encode_String(handle, serializer);
         sse_encode_list_String(participants, serializer);
+        sse_encode_bool(isVideo, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 58, port: port_);
       },
@@ -2996,14 +2999,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiApiCreateFacetimeConstMeta,
-      argValues: [facetime, uuid, handle, participants],
+      argValues: [facetime, uuid, handle, participants, isVideo],
       apiImpl: this,
     ));
   }
 
   TaskConstMeta get kCrateApiApiCreateFacetimeConstMeta => const TaskConstMeta(
         debugName: "create_facetime",
-        argNames: ["facetime", "uuid", "handle", "participants"],
+        argNames: ["facetime", "uuid", "handle", "participants", "isVideo"],
       );
 
   @override

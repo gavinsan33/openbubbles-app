@@ -52,6 +52,8 @@ type StreamMode = Option<Option<HashMap<u32, Vec<u32>>>>;
 #[derive(uniffi::Object)]
 pub struct FtCall {
     guid: String,
+    // FaceTime Audio when false: no video sender, Kotlin skips the camera
+    is_video: bool,
     ft: Arc<FTClient>,
     av: Arc<AVSession>,
     sink: Arc<dyn FtMediaSink>,
@@ -102,10 +104,12 @@ pub async fn start_call(ft: Arc<FTClient>, guid: String, sink: Arc<dyn FtMediaSi
         ft.join(session, false).await?;
     }
     let av = session.connection.clone().ok_or(anyhow::anyhow!("No connection after join"))?;
+    let is_video = session.is_video;
     drop(state);
 
     let call = Arc::new(FtCall {
         guid: guid.clone(),
+        is_video,
         ft,
         av: av.clone(),
         sink,
@@ -208,9 +212,12 @@ impl FtCall {
         let (video, audio) = match mode {
             // 1:1 senders address the peer directly and need it to be present
             None if !has_peer => (None, None),
-            None => (Some(self.av.create_video_sender(1, None, &[], w, h).await), Some(self.av.create_audio_sender(2, None, &[]).await)),
+            None => (
+                if self.is_video { Some(self.av.create_video_sender(1, None, &[], w, h).await) } else { None },
+                Some(self.av.create_audio_sender(2, None, &[]).await),
+            ),
             Some(groups) => {
-                let video = match groups.get(&1).and_then(|s| s.split_first()) {
+                let video = match groups.get(&1).and_then(|s| s.split_first()).filter(|_| self.is_video) {
                     Some((first, rest)) => Some(self.av.create_video_sender(1, Some(*first), rest, w, h).await),
                     None => None,
                 };
@@ -334,6 +341,10 @@ fn decode_aac(decoder: &mut Decoder, frame: &[u8]) -> Result<Vec<i16>, DecoderEr
 
 #[uniffi::export]
 impl FtCall {
+    pub fn is_video(&self) -> bool {
+        self.is_video
+    }
+
     /// encoder output with BUFFER_FLAG_CODEC_CONFIG (Annex-B VPS/SPS/PPS)
     pub fn set_video_config(self: Arc<Self>, csd: Vec<u8>, width: u32, height: u32) {
         let (width, height) = (width as u16, height as u16);

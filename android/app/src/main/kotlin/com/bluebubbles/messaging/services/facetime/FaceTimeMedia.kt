@@ -66,7 +66,8 @@ class FaceTimeMedia(
     private val onEnded: () -> Unit,
 ) : FtMediaSink {
     var call: FtCall? = null
-        set(value) { field = value; value?.let { startEncoder() } }
+        // FaceTime Audio calls never touch the camera
+        set(value) { field = value; if (value?.isVideo() == true) startEncoder() }
 
     @Volatile var micMuted = false
     @Volatile var cameraOff = false
@@ -426,11 +427,13 @@ class FaceTimeMedia(
         }
     }
 
+    // headsets win; otherwise video calls use the speaker and audio calls the earpiece, like a phone call
     @SuppressLint("MissingPermission")
-    fun startAudio() {
+    fun startAudio(video: Boolean) {
         audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
         val routes = availableRoutes()
-        setAudioRoute(routes.firstOrNull { it == AudioRoute.BLUETOOTH || it == AudioRoute.WIRED } ?: AudioRoute.SPEAKER)
+        setAudioRoute(routes.firstOrNull { it == AudioRoute.BLUETOOTH || it == AudioRoute.WIRED }
+            ?: if (video) AudioRoute.SPEAKER else AudioRoute.EARPIECE)
         audioManager.registerAudioDeviceCallback(deviceCallback, handler)
 
         val minRec = AudioRecord.getMinBufferSize(AUDIO_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)

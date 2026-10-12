@@ -66,7 +66,7 @@ class IntentsService extends GetxService {
         }
       }
       var handles = call.members.map((a) => a.handle).where((a) => a != call!.myHandles.first && !a.startsWith("temp:")).toList();
-      pushService.placeOutgoingCall(call.myHandles.first, handles);
+      pushService.placeOutgoingCall(call.myHandles.first, handles, video: call.isVideo);
       mcs.invokeMethod(
         "delete-notification",
         {

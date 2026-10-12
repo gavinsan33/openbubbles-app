@@ -220,25 +220,33 @@ class FaceTimeBtnState extends OptimizedState<FaceTimeBtn> {
           )
         );
       }
+      final color = !iOS ? context.theme.colorScheme.onBackground
+          : (!marked && !marking || widget.controller.inSelectMode.value)
+          ? context.theme.colorScheme.primary
+          : context.theme.colorScheme.outline;
+      Future<void> call(bool video) async {
+        var data = await chat.getConversationData();
+        var handle = await chat.ensureHandle();
+        var handles = data.participants;
+        handles.remove(handle);
+        await pushService.placeOutgoingCall(handle, handles, video: video);
+      }
       return Padding(
         padding: iOS ? const EdgeInsets.only(top: 5) : EdgeInsets.zero,
-        child: IconButton(
-          icon: Icon(
-            (iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined),
-            color: !iOS ? context.theme.colorScheme.onBackground
-                : (!marked && !marking || widget.controller.inSelectMode.value)
-                ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.outline,
-            size: iOS ? 35 : null,
-          ),
-          tooltip: "FaceTime Call",
-          onPressed: () async {
-            var data = await chat.getConversationData();
-            var handle = await chat.ensureHandle();
-            var handles = data.participants;
-            handles.remove(handle);
-            await pushService.placeOutgoingCall(handle, handles);
-          },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(iOS ? CupertinoIcons.phone : Icons.call_outlined, color: color, size: iOS ? 30 : null),
+              tooltip: "FaceTime Audio",
+              onPressed: () => call(false),
+            ),
+            IconButton(
+              icon: Icon(iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined, color: color, size: iOS ? 35 : null),
+              tooltip: "FaceTime Call",
+              onPressed: () => call(true),
+            ),
+          ],
         ),
       );
     });

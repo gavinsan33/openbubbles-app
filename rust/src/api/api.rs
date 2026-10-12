@@ -1551,10 +1551,10 @@ pub async fn decline_facetime(facetime: &Arc<FTClient>, guid: String) -> anyhow:
     Ok(())
 }
 
-pub async fn create_facetime(facetime: &Arc<FTClient>, uuid: String, handle: String, participants: Vec<String>) -> anyhow::Result<()> {
+pub async fn create_facetime(facetime: &Arc<FTClient>, uuid: String, handle: String, participants: Vec<String>, is_video: bool) -> anyhow::Result<()> {
     // must be set before the session connects to the relay
     facetime.set_local_interfaces(&crate::ft_media::local_interfaces()).await;
-    facetime.create_session(uuid, handle, &participants, true).await?;
+    facetime.create_session(uuid, handle, &participants, is_video).await?;
     Ok(())
 }
 

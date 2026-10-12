@@ -574,6 +574,7 @@ class ActionHandler extends GetxService {
     String link = data["link"]!!;
     Uint8List? chatIcon = data["icon"];
     String? poster = data["poster"];
+    bool audio = data["audio"] == true;
 
     // Find the contact info for the caller
     // Load the contact's avatar & name
@@ -598,7 +599,7 @@ class ActionHandler extends GetxService {
       await showFaceTimeOverlay(callUuid, caller, chatIcon, link);
     }
     // always show facetime notification for ringtone
-    await notif.createIncomingFaceTimeNotification(callUuid, caller, link, chatIcon, poster);
+    await notif.createIncomingFaceTimeNotification(callUuid, caller, link, chatIcon, poster, audio: audio);
   }
 
   Future<void> handleIncomingFaceTimeCallLegacy(Map<String, dynamic> data) async {

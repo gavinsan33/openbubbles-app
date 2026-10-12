@@ -92,7 +92,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
       onTap: () async {
         if (session.members.length == 2 && !active) {
           // 1-1 facetime, call again
-          await pushService.placeOutgoingCall(session.myHandles.first, [session.members.firstWhere((a) => !session.myHandles.contains(a.handle)).handle]);
+          await pushService.placeOutgoingCall(session.myHandles.first, [session.members.firstWhere((a) => !session.myHandles.contains(a.handle)).handle], video: session.isVideo);
           return;
         }
         pushService.chosenFTRoomGuid = session.groupId;

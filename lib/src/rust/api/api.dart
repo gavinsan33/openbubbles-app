@@ -594,12 +594,14 @@ Future<void> createFacetime(
         {required ArcFtClient facetime,
         required String uuid,
         required String handle,
-        required List<String> participants}) =>
+        required List<String> participants,
+        required bool isVideo}) =>
     RustLib.instance.api.crateApiApiCreateFacetime(
         facetime: facetime,
         uuid: uuid,
         handle: handle,
-        participants: participants);
+        participants: participants,
+        isVideo: isVideo);
 
 Future<void> cancelFacetime(
         {required ArcFtClient facetime, required String guid}) =>

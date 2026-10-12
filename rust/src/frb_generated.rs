@@ -2947,6 +2947,7 @@ fn wire__crate__api__api__create_facetime_impl(
             let api_uuid = <String>::sse_decode(&mut deserializer);
             let api_handle = <String>::sse_decode(&mut deserializer);
             let api_participants = <Vec<String>>::sse_decode(&mut deserializer);
+            let api_is_video = <bool>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
@@ -2975,6 +2976,7 @@ fn wire__crate__api__api__create_facetime_impl(
                             api_uuid,
                             api_handle,
                             api_participants,
+                            api_is_video,
                         )
                         .await?;
                         Ok(output_ok)

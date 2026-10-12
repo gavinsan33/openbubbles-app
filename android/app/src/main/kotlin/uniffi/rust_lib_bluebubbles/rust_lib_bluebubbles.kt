@@ -1174,6 +1174,8 @@ internal open class UniffiVTableCallbackInterfaceSpecialAppleAuthCallback(
 
 
 
+
+
 // For large crates we prevent `MethodTooLargeException` (see #2340)
 // N.B. the name of the extension is very misleading, since it is 
 // rather `InterfaceTooLargeException`, caused by too many methods 
@@ -1208,6 +1210,8 @@ fun uniffi_rust_lib_bluebubbles_checksum_func_start(
 fun uniffi_rust_lib_bluebubbles_checksum_method_availablegroupscallback_groups(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_is_video(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_leave(
 ): Short
@@ -1380,6 +1384,8 @@ fun uniffi_rust_lib_bluebubbles_fn_clone_ftcall(`ptr`: Pointer,uniffi_out_err: U
 ): Pointer
 fun uniffi_rust_lib_bluebubbles_fn_free_ftcall(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_is_video(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Byte
 fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_leave(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_send_audio(`ptr`: Pointer,`pcm`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -1695,6 +1701,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway() != 11467.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_is_video() != 36129.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_leave() != 55566.toShort()) {
@@ -2839,6 +2848,8 @@ public object FfiConverterTypeCarrierHandler: FfiConverter<CarrierHandler, Point
 
 public interface FtCallInterface {
     
+    fun `isVideo`(): kotlin.Boolean
+    
     fun `leave`()
     
     /**
@@ -2942,6 +2953,18 @@ open class FtCall: Disposable, AutoCloseable, FtCallInterface
             UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_clone_ftcall(pointer!!, status)
         }
     }
+
+    override fun `isVideo`(): kotlin.Boolean {
+            return FfiConverterBoolean.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_is_video(
+        it, _status)
+}
+    }
+    )
+    }
+    
 
     override fun `leave`()
         = 
