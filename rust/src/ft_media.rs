@@ -60,7 +60,13 @@ pub struct FtCall {
     video_csd: Mutex<Option<Vec<u8>>>,
     dims: Mutex<(u16, u16)>,
     encoder: Mutex<AacEncoder>,
-    audio_ts: Mutex<u32>,
+    // audio and video RTP timestamps share this call clock (base + elapsed at 24kHz): receivers
+    // sync the streams by timestamp, and unrelated clocks left them holding our video forever
+    clock_start: Instant,
+    ts_base: u32,
+    audio_ts: Mutex<Option<u32>>,
+    // camera pts (us) -> call clock (us), fixed at the first frame
+    video_pts_offset: Mutex<Option<i64>>,
     ended: AtomicBool,
     video_sent: AtomicU64,
     video_received: AtomicU64,
@@ -110,7 +116,10 @@ pub async fn start_call(ft: Arc<FTClient>, guid: String, sink: Arc<dyn FtMediaSi
         video_csd: Mutex::new(None),
         dims: Mutex::new((1280, 720)),
         encoder: Mutex::new(AacEncoder::new()?),
-        audio_ts: Mutex::new(rand::random()),
+        clock_start: Instant::now(),
+        ts_base: rand::random(),
+        audio_ts: Mutex::new(None),
+        video_pts_offset: Mutex::new(None),
         ended: AtomicBool::new(false),
         video_sent: AtomicU64::new(0),
         video_received: AtomicU64::new(0),
@@ -267,6 +276,11 @@ impl FtCall {
                             }
                         }
                     }
+                    if received % 300 == 1 {
+                        // what a real Apple sender puts in the trailer, to compare with what we send
+                        let meta: Vec<String> = msg.metadata.iter().map(|(k, v)| format!("{k}={v:02x?}")).collect();
+                        info!("FT incoming video metadata {meta:?} camera {:?}", msg.camera_meta);
+                    }
                     let (mul, div) = msg.stream.clock_conversion();
                     let rotation = msg.camera_meta.as_ref().map(|c| rotation_degrees(&c.orientation)).unwrap_or(0);
                     let mirrored = msg.camera_meta.as_ref().map(|c| c.is_mirrored).unwrap_or(false);
@@ -352,7 +366,10 @@ impl FtCall {
         frames.extend(AnnexB::new(&data).filter(|nal| !nal.is_empty() && !(32..=34).contains(&((nal[0] >> 1) & 0x3f))).map(|nal| ChannelFrame::Sample(nal.to_vec())));
 
         video.camera_source = FTVideoCameraStatus { orientation: rotation_from_degrees(rotation), is_mirrored: mirrored, is_back: back, source: 0 };
-        let timestamp = (timestamp_us * RTP_CLOCK / 1_000_000) as u32;
+        let elapsed_us = self.clock_start.elapsed().as_micros() as i64;
+        let offset = *self.video_pts_offset.lock().unwrap().get_or_insert(elapsed_us - timestamp_us as i64);
+        let call_us = (timestamp_us as i64 + offset).max(0) as u64;
+        let timestamp = self.ts_base.wrapping_add((call_us * RTP_CLOCK / 1_000_000) as u32);
         match video.send_video_frame(frames, timestamp) {
             Ok(()) => {
                 if keyframe { senders.send_config = false }
@@ -372,8 +389,10 @@ impl FtCall {
             Err(e) => { warn!("FT aac encode {e}"); return },
         };
         let mut ts = self.audio_ts.lock().unwrap();
-        let timestamp = *ts;
-        *ts = ts.wrapping_add(AUDIO_FRAME_SAMPLES as u32);
+        let timestamp = *ts.get_or_insert_with(|| {
+            self.ts_base.wrapping_add((self.clock_start.elapsed().as_micros() as u64 * RTP_CLOCK / 1_000_000) as u32)
+        });
+        *ts = Some(timestamp.wrapping_add(AUDIO_FRAME_SAMPLES as u32));
         drop(ts);
 
         let mut senders = self.senders.lock().unwrap();
