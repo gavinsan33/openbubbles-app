@@ -9,6 +9,14 @@ uniffi::setup_scaffolding!();
 
 pub static RUNTIME: LazyLock<tokio::runtime::Runtime> = LazyLock::new(|| {
     info!("creating runner");
+    // panics otherwise only reach stderr, which logcat doesn't show
+    let default_hook = std::panic::take_hook();
+    std::panic::set_hook(Box::new(move |info| {
+        log::error!("rust panic: {info}");
+        default_hook(info);
+    }));
+    // the facetime relay's QUIC (rustpush's patched rustls) can't pick a provider by itself
+    let _ = rustls_psk::crypto::aws_lc_rs::default_provider().install_default();
     tokio::runtime::Builder::new_multi_thread()
         .worker_threads(1)
         .thread_name("tokio-rustpush")
@@ -49,6 +57,7 @@ pub fn init_logger(path: &Path) {
 }
 
 mod native;
+mod ft_media;
 pub mod api;
 mod keystore;
 mod frb_generated; /* AUTO INJECTED BY flutter_rust_bridge. This line may not be accurate, and you can change it according to your needs. */

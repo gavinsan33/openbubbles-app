@@ -861,7 +861,7 @@ class Chat {
         lastAddressedHandle: (await ensureHandle()).replaceFirst("mailto:", "").replaceFirst("tel:", ""), 
         guid: "iMessage;${isGroup ? '+' : '-'};$chatIdentifier",
         displayName: displayName,
-        proto001: api.encodeChatproto(chat: const api.ChatProto(unk1: 0)),
+        proto001: api.encodeChatproto(chat: const api.ChatProto(isRecovered: 0)),
       );
     }
     existing.style = isGroup ? 43 : 45;

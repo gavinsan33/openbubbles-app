@@ -9,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
 import 'package:version/version.dart';
 
+import 'environment.dart';
 import 'target.dart';
 import 'util.dart';
 
@@ -108,13 +109,17 @@ class AndroidEnvironment {
 
     final ccKey = 'CC_${target.rust}';
     final ccValue = path.join(toolchainPath, 'clang$exe');
+    // headers AOSP has but the NDK doesn't (e.g. log/log.h for fdk-aac, which builds its C++ with CC)
+    final shimDir = path.join(Environment.manifestDir, 'android-shim');
+    final shimFlag = Directory(shimDir).existsSync() ? ' -I$shimDir' : '';
+
     final cfFlagsKey = 'CFLAGS_${target.rust}';
-    final cFlagsValue = targetArg;
+    final cFlagsValue = '$targetArg$shimFlag';
 
     final cxxKey = 'CXX_${target.rust}';
     final cxxValue = path.join(toolchainPath, 'clang++$exe');
     final cxxfFlagsKey = 'CXXFLAGS_${target.rust}';
-    final cxxFlagsValue = targetArg;
+    final cxxFlagsValue = '$targetArg$shimFlag';
 
     final linkerKey = 'cargo_target_${target.rust.replaceAll('-', '_')}_linker'.toUpperCase();
 

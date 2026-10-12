@@ -7,6 +7,7 @@ use rustpush::{EntitlementAuthState, GenerateVerificationTokenRequest, PushError
 use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
 
 use futures::FutureExt;
+use crate::ft_media::{FtCall, FtMediaSink};
 use uuid::Uuid;
 use crate::{RUNTIME, api::api::{APSWatcher, DaemonData, PollResult, PushMessage, SharedPushState, approve_circle, decline_facetime, do_first_time_init, get_2fa_code, get_entitlements, recv_wait, set_status, teardown_2fa}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger};
 
@@ -325,6 +326,20 @@ impl NativePushState {
         let arc_val = Arc::downgrade(&self.state).into_raw() as u64;
         info!("emitting state {arc_val}");
         arc_val
+    }
+
+    /// joins the call if needed and attaches native media. Blocks, call off the main thread.
+    pub fn start_facetime(&self, guid: String, sink: Arc<dyn FtMediaSink>) -> Option<Arc<FtCall>> {
+        let ft = self.state.ft_client.clone();
+        RUNTIME.block_on(async move {
+            match crate::ft_media::start_call(ft, guid, sink).await {
+                Ok(call) => Some(call),
+                Err(e) => {
+                    warn!("Failed to start facetime {e}");
+                    None
+                }
+            }
+        })
     }
 
     pub fn decline_facetime(&self, guid: String) {

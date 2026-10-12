@@ -1030,21 +1030,22 @@ class Message {
       throw Exception("No Attachments!");
     }
 
-    var p = payloadData?.appData?.firstOrNull != null ? api.encodeExtensionApp(app: pushService.dataToApp(payloadData!)).$2 : null;
+    var p = payloadData?.appData?.firstOrNull != null ? api.encodeExtensionApp(app: pushService.dataToApp(payloadData!), isBackup: true).$2 : null;
     return api.CloudMessage(
       utm: api.utmNow(),
-      type: associatedMessageGuid != null ? 2 : 1,
       error: error, 
       chatId: chat.target!.isGroup ? chat.target!.cloudGuid ?? chat.target!.guid : "iMessage;-;${chat.target!.chatIdentifier}", 
       sender: isFromMe == true ? "" : getHandle()?.address ?? "", 
       time: RustPushBBUtils.nsSinceAppleEpoch(dateCreated!), 
-      msgProto2: threadOriginatorGuid != null ? api.encodeMessageproto2(messageproto2: api.MessageProto2(
-        reply: "r:$threadOriginatorPart:$threadOriginatorGuid"
-      )) : null,
       // this assumes it was sent with this handle, but, cmon, just go along with me...
       destinationCallerId: chat.target!.usingHandle!.replaceFirst("mailto:", "").replaceFirst("tel:", ""), 
-      msgProto: api.encodeMessageproto(messageproto: api.MessageProto(
-        unk1: 1,
+      message: api.CloudMessageType.message(
+      reaction: associatedMessageGuid != null,
+      proto2: threadOriginatorGuid != null ? api.MessageProto2(
+        reply: "r:$threadOriginatorPart:$threadOriginatorGuid"
+      ) : null,
+      proto: api.MessageProto(
+        version: 1,
         subject: subject, 
         text: attributedBody[0].string, 
         attributedBody: encodeAttributedBody(attributedBody, noAttachments),
@@ -1065,14 +1066,23 @@ class Message {
         )),
         effect: expressiveSendStyleId,
         dateRead: dateRead != null ? RustPushBBUtils.nsSinceAppleEpoch(dateRead!) : 0,
-        unk10: 0,
-        unk11: 0,
+        timePlayed: 0,
+        timeExpressiveSentPlayed: 0,
         dateDelivered: dateDelivered != null ? RustPushBBUtils.nsSinceAppleEpoch(dateDelivered!) : 0,
-        unk14: 0,
+        expireState: 0,
         associatedMessageType: amt,
         associatedMessageGuid: associatedMessageGuid != null ? "p:$associatedMessagePart/$associatedMessageGuid" : null,
         associatedMessageRangeLength: associatedMessagePart != null ? Message.findOne(guid: associatedMessageGuid!)?.attributedBody[0].runs.firstWhere((r) => r.attributes!.messagePart == associatedMessagePart).range[1] : null,
         associatedMessageRangeLocation: associatedMessagePart != null ? Message.findOne(guid: associatedMessageGuid!)?.attributedBody[0].runs.firstWhere((r) => r.attributes!.messagePart == associatedMessagePart).range[0] : null
+      ),
+      proto3: const api.MessageProto3(cmmState: 0, cmmAssetOffset: 0),
+      proto4: api.MessageProto4(
+        associatedMessageEmoji: associatedMessageEmoji,
+        service: chat.target!.isRpSms ? "SMS" : "iMessage", 
+        scheduleType: 0, 
+        scheduleState: 0, 
+        groupId: chat.target!.guid, 
+        sentOrReceivedOffGrid: 0
       )),
       flags: api.MessageFlags.fromBitsTruncate(val: 
         IS_FINISHED |
@@ -1084,16 +1094,7 @@ class Message {
         WAS_DATA_DETECTED
       ), 
       guid: guid!, 
-      msgProto3: api.encodeMessageproto3(messageproto3: const api.MessageProto3(unk2: 0, unk3: 0)),
       service: chat.target!.isRpSms ? "SMS" : "iMessage",
-      msgProto4: api.encodeMessageproto4(messageproto4: api.MessageProto4(
-        associatedMessageEmoji: associatedMessageEmoji,
-        service: chat.target!.isRpSms ? "SMS" : "iMessage", 
-        scheduleType: 0, 
-        scheduleState: 0, 
-        groupId: chat.target!.guid, 
-        sentOrReceivedOffGrid: 0
-      ))
     );
   }
 
@@ -1113,6 +1114,9 @@ class Message {
     }
 
     if (chat?.isRpSms ?? true) return;
+    // group renames, participant changes etc. aren't synced into the local db
+    final message = c.message;
+    if (message is! api.CloudMessageType_Message) return;
 
     Logger.info("Syncing new message");
 
@@ -1122,7 +1126,7 @@ class Message {
     handle = RustPushBBUtils.rustHandleToBB(c.sender);
     handleId = handle!.originalROWID;
     dateCreated = RustPushBBUtils.fromNsSinceAppleEpoch(c.time);
-    var proto1 = api.decodeMessageproto(wrapped: c.msgProto);
+    var proto1 = message.proto;
     subject = proto1.subject;
     text = proto1.text;
     attributedBody = decodeAttributedBody(proto1.attributedBody);
@@ -1170,8 +1174,8 @@ class Message {
     var bits = c.flags.bits();
     isFromMe = (bits & IS_FROM_ME) != 0;
 
-    if (c.msgProto2 != null) {
-      var proto2 = api.decodeMessageproto2(wrapped: c.msgProto2!);
+    var proto2 = message.proto2;
+    if (proto2 != null) {
       if (proto2.reply != null && proto2.reply!.startsWith("r:")) {
         var parts = proto2.reply!.split(":");
         threadOriginatorGuid = parts.last;
@@ -1179,8 +1183,8 @@ class Message {
       }
     }
     
-    if (c.msgProto4 != null) {
-      var proto4 = api.decodeMessageproto4(wrapped: c.msgProto4!);
+    var proto4 = message.proto4;
+    if (proto4 != null) {
       associatedMessageEmoji = proto4.associatedMessageEmoji;
     }
     

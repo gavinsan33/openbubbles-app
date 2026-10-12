@@ -45,7 +45,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
     super.dispose();
   }
 
-  Widget buildSession(api.FTSession session, bool active) {
+  Widget buildSession(api.FTSessionInfo session, bool active) {
     var participants = session.members.where((a) => !session.myHandles.contains(a.handle)).map((a) {
       if (a.nickname != null) {
         return Handle(address: "Maybe: ${a.nickname}");

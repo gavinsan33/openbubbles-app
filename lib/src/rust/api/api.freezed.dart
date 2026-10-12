@@ -20,19 +20,19 @@ mixin _$AttachmentType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(MMCSFile field0) mmcs,
+    required TResult Function(List<MMCSFile> field0) mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(MMCSFile field0)? mmcs,
+    TResult? Function(List<MMCSFile> field0)? mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(MMCSFile field0)? mmcs,
+    TResult Function(List<MMCSFile> field0)? mmcs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -150,7 +150,7 @@ class _$AttachmentType_InlineImpl extends AttachmentType_Inline {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(MMCSFile field0) mmcs,
+    required TResult Function(List<MMCSFile> field0) mmcs,
   }) {
     return inline(field0);
   }
@@ -159,7 +159,7 @@ class _$AttachmentType_InlineImpl extends AttachmentType_Inline {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(MMCSFile field0)? mmcs,
+    TResult? Function(List<MMCSFile> field0)? mmcs,
   }) {
     return inline?.call(field0);
   }
@@ -168,7 +168,7 @@ class _$AttachmentType_InlineImpl extends AttachmentType_Inline {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(MMCSFile field0)? mmcs,
+    TResult Function(List<MMCSFile> field0)? mmcs,
     required TResult orElse(),
   }) {
     if (inline != null) {
@@ -230,7 +230,7 @@ abstract class _$$AttachmentType_MMCSImplCopyWith<$Res> {
           $Res Function(_$AttachmentType_MMCSImpl) then) =
       __$$AttachmentType_MMCSImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({MMCSFile field0});
+  $Res call({List<MMCSFile> field0});
 }
 
 /// @nodoc
@@ -250,9 +250,9 @@ class __$$AttachmentType_MMCSImplCopyWithImpl<$Res>
   }) {
     return _then(_$AttachmentType_MMCSImpl(
       null == field0
-          ? _value.field0
+          ? _value._field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as MMCSFile,
+              as List<MMCSFile>,
     ));
   }
 }
@@ -260,10 +260,17 @@ class __$$AttachmentType_MMCSImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
-  const _$AttachmentType_MMCSImpl(this.field0) : super._();
+  const _$AttachmentType_MMCSImpl(final List<MMCSFile> field0)
+      : _field0 = field0,
+        super._();
 
+  final List<MMCSFile> _field0;
   @override
-  final MMCSFile field0;
+  List<MMCSFile> get field0 {
+    if (_field0 is EqualUnmodifiableListView) return _field0;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_field0);
+  }
 
   @override
   String toString() {
@@ -275,11 +282,12 @@ class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AttachmentType_MMCSImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
+            const DeepCollectionEquality().equals(other._field0, _field0));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, field0);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_field0));
 
   /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
@@ -294,7 +302,7 @@ class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(MMCSFile field0) mmcs,
+    required TResult Function(List<MMCSFile> field0) mmcs,
   }) {
     return mmcs(field0);
   }
@@ -303,7 +311,7 @@ class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(MMCSFile field0)? mmcs,
+    TResult? Function(List<MMCSFile> field0)? mmcs,
   }) {
     return mmcs?.call(field0);
   }
@@ -312,7 +320,7 @@ class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(MMCSFile field0)? mmcs,
+    TResult Function(List<MMCSFile> field0)? mmcs,
     required TResult orElse(),
   }) {
     if (mmcs != null) {
@@ -354,12 +362,12 @@ class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
 }
 
 abstract class AttachmentType_MMCS extends AttachmentType {
-  const factory AttachmentType_MMCS(final MMCSFile field0) =
+  const factory AttachmentType_MMCS(final List<MMCSFile> field0) =
       _$AttachmentType_MMCSImpl;
   const AttachmentType_MMCS._() : super._();
 
   @override
-  MMCSFile get field0;
+  List<MMCSFile> get field0;
 
   /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
@@ -777,6 +785,1550 @@ abstract class BalloonLayout_TemplateLayout extends BalloonLayout {
 }
 
 /// @nodoc
+mixin _$CloudMessageType {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CloudMessageTypeCopyWith<$Res> {
+  factory $CloudMessageTypeCopyWith(
+          CloudMessageType value, $Res Function(CloudMessageType) then) =
+      _$CloudMessageTypeCopyWithImpl<$Res, CloudMessageType>;
+}
+
+/// @nodoc
+class _$CloudMessageTypeCopyWithImpl<$Res, $Val extends CloudMessageType>
+    implements $CloudMessageTypeCopyWith<$Res> {
+  _$CloudMessageTypeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_MessageImplCopyWith<$Res> {
+  factory _$$CloudMessageType_MessageImplCopyWith(
+          _$CloudMessageType_MessageImpl value,
+          $Res Function(_$CloudMessageType_MessageImpl) then) =
+      __$$CloudMessageType_MessageImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {bool reaction,
+      MessageProto proto,
+      MessageProto2? proto2,
+      MessageProto3? proto3,
+      MessageProto4? proto4});
+}
+
+/// @nodoc
+class __$$CloudMessageType_MessageImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res, _$CloudMessageType_MessageImpl>
+    implements _$$CloudMessageType_MessageImplCopyWith<$Res> {
+  __$$CloudMessageType_MessageImplCopyWithImpl(
+      _$CloudMessageType_MessageImpl _value,
+      $Res Function(_$CloudMessageType_MessageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reaction = null,
+    Object? proto = null,
+    Object? proto2 = freezed,
+    Object? proto3 = freezed,
+    Object? proto4 = freezed,
+  }) {
+    return _then(_$CloudMessageType_MessageImpl(
+      reaction: null == reaction
+          ? _value.reaction
+          : reaction // ignore: cast_nullable_to_non_nullable
+              as bool,
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as MessageProto,
+      proto2: freezed == proto2
+          ? _value.proto2
+          : proto2 // ignore: cast_nullable_to_non_nullable
+              as MessageProto2?,
+      proto3: freezed == proto3
+          ? _value.proto3
+          : proto3 // ignore: cast_nullable_to_non_nullable
+              as MessageProto3?,
+      proto4: freezed == proto4
+          ? _value.proto4
+          : proto4 // ignore: cast_nullable_to_non_nullable
+              as MessageProto4?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_MessageImpl extends CloudMessageType_Message {
+  const _$CloudMessageType_MessageImpl(
+      {required this.reaction,
+      required this.proto,
+      this.proto2,
+      this.proto3,
+      this.proto4})
+      : super._();
+
+  @override
+  final bool reaction;
+  @override
+  final MessageProto proto;
+  @override
+  final MessageProto2? proto2;
+  @override
+  final MessageProto3? proto3;
+  @override
+  final MessageProto4? proto4;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.message(reaction: $reaction, proto: $proto, proto2: $proto2, proto3: $proto3, proto4: $proto4)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_MessageImpl &&
+            (identical(other.reaction, reaction) ||
+                other.reaction == reaction) &&
+            (identical(other.proto, proto) || other.proto == proto) &&
+            (identical(other.proto2, proto2) || other.proto2 == proto2) &&
+            (identical(other.proto3, proto3) || other.proto3 == proto3) &&
+            (identical(other.proto4, proto4) || other.proto4 == proto4));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, reaction, proto, proto2, proto3, proto4);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_MessageImplCopyWith<_$CloudMessageType_MessageImpl>
+      get copyWith => __$$CloudMessageType_MessageImplCopyWithImpl<
+          _$CloudMessageType_MessageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return message(reaction, proto, proto2, proto3, proto4);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return message?.call(reaction, proto, proto2, proto3, proto4);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (message != null) {
+      return message(reaction, proto, proto2, proto3, proto4);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return message(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return message?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (message != null) {
+      return message(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_Message extends CloudMessageType {
+  const factory CloudMessageType_Message(
+      {required final bool reaction,
+      required final MessageProto proto,
+      final MessageProto2? proto2,
+      final MessageProto3? proto3,
+      final MessageProto4? proto4}) = _$CloudMessageType_MessageImpl;
+  const CloudMessageType_Message._() : super._();
+
+  bool get reaction;
+  MessageProto get proto;
+  MessageProto2? get proto2;
+  MessageProto3? get proto3;
+  MessageProto4? get proto4;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_MessageImplCopyWith<_$CloudMessageType_MessageImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_GroupTitleChangeImplCopyWith<$Res> {
+  factory _$$CloudMessageType_GroupTitleChangeImplCopyWith(
+          _$CloudMessageType_GroupTitleChangeImpl value,
+          $Res Function(_$CloudMessageType_GroupTitleChangeImpl) then) =
+      __$$CloudMessageType_GroupTitleChangeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GroupTitleChange proto});
+}
+
+/// @nodoc
+class __$$CloudMessageType_GroupTitleChangeImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res,
+        _$CloudMessageType_GroupTitleChangeImpl>
+    implements _$$CloudMessageType_GroupTitleChangeImplCopyWith<$Res> {
+  __$$CloudMessageType_GroupTitleChangeImplCopyWithImpl(
+      _$CloudMessageType_GroupTitleChangeImpl _value,
+      $Res Function(_$CloudMessageType_GroupTitleChangeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? proto = null,
+  }) {
+    return _then(_$CloudMessageType_GroupTitleChangeImpl(
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as GroupTitleChange,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_GroupTitleChangeImpl
+    extends CloudMessageType_GroupTitleChange {
+  const _$CloudMessageType_GroupTitleChangeImpl({required this.proto})
+      : super._();
+
+  @override
+  final GroupTitleChange proto;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.groupTitleChange(proto: $proto)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_GroupTitleChangeImpl &&
+            (identical(other.proto, proto) || other.proto == proto));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, proto);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_GroupTitleChangeImplCopyWith<
+          _$CloudMessageType_GroupTitleChangeImpl>
+      get copyWith => __$$CloudMessageType_GroupTitleChangeImplCopyWithImpl<
+          _$CloudMessageType_GroupTitleChangeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return groupTitleChange(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return groupTitleChange?.call(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (groupTitleChange != null) {
+      return groupTitleChange(proto);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return groupTitleChange(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return groupTitleChange?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (groupTitleChange != null) {
+      return groupTitleChange(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_GroupTitleChange extends CloudMessageType {
+  const factory CloudMessageType_GroupTitleChange(
+          {required final GroupTitleChange proto}) =
+      _$CloudMessageType_GroupTitleChangeImpl;
+  const CloudMessageType_GroupTitleChange._() : super._();
+
+  GroupTitleChange get proto;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_GroupTitleChangeImplCopyWith<
+          _$CloudMessageType_GroupTitleChangeImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_LocationShareStatusChangeImplCopyWith<$Res> {
+  factory _$$CloudMessageType_LocationShareStatusChangeImplCopyWith(
+          _$CloudMessageType_LocationShareStatusChangeImpl value,
+          $Res Function(_$CloudMessageType_LocationShareStatusChangeImpl)
+              then) =
+      __$$CloudMessageType_LocationShareStatusChangeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({LocationShareStatusChange proto});
+}
+
+/// @nodoc
+class __$$CloudMessageType_LocationShareStatusChangeImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res,
+        _$CloudMessageType_LocationShareStatusChangeImpl>
+    implements _$$CloudMessageType_LocationShareStatusChangeImplCopyWith<$Res> {
+  __$$CloudMessageType_LocationShareStatusChangeImplCopyWithImpl(
+      _$CloudMessageType_LocationShareStatusChangeImpl _value,
+      $Res Function(_$CloudMessageType_LocationShareStatusChangeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? proto = null,
+  }) {
+    return _then(_$CloudMessageType_LocationShareStatusChangeImpl(
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as LocationShareStatusChange,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_LocationShareStatusChangeImpl
+    extends CloudMessageType_LocationShareStatusChange {
+  const _$CloudMessageType_LocationShareStatusChangeImpl({required this.proto})
+      : super._();
+
+  @override
+  final LocationShareStatusChange proto;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.locationShareStatusChange(proto: $proto)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_LocationShareStatusChangeImpl &&
+            (identical(other.proto, proto) || other.proto == proto));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, proto);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_LocationShareStatusChangeImplCopyWith<
+          _$CloudMessageType_LocationShareStatusChangeImpl>
+      get copyWith =>
+          __$$CloudMessageType_LocationShareStatusChangeImplCopyWithImpl<
+                  _$CloudMessageType_LocationShareStatusChangeImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return locationShareStatusChange(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return locationShareStatusChange?.call(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (locationShareStatusChange != null) {
+      return locationShareStatusChange(proto);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return locationShareStatusChange(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return locationShareStatusChange?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (locationShareStatusChange != null) {
+      return locationShareStatusChange(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_LocationShareStatusChange
+    extends CloudMessageType {
+  const factory CloudMessageType_LocationShareStatusChange(
+          {required final LocationShareStatusChange proto}) =
+      _$CloudMessageType_LocationShareStatusChangeImpl;
+  const CloudMessageType_LocationShareStatusChange._() : super._();
+
+  LocationShareStatusChange get proto;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_LocationShareStatusChangeImplCopyWith<
+          _$CloudMessageType_LocationShareStatusChangeImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_MessageActionImplCopyWith<$Res> {
+  factory _$$CloudMessageType_MessageActionImplCopyWith(
+          _$CloudMessageType_MessageActionImpl value,
+          $Res Function(_$CloudMessageType_MessageActionImpl) then) =
+      __$$CloudMessageType_MessageActionImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({MessageAction proto});
+}
+
+/// @nodoc
+class __$$CloudMessageType_MessageActionImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res,
+        _$CloudMessageType_MessageActionImpl>
+    implements _$$CloudMessageType_MessageActionImplCopyWith<$Res> {
+  __$$CloudMessageType_MessageActionImplCopyWithImpl(
+      _$CloudMessageType_MessageActionImpl _value,
+      $Res Function(_$CloudMessageType_MessageActionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? proto = null,
+  }) {
+    return _then(_$CloudMessageType_MessageActionImpl(
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as MessageAction,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_MessageActionImpl
+    extends CloudMessageType_MessageAction {
+  const _$CloudMessageType_MessageActionImpl({required this.proto}) : super._();
+
+  @override
+  final MessageAction proto;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.messageAction(proto: $proto)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_MessageActionImpl &&
+            (identical(other.proto, proto) || other.proto == proto));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, proto);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_MessageActionImplCopyWith<
+          _$CloudMessageType_MessageActionImpl>
+      get copyWith => __$$CloudMessageType_MessageActionImplCopyWithImpl<
+          _$CloudMessageType_MessageActionImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return messageAction(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return messageAction?.call(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (messageAction != null) {
+      return messageAction(proto);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return messageAction(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return messageAction?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (messageAction != null) {
+      return messageAction(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_MessageAction extends CloudMessageType {
+  const factory CloudMessageType_MessageAction(
+          {required final MessageAction proto}) =
+      _$CloudMessageType_MessageActionImpl;
+  const CloudMessageType_MessageAction._() : super._();
+
+  MessageAction get proto;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_MessageActionImplCopyWith<
+          _$CloudMessageType_MessageActionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_ParticipantChangeImplCopyWith<$Res> {
+  factory _$$CloudMessageType_ParticipantChangeImplCopyWith(
+          _$CloudMessageType_ParticipantChangeImpl value,
+          $Res Function(_$CloudMessageType_ParticipantChangeImpl) then) =
+      __$$CloudMessageType_ParticipantChangeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ParticipantChange proto, ExtraSummaryInfo? proto2});
+}
+
+/// @nodoc
+class __$$CloudMessageType_ParticipantChangeImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res,
+        _$CloudMessageType_ParticipantChangeImpl>
+    implements _$$CloudMessageType_ParticipantChangeImplCopyWith<$Res> {
+  __$$CloudMessageType_ParticipantChangeImplCopyWithImpl(
+      _$CloudMessageType_ParticipantChangeImpl _value,
+      $Res Function(_$CloudMessageType_ParticipantChangeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? proto = null,
+    Object? proto2 = freezed,
+  }) {
+    return _then(_$CloudMessageType_ParticipantChangeImpl(
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as ParticipantChange,
+      proto2: freezed == proto2
+          ? _value.proto2
+          : proto2 // ignore: cast_nullable_to_non_nullable
+              as ExtraSummaryInfo?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_ParticipantChangeImpl
+    extends CloudMessageType_ParticipantChange {
+  const _$CloudMessageType_ParticipantChangeImpl(
+      {required this.proto, this.proto2})
+      : super._();
+
+  @override
+  final ParticipantChange proto;
+  @override
+  final ExtraSummaryInfo? proto2;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.participantChange(proto: $proto, proto2: $proto2)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_ParticipantChangeImpl &&
+            (identical(other.proto, proto) || other.proto == proto) &&
+            (identical(other.proto2, proto2) || other.proto2 == proto2));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, proto, proto2);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_ParticipantChangeImplCopyWith<
+          _$CloudMessageType_ParticipantChangeImpl>
+      get copyWith => __$$CloudMessageType_ParticipantChangeImplCopyWithImpl<
+          _$CloudMessageType_ParticipantChangeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return participantChange(proto, proto2);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return participantChange?.call(proto, proto2);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (participantChange != null) {
+      return participantChange(proto, proto2);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return participantChange(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return participantChange?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (participantChange != null) {
+      return participantChange(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_ParticipantChange extends CloudMessageType {
+  const factory CloudMessageType_ParticipantChange(
+          {required final ParticipantChange proto,
+          final ExtraSummaryInfo? proto2}) =
+      _$CloudMessageType_ParticipantChangeImpl;
+  const CloudMessageType_ParticipantChange._() : super._();
+
+  ParticipantChange get proto;
+  ExtraSummaryInfo? get proto2;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_ParticipantChangeImplCopyWith<
+          _$CloudMessageType_ParticipantChangeImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_GroupActionImplCopyWith<$Res> {
+  factory _$$CloudMessageType_GroupActionImplCopyWith(
+          _$CloudMessageType_GroupActionImpl value,
+          $Res Function(_$CloudMessageType_GroupActionImpl) then) =
+      __$$CloudMessageType_GroupActionImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({GroupAction proto});
+}
+
+/// @nodoc
+class __$$CloudMessageType_GroupActionImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res,
+        _$CloudMessageType_GroupActionImpl>
+    implements _$$CloudMessageType_GroupActionImplCopyWith<$Res> {
+  __$$CloudMessageType_GroupActionImplCopyWithImpl(
+      _$CloudMessageType_GroupActionImpl _value,
+      $Res Function(_$CloudMessageType_GroupActionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? proto = null,
+  }) {
+    return _then(_$CloudMessageType_GroupActionImpl(
+      proto: null == proto
+          ? _value.proto
+          : proto // ignore: cast_nullable_to_non_nullable
+              as GroupAction,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloudMessageType_GroupActionImpl extends CloudMessageType_GroupAction {
+  const _$CloudMessageType_GroupActionImpl({required this.proto}) : super._();
+
+  @override
+  final GroupAction proto;
+
+  @override
+  String toString() {
+    return 'CloudMessageType.groupAction(proto: $proto)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_GroupActionImpl &&
+            (identical(other.proto, proto) || other.proto == proto));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, proto);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloudMessageType_GroupActionImplCopyWith<
+          _$CloudMessageType_GroupActionImpl>
+      get copyWith => __$$CloudMessageType_GroupActionImplCopyWithImpl<
+          _$CloudMessageType_GroupActionImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return groupAction(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return groupAction?.call(proto);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (groupAction != null) {
+      return groupAction(proto);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return groupAction(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return groupAction?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (groupAction != null) {
+      return groupAction(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_GroupAction extends CloudMessageType {
+  const factory CloudMessageType_GroupAction(
+      {required final GroupAction proto}) = _$CloudMessageType_GroupActionImpl;
+  const CloudMessageType_GroupAction._() : super._();
+
+  GroupAction get proto;
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloudMessageType_GroupActionImplCopyWith<
+          _$CloudMessageType_GroupActionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloudMessageType_UnknownImplCopyWith<$Res> {
+  factory _$$CloudMessageType_UnknownImplCopyWith(
+          _$CloudMessageType_UnknownImpl value,
+          $Res Function(_$CloudMessageType_UnknownImpl) then) =
+      __$$CloudMessageType_UnknownImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CloudMessageType_UnknownImplCopyWithImpl<$Res>
+    extends _$CloudMessageTypeCopyWithImpl<$Res, _$CloudMessageType_UnknownImpl>
+    implements _$$CloudMessageType_UnknownImplCopyWith<$Res> {
+  __$$CloudMessageType_UnknownImplCopyWithImpl(
+      _$CloudMessageType_UnknownImpl _value,
+      $Res Function(_$CloudMessageType_UnknownImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CloudMessageType
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CloudMessageType_UnknownImpl extends CloudMessageType_Unknown {
+  const _$CloudMessageType_UnknownImpl() : super._();
+
+  @override
+  String toString() {
+    return 'CloudMessageType.unknown()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloudMessageType_UnknownImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(bool reaction, MessageProto proto,
+            MessageProto2? proto2, MessageProto3? proto3, MessageProto4? proto4)
+        message,
+    required TResult Function(GroupTitleChange proto) groupTitleChange,
+    required TResult Function(LocationShareStatusChange proto)
+        locationShareStatusChange,
+    required TResult Function(MessageAction proto) messageAction,
+    required TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)
+        participantChange,
+    required TResult Function(GroupAction proto) groupAction,
+    required TResult Function() unknown,
+  }) {
+    return unknown();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult? Function(GroupTitleChange proto)? groupTitleChange,
+    TResult? Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult? Function(MessageAction proto)? messageAction,
+    TResult? Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult? Function(GroupAction proto)? groupAction,
+    TResult? Function()? unknown,
+  }) {
+    return unknown?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(bool reaction, MessageProto proto, MessageProto2? proto2,
+            MessageProto3? proto3, MessageProto4? proto4)?
+        message,
+    TResult Function(GroupTitleChange proto)? groupTitleChange,
+    TResult Function(LocationShareStatusChange proto)?
+        locationShareStatusChange,
+    TResult Function(MessageAction proto)? messageAction,
+    TResult Function(ParticipantChange proto, ExtraSummaryInfo? proto2)?
+        participantChange,
+    TResult Function(GroupAction proto)? groupAction,
+    TResult Function()? unknown,
+    required TResult orElse(),
+  }) {
+    if (unknown != null) {
+      return unknown();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CloudMessageType_Message value) message,
+    required TResult Function(CloudMessageType_GroupTitleChange value)
+        groupTitleChange,
+    required TResult Function(CloudMessageType_LocationShareStatusChange value)
+        locationShareStatusChange,
+    required TResult Function(CloudMessageType_MessageAction value)
+        messageAction,
+    required TResult Function(CloudMessageType_ParticipantChange value)
+        participantChange,
+    required TResult Function(CloudMessageType_GroupAction value) groupAction,
+    required TResult Function(CloudMessageType_Unknown value) unknown,
+  }) {
+    return unknown(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CloudMessageType_Message value)? message,
+    TResult? Function(CloudMessageType_GroupTitleChange value)?
+        groupTitleChange,
+    TResult? Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult? Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult? Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult? Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult? Function(CloudMessageType_Unknown value)? unknown,
+  }) {
+    return unknown?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CloudMessageType_Message value)? message,
+    TResult Function(CloudMessageType_GroupTitleChange value)? groupTitleChange,
+    TResult Function(CloudMessageType_LocationShareStatusChange value)?
+        locationShareStatusChange,
+    TResult Function(CloudMessageType_MessageAction value)? messageAction,
+    TResult Function(CloudMessageType_ParticipantChange value)?
+        participantChange,
+    TResult Function(CloudMessageType_GroupAction value)? groupAction,
+    TResult Function(CloudMessageType_Unknown value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (unknown != null) {
+      return unknown(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CloudMessageType_Unknown extends CloudMessageType {
+  const factory CloudMessageType_Unknown() = _$CloudMessageType_UnknownImpl;
+  const CloudMessageType_Unknown._() : super._();
+}
+
+/// @nodoc
 mixin _$DeleteTarget {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1154,6 +2706,8 @@ mixin _$FTMessage {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1171,6 +2725,8 @@ mixin _$FTMessage {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1186,6 +2742,8 @@ mixin _$FTMessage {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1201,6 +2759,8 @@ mixin _$FTMessage {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1214,6 +2774,8 @@ mixin _$FTMessage {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1227,6 +2789,8 @@ mixin _$FTMessage {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1336,6 +2900,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return letMeInRequest(field0);
   }
@@ -1356,6 +2922,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return letMeInRequest?.call(field0);
   }
@@ -1374,6 +2942,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (letMeInRequest != null) {
@@ -1395,6 +2965,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return letMeInRequest(this);
   }
@@ -1411,6 +2983,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return letMeInRequest?.call(this);
   }
@@ -1427,6 +3001,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (letMeInRequest != null) {
@@ -1533,6 +3109,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return linkChanged(guid);
   }
@@ -1553,6 +3131,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return linkChanged?.call(guid);
   }
@@ -1571,6 +3151,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (linkChanged != null) {
@@ -1592,6 +3174,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return linkChanged(this);
   }
@@ -1608,6 +3192,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return linkChanged?.call(this);
   }
@@ -1624,6 +3210,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (linkChanged != null) {
@@ -1759,6 +3347,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return joinEvent(guid, participant, handle, this.ring);
   }
@@ -1779,6 +3369,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return joinEvent?.call(guid, participant, handle, this.ring);
   }
@@ -1797,6 +3389,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (joinEvent != null) {
@@ -1818,6 +3412,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return joinEvent(this);
   }
@@ -1834,6 +3430,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return joinEvent?.call(this);
   }
@@ -1850,6 +3448,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (joinEvent != null) {
@@ -1990,6 +3590,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return addMembers(guid, members, this.ring);
   }
@@ -2010,6 +3612,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return addMembers?.call(guid, members, this.ring);
   }
@@ -2028,6 +3632,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (addMembers != null) {
@@ -2049,6 +3655,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return addMembers(this);
   }
@@ -2065,6 +3673,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return addMembers?.call(this);
   }
@@ -2081,6 +3691,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (addMembers != null) {
@@ -2209,6 +3821,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return removeMembers(guid, members);
   }
@@ -2229,6 +3843,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return removeMembers?.call(guid, members);
   }
@@ -2247,6 +3863,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (removeMembers != null) {
@@ -2268,6 +3886,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return removeMembers(this);
   }
@@ -2284,6 +3904,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return removeMembers?.call(this);
   }
@@ -2300,6 +3922,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (removeMembers != null) {
@@ -2427,6 +4051,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return leaveEvent(guid, participant, handle);
   }
@@ -2447,6 +4073,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return leaveEvent?.call(guid, participant, handle);
   }
@@ -2465,6 +4093,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (leaveEvent != null) {
@@ -2486,6 +4116,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return leaveEvent(this);
   }
@@ -2502,6 +4134,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return leaveEvent?.call(this);
   }
@@ -2518,6 +4152,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (leaveEvent != null) {
@@ -2627,6 +4263,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return ring(guid);
   }
@@ -2647,6 +4285,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return ring?.call(guid);
   }
@@ -2665,6 +4305,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (ring != null) {
@@ -2686,6 +4328,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return ring(this);
   }
@@ -2702,6 +4346,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return ring?.call(this);
   }
@@ -2718,6 +4364,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (ring != null) {
@@ -2823,6 +4471,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return decline(guid);
   }
@@ -2843,6 +4493,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return decline?.call(guid);
   }
@@ -2861,6 +4513,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (decline != null) {
@@ -2882,6 +4536,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return decline(this);
   }
@@ -2898,6 +4554,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return decline?.call(this);
   }
@@ -2914,6 +4572,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (decline != null) {
@@ -3022,6 +4682,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
     required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
   }) {
     return respondedElsewhere(guid);
   }
@@ -3042,6 +4704,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
     TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
   }) {
     return respondedElsewhere?.call(guid);
   }
@@ -3060,6 +4724,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
     TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
     required TResult orElse(),
   }) {
     if (respondedElsewhere != null) {
@@ -3081,6 +4747,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     required TResult Function(FTMessage_Decline value) decline,
     required TResult Function(FTMessage_RespondedElsewhere value)
         respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
   }) {
     return respondedElsewhere(this);
   }
@@ -3097,6 +4765,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
     TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
   }) {
     return respondedElsewhere?.call(this);
   }
@@ -3113,6 +4783,8 @@ class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
     TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
     required TResult orElse(),
   }) {
     if (respondedElsewhere != null) {
@@ -3134,6 +4806,424 @@ abstract class FTMessage_RespondedElsewhere extends FTMessage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FTMessage_RespondedElsewhereImplCopyWith<
           _$FTMessage_RespondedElsewhereImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_ConnectedImplCopyWith<$Res> {
+  factory _$$FTMessage_ConnectedImplCopyWith(_$FTMessage_ConnectedImpl value,
+          $Res Function(_$FTMessage_ConnectedImpl) then) =
+      __$$FTMessage_ConnectedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_ConnectedImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_ConnectedImpl>
+    implements _$$FTMessage_ConnectedImplCopyWith<$Res> {
+  __$$FTMessage_ConnectedImplCopyWithImpl(_$FTMessage_ConnectedImpl _value,
+      $Res Function(_$FTMessage_ConnectedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_ConnectedImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_ConnectedImpl extends FTMessage_Connected {
+  const _$FTMessage_ConnectedImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.connected(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_ConnectedImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_ConnectedImplCopyWith<_$FTMessage_ConnectedImpl> get copyWith =>
+      __$$FTMessage_ConnectedImplCopyWithImpl<_$FTMessage_ConnectedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
+  }) {
+    return connected(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
+  }) {
+    return connected?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
+    required TResult orElse(),
+  }) {
+    if (connected != null) {
+      return connected(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
+  }) {
+    return connected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
+  }) {
+    return connected?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
+    required TResult orElse(),
+  }) {
+    if (connected != null) {
+      return connected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_Connected extends FTMessage {
+  const factory FTMessage_Connected({required final String guid}) =
+      _$FTMessage_ConnectedImpl;
+  const FTMessage_Connected._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_ConnectedImplCopyWith<_$FTMessage_ConnectedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_DisconnectedImplCopyWith<$Res> {
+  factory _$$FTMessage_DisconnectedImplCopyWith(
+          _$FTMessage_DisconnectedImpl value,
+          $Res Function(_$FTMessage_DisconnectedImpl) then) =
+      __$$FTMessage_DisconnectedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_DisconnectedImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_DisconnectedImpl>
+    implements _$$FTMessage_DisconnectedImplCopyWith<$Res> {
+  __$$FTMessage_DisconnectedImplCopyWithImpl(
+      _$FTMessage_DisconnectedImpl _value,
+      $Res Function(_$FTMessage_DisconnectedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_DisconnectedImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_DisconnectedImpl extends FTMessage_Disconnected {
+  const _$FTMessage_DisconnectedImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.disconnected(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_DisconnectedImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_DisconnectedImplCopyWith<_$FTMessage_DisconnectedImpl>
+      get copyWith => __$$FTMessage_DisconnectedImplCopyWithImpl<
+          _$FTMessage_DisconnectedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
+    required TResult Function(String guid) connected,
+    required TResult Function(String guid) disconnected,
+  }) {
+    return disconnected(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
+    TResult? Function(String guid)? connected,
+    TResult? Function(String guid)? disconnected,
+  }) {
+    return disconnected?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
+    TResult Function(String guid)? connected,
+    TResult Function(String guid)? disconnected,
+    required TResult orElse(),
+  }) {
+    if (disconnected != null) {
+      return disconnected(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
+    required TResult Function(FTMessage_Connected value) connected,
+    required TResult Function(FTMessage_Disconnected value) disconnected,
+  }) {
+    return disconnected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult? Function(FTMessage_Connected value)? connected,
+    TResult? Function(FTMessage_Disconnected value)? disconnected,
+  }) {
+    return disconnected?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    TResult Function(FTMessage_Connected value)? connected,
+    TResult Function(FTMessage_Disconnected value)? disconnected,
+    required TResult orElse(),
+  }) {
+    if (disconnected != null) {
+      return disconnected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_Disconnected extends FTMessage {
+  const factory FTMessage_Disconnected({required final String guid}) =
+      _$FTMessage_DisconnectedImpl;
+  const FTMessage_Disconnected._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_DisconnectedImplCopyWith<_$FTMessage_DisconnectedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -5187,6 +7277,7 @@ mixin _$Message {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5218,6 +7309,7 @@ mixin _$Message {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5249,6 +7341,7 @@ mixin _$Message {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -5286,6 +7379,7 @@ mixin _$Message {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5317,6 +7411,7 @@ mixin _$Message {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5348,6 +7443,7 @@ mixin _$Message {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -5471,6 +7567,7 @@ class _$Message_MessageImpl extends Message_Message {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return message(field0);
   }
@@ -5505,6 +7602,7 @@ class _$Message_MessageImpl extends Message_Message {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return message?.call(field0);
   }
@@ -5539,6 +7637,7 @@ class _$Message_MessageImpl extends Message_Message {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -5582,6 +7681,7 @@ class _$Message_MessageImpl extends Message_Message {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return message(this);
   }
@@ -5616,6 +7716,7 @@ class _$Message_MessageImpl extends Message_Message {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return message?.call(this);
   }
@@ -5650,6 +7751,7 @@ class _$Message_MessageImpl extends Message_Message {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -5772,6 +7874,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return renameMessage(field0);
   }
@@ -5806,6 +7909,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return renameMessage?.call(field0);
   }
@@ -5840,6 +7944,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -5883,6 +7988,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return renameMessage(this);
   }
@@ -5917,6 +8023,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return renameMessage?.call(this);
   }
@@ -5951,6 +8058,7 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -6074,6 +8182,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return changeParticipants(field0);
   }
@@ -6108,6 +8217,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -6142,6 +8252,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -6185,6 +8296,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return changeParticipants(this);
   }
@@ -6219,6 +8331,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return changeParticipants?.call(this);
   }
@@ -6253,6 +8366,7 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -6373,6 +8487,7 @@ class _$Message_ReactImpl extends Message_React {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return react(field0);
   }
@@ -6407,6 +8522,7 @@ class _$Message_ReactImpl extends Message_React {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return react?.call(field0);
   }
@@ -6441,6 +8557,7 @@ class _$Message_ReactImpl extends Message_React {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -6484,6 +8601,7 @@ class _$Message_ReactImpl extends Message_React {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return react(this);
   }
@@ -6518,6 +8636,7 @@ class _$Message_ReactImpl extends Message_React {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return react?.call(this);
   }
@@ -6552,6 +8671,7 @@ class _$Message_ReactImpl extends Message_React {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -6644,6 +8764,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return delivered();
   }
@@ -6678,6 +8799,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return delivered?.call();
   }
@@ -6712,6 +8834,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -6755,6 +8878,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return delivered(this);
   }
@@ -6789,6 +8913,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return delivered?.call(this);
   }
@@ -6823,6 +8948,7 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -6907,6 +9033,7 @@ class _$Message_ReadImpl extends Message_Read {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return read();
   }
@@ -6941,6 +9068,7 @@ class _$Message_ReadImpl extends Message_Read {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return read?.call();
   }
@@ -6975,6 +9103,7 @@ class _$Message_ReadImpl extends Message_Read {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -7018,6 +9147,7 @@ class _$Message_ReadImpl extends Message_Read {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return read(this);
   }
@@ -7052,6 +9182,7 @@ class _$Message_ReadImpl extends Message_Read {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return read?.call(this);
   }
@@ -7086,6 +9217,7 @@ class _$Message_ReadImpl extends Message_Read {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -7206,6 +9338,7 @@ class _$Message_TypingImpl extends Message_Typing {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return typing(field0, field1);
   }
@@ -7240,6 +9373,7 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return typing?.call(field0, field1);
   }
@@ -7274,6 +9408,7 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -7317,6 +9452,7 @@ class _$Message_TypingImpl extends Message_Typing {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return typing(this);
   }
@@ -7351,6 +9487,7 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return typing?.call(this);
   }
@@ -7385,6 +9522,7 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -7507,6 +9645,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return unsend(field0);
   }
@@ -7541,6 +9680,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return unsend?.call(field0);
   }
@@ -7575,6 +9715,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -7618,6 +9759,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return unsend(this);
   }
@@ -7652,6 +9794,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return unsend?.call(this);
   }
@@ -7686,6 +9829,7 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -7806,6 +9950,7 @@ class _$Message_EditImpl extends Message_Edit {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return edit(field0);
   }
@@ -7840,6 +9985,7 @@ class _$Message_EditImpl extends Message_Edit {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return edit?.call(field0);
   }
@@ -7874,6 +10020,7 @@ class _$Message_EditImpl extends Message_Edit {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -7917,6 +10064,7 @@ class _$Message_EditImpl extends Message_Edit {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return edit(this);
   }
@@ -7951,6 +10099,7 @@ class _$Message_EditImpl extends Message_Edit {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return edit?.call(this);
   }
@@ -7985,6 +10134,7 @@ class _$Message_EditImpl extends Message_Edit {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -8105,6 +10255,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return iconChange(field0);
   }
@@ -8139,6 +10290,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return iconChange?.call(field0);
   }
@@ -8173,6 +10325,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -8216,6 +10369,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return iconChange(this);
   }
@@ -8250,6 +10404,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return iconChange?.call(this);
   }
@@ -8284,6 +10439,7 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -8407,6 +10563,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return enableSmsActivation(field0);
   }
@@ -8441,6 +10598,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return enableSmsActivation?.call(field0);
   }
@@ -8475,6 +10633,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -8518,6 +10677,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return enableSmsActivation(this);
   }
@@ -8552,6 +10712,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return enableSmsActivation?.call(this);
   }
@@ -8586,6 +10747,7 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -8682,6 +10844,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return messageReadOnDevice();
   }
@@ -8716,6 +10879,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return messageReadOnDevice?.call();
   }
@@ -8750,6 +10914,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -8793,6 +10958,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return messageReadOnDevice(this);
   }
@@ -8827,6 +10993,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return messageReadOnDevice?.call(this);
   }
@@ -8861,6 +11028,7 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -8976,6 +11144,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return smsConfirmSent(field0);
   }
@@ -9010,6 +11179,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return smsConfirmSent?.call(field0);
   }
@@ -9044,6 +11214,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -9087,6 +11258,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return smsConfirmSent(this);
   }
@@ -9121,6 +11293,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return smsConfirmSent?.call(this);
   }
@@ -9155,6 +11328,7 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -9248,6 +11422,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return markUnread();
   }
@@ -9282,6 +11457,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return markUnread?.call();
   }
@@ -9316,6 +11492,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -9359,6 +11536,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return markUnread(this);
   }
@@ -9393,6 +11571,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return markUnread?.call(this);
   }
@@ -9427,6 +11606,7 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -9514,6 +11694,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return peerCacheInvalidate();
   }
@@ -9548,6 +11729,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return peerCacheInvalidate?.call();
   }
@@ -9582,6 +11764,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -9625,6 +11808,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return peerCacheInvalidate(this);
   }
@@ -9659,6 +11843,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return peerCacheInvalidate?.call(this);
   }
@@ -9693,6 +11878,7 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -9808,6 +11994,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return updateExtension(field0);
   }
@@ -9842,6 +12029,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return updateExtension?.call(field0);
   }
@@ -9876,6 +12064,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -9919,6 +12108,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return updateExtension(this);
   }
@@ -9953,6 +12143,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return updateExtension?.call(this);
   }
@@ -9987,6 +12178,7 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -10107,6 +12299,7 @@ class _$Message_ErrorImpl extends Message_Error {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return error(field0);
   }
@@ -10141,6 +12334,7 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return error?.call(field0);
   }
@@ -10175,6 +12369,7 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -10218,6 +12413,7 @@ class _$Message_ErrorImpl extends Message_Error {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return error(this);
   }
@@ -10252,6 +12448,7 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return error?.call(this);
   }
@@ -10286,6 +12483,7 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -10408,6 +12606,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return moveToRecycleBin(field0);
   }
@@ -10442,6 +12641,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return moveToRecycleBin?.call(field0);
   }
@@ -10476,6 +12676,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (moveToRecycleBin != null) {
@@ -10519,6 +12720,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return moveToRecycleBin(this);
   }
@@ -10553,6 +12755,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return moveToRecycleBin?.call(this);
   }
@@ -10587,6 +12790,7 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (moveToRecycleBin != null) {
@@ -10708,6 +12912,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return recoverChat(field0);
   }
@@ -10742,6 +12947,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return recoverChat?.call(field0);
   }
@@ -10776,6 +12982,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (recoverChat != null) {
@@ -10819,6 +13026,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return recoverChat(this);
   }
@@ -10853,6 +13061,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return recoverChat?.call(this);
   }
@@ -10887,6 +13096,7 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (recoverChat != null) {
@@ -11010,6 +13220,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return permanentDelete(field0);
   }
@@ -11044,6 +13255,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return permanentDelete?.call(field0);
   }
@@ -11078,6 +13290,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (permanentDelete != null) {
@@ -11121,6 +13334,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return permanentDelete(this);
   }
@@ -11155,6 +13369,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return permanentDelete?.call(this);
   }
@@ -11189,6 +13404,7 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (permanentDelete != null) {
@@ -11282,6 +13498,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return unschedule();
   }
@@ -11316,6 +13533,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return unschedule?.call();
   }
@@ -11350,6 +13568,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (unschedule != null) {
@@ -11393,6 +13612,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return unschedule(this);
   }
@@ -11427,6 +13647,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return unschedule?.call(this);
   }
@@ -11461,6 +13682,7 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (unschedule != null) {
@@ -11574,6 +13796,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return updateProfile(field0);
   }
@@ -11608,6 +13831,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return updateProfile?.call(field0);
   }
@@ -11642,6 +13866,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateProfile != null) {
@@ -11685,6 +13910,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return updateProfile(this);
   }
@@ -11719,6 +13945,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return updateProfile?.call(this);
   }
@@ -11753,6 +13980,7 @@ class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateProfile != null) {
@@ -11877,6 +14105,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return updateProfileSharing(field0);
   }
@@ -11911,6 +14140,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return updateProfileSharing?.call(field0);
   }
@@ -11945,6 +14175,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateProfileSharing != null) {
@@ -11988,6 +14219,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return updateProfileSharing(this);
   }
@@ -12022,6 +14254,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return updateProfileSharing?.call(this);
   }
@@ -12056,6 +14289,7 @@ class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (updateProfileSharing != null) {
@@ -12180,6 +14414,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return shareProfile(field0);
   }
@@ -12214,6 +14449,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return shareProfile?.call(field0);
   }
@@ -12248,6 +14484,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (shareProfile != null) {
@@ -12291,6 +14528,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return shareProfile(this);
   }
@@ -12325,6 +14563,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return shareProfile?.call(this);
   }
@@ -12359,6 +14598,7 @@ class _$Message_ShareProfileImpl extends Message_ShareProfile {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (shareProfile != null) {
@@ -12454,6 +14694,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return notifyAnyways();
   }
@@ -12488,6 +14729,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return notifyAnyways?.call();
   }
@@ -12522,6 +14764,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (notifyAnyways != null) {
@@ -12565,6 +14808,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return notifyAnyways(this);
   }
@@ -12599,6 +14843,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return notifyAnyways?.call(this);
   }
@@ -12633,6 +14878,7 @@ class _$Message_NotifyAnywaysImpl extends Message_NotifyAnyways {
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (notifyAnyways != null) {
@@ -12762,6 +15008,7 @@ class _$Message_SetTranscriptBackgroundImpl
     required TResult Function() notifyAnyways,
     required TResult Function(SetTranscriptBackgroundMessage field0)
         setTranscriptBackground,
+    required TResult Function() recoverProfile,
   }) {
     return setTranscriptBackground(field0);
   }
@@ -12796,6 +15043,7 @@ class _$Message_SetTranscriptBackgroundImpl
     TResult? Function()? notifyAnyways,
     TResult? Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult? Function()? recoverProfile,
   }) {
     return setTranscriptBackground?.call(field0);
   }
@@ -12830,6 +15078,7 @@ class _$Message_SetTranscriptBackgroundImpl
     TResult Function()? notifyAnyways,
     TResult Function(SetTranscriptBackgroundMessage field0)?
         setTranscriptBackground,
+    TResult Function()? recoverProfile,
     required TResult orElse(),
   }) {
     if (setTranscriptBackground != null) {
@@ -12873,6 +15122,7 @@ class _$Message_SetTranscriptBackgroundImpl
     required TResult Function(Message_NotifyAnyways value) notifyAnyways,
     required TResult Function(Message_SetTranscriptBackground value)
         setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
   }) {
     return setTranscriptBackground(this);
   }
@@ -12907,6 +15157,7 @@ class _$Message_SetTranscriptBackgroundImpl
     TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult? Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
   }) {
     return setTranscriptBackground?.call(this);
   }
@@ -12941,6 +15192,7 @@ class _$Message_SetTranscriptBackgroundImpl
     TResult Function(Message_NotifyAnyways value)? notifyAnyways,
     TResult Function(Message_SetTranscriptBackground value)?
         setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
     required TResult orElse(),
   }) {
     if (setTranscriptBackground != null) {
@@ -12964,6 +15216,278 @@ abstract class Message_SetTranscriptBackground extends Message {
   _$$Message_SetTranscriptBackgroundImplCopyWith<
           _$Message_SetTranscriptBackgroundImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Message_RecoverProfileImplCopyWith<$Res> {
+  factory _$$Message_RecoverProfileImplCopyWith(
+          _$Message_RecoverProfileImpl value,
+          $Res Function(_$Message_RecoverProfileImpl) then) =
+      __$$Message_RecoverProfileImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Message_RecoverProfileImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_RecoverProfileImpl>
+    implements _$$Message_RecoverProfileImplCopyWith<$Res> {
+  __$$Message_RecoverProfileImplCopyWithImpl(
+      _$Message_RecoverProfileImpl _value,
+      $Res Function(_$Message_RecoverProfileImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Message_RecoverProfileImpl extends Message_RecoverProfile {
+  const _$Message_RecoverProfileImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Message.recoverProfile()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Message_RecoverProfileImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(ReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function(bool field0, TypingApp? field1) typing,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
+    required TResult Function(MoveToRecycleBinMessage field0) moveToRecycleBin,
+    required TResult Function(OperatedChat field0) recoverChat,
+    required TResult Function(PermanentDeleteMessage field0) permanentDelete,
+    required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
+    required TResult Function() notifyAnyways,
+    required TResult Function(SetTranscriptBackgroundMessage field0)
+        setTranscriptBackground,
+    required TResult Function() recoverProfile,
+  }) {
+    return recoverProfile();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function(bool field0, TypingApp? field1)? typing,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
+    TResult? Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult? Function(OperatedChat field0)? recoverChat,
+    TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
+    TResult? Function()? notifyAnyways,
+    TResult? Function(SetTranscriptBackgroundMessage field0)?
+        setTranscriptBackground,
+    TResult? Function()? recoverProfile,
+  }) {
+    return recoverProfile?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function(bool field0, TypingApp? field1)? typing,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
+    TResult Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult Function(OperatedChat field0)? recoverChat,
+    TResult Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
+    TResult Function()? notifyAnyways,
+    TResult Function(SetTranscriptBackgroundMessage field0)?
+        setTranscriptBackground,
+    TResult Function()? recoverProfile,
+    required TResult orElse(),
+  }) {
+    if (recoverProfile != null) {
+      return recoverProfile();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(Message_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
+    required TResult Function(Message_MoveToRecycleBin value) moveToRecycleBin,
+    required TResult Function(Message_RecoverChat value) recoverChat,
+    required TResult Function(Message_PermanentDelete value) permanentDelete,
+    required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
+    required TResult Function(Message_NotifyAnyways value) notifyAnyways,
+    required TResult Function(Message_SetTranscriptBackground value)
+        setTranscriptBackground,
+    required TResult Function(Message_RecoverProfile value) recoverProfile,
+  }) {
+    return recoverProfile(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
+    TResult? Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult? Function(Message_RecoverChat value)? recoverChat,
+    TResult? Function(Message_PermanentDelete value)? permanentDelete,
+    TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
+    TResult? Function(Message_NotifyAnyways value)? notifyAnyways,
+    TResult? Function(Message_SetTranscriptBackground value)?
+        setTranscriptBackground,
+    TResult? Function(Message_RecoverProfile value)? recoverProfile,
+  }) {
+    return recoverProfile?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
+    TResult Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult Function(Message_RecoverChat value)? recoverChat,
+    TResult Function(Message_PermanentDelete value)? permanentDelete,
+    TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
+    TResult Function(Message_NotifyAnyways value)? notifyAnyways,
+    TResult Function(Message_SetTranscriptBackground value)?
+        setTranscriptBackground,
+    TResult Function(Message_RecoverProfile value)? recoverProfile,
+    required TResult orElse(),
+  }) {
+    if (recoverProfile != null) {
+      return recoverProfile(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Message_RecoverProfile extends Message {
+  const factory Message_RecoverProfile() = _$Message_RecoverProfileImpl;
+  const Message_RecoverProfile._() : super._();
 }
 
 /// @nodoc

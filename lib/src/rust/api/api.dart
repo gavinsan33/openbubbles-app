@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `bin_deserialize_16`, `config`, `encrypt`, `get_login_config`, `get_password`, `handle_2fa`, `handle_circle`, `handle_photostream`, `migrate`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `reset_user`, `shared_items`, `subscribe_streams`, `wrap_sink`
+// These functions are ignored because they are not marked as `pub`: `bin_deserialize_16`, `config`, `encrypt`, `get_login_config`, `get_password`, `handle_2fa`, `handle_circle`, `handle_photostream`, `load`, `migrate`, `persister`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `reset_user`, `shared_items`, `subscribe_streams`, `wrap_sink`
 // These functions are ignored because they have generic arguments: `bin_deserialize`, `bin_serialize`
 // These types are ignored because they are not used by any `pub` functions: `AnisetteState`, `DaemonData`, `FLUTTER_RUST_BRIDGE_HANDLER`, `GSAConfig`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `ProvisionedAnisette`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `get_files`, `initialize`, `spawn`
@@ -19,41 +19,6 @@ ChatProto decodeChatproto({required GZipWrapperChatProto wrapped}) =>
 
 GZipWrapperChatProto encodeChatproto({required ChatProto chat}) =>
     RustLib.instance.api.crateApiApiEncodeChatproto(chat: chat);
-
-MessageProto decodeMessageproto({required GZipWrapperMessageProto wrapped}) =>
-    RustLib.instance.api.crateApiApiDecodeMessageproto(wrapped: wrapped);
-
-GZipWrapperMessageProto encodeMessageproto(
-        {required MessageProto messageproto}) =>
-    RustLib.instance.api
-        .crateApiApiEncodeMessageproto(messageproto: messageproto);
-
-MessageProto2 decodeMessageproto2(
-        {required GZipWrapperMessageProto2 wrapped}) =>
-    RustLib.instance.api.crateApiApiDecodeMessageproto2(wrapped: wrapped);
-
-GZipWrapperMessageProto2 encodeMessageproto2(
-        {required MessageProto2 messageproto2}) =>
-    RustLib.instance.api
-        .crateApiApiEncodeMessageproto2(messageproto2: messageproto2);
-
-MessageProto3 decodeMessageproto3(
-        {required GZipWrapperMessageProto3 wrapped}) =>
-    RustLib.instance.api.crateApiApiDecodeMessageproto3(wrapped: wrapped);
-
-GZipWrapperMessageProto3 encodeMessageproto3(
-        {required MessageProto3 messageproto3}) =>
-    RustLib.instance.api
-        .crateApiApiEncodeMessageproto3(messageproto3: messageproto3);
-
-MessageProto4 decodeMessageproto4(
-        {required GZipWrapperMessageProto4 wrapped}) =>
-    RustLib.instance.api.crateApiApiDecodeMessageproto4(wrapped: wrapped);
-
-GZipWrapperMessageProto4 encodeMessageproto4(
-        {required MessageProto4 messageproto4}) =>
-    RustLib.instance.api
-        .crateApiApiEncodeMessageproto4(messageproto4: messageproto4);
 
 AttachmentMeta decodeAttachmentmeta(
         {required GZipWrapperAttachmentMeta wrapped}) =>
@@ -73,8 +38,10 @@ IdsngmIdentity decodeIdentity({required List<int> identity}) =>
 ExtensionApp decodeExtensionApp({required List<int> bp, required String bid}) =>
     RustLib.instance.api.crateApiApiDecodeExtensionApp(bp: bp, bid: bid);
 
-(Uint8List, Uint8List?) encodeExtensionApp({required ExtensionApp app}) =>
-    RustLib.instance.api.crateApiApiEncodeExtensionApp(app: app);
+(Uint8List, Uint8List?) encodeExtensionApp(
+        {required ExtensionApp app, required bool isBackup}) =>
+    RustLib.instance.api
+        .crateApiApiEncodeExtensionApp(app: app, isBackup: isBackup);
 
 Future<SharedPushState?> serviceFromPtr({required String ptr}) =>
     RustLib.instance.api.crateApiApiServiceFromPtr(ptr: ptr);
@@ -583,7 +550,7 @@ Future<void> syncNow(
         {required SyncManagerDefaultAnisetteProviderMyFilePackager lock}) =>
     RustLib.instance.api.crateApiApiSyncNow(lock: lock);
 
-Future<List<FTSession>> ftSessions({required ArcFtClient facetime}) =>
+Future<List<FTSessionInfo>> ftSessions({required ArcFtClient facetime}) =>
     RustLib.instance.api.crateApiApiFtSessions(facetime: facetime);
 
 Future<String> getFtLink(
@@ -1212,9 +1179,6 @@ abstract class ChannelInterestToken implements RustOpaqueInterface {}
 abstract class CircleClientSessionDefaultAnisetteProvider
     implements RustOpaqueInterface {}
 
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ConversationLink>>
-abstract class ConversationLink implements RustOpaqueInterface {}
-
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ConversationParticipant>>
 abstract class ConversationParticipant implements RustOpaqueInterface {}
 
@@ -1237,18 +1201,6 @@ abstract class GZipWrapperAttachmentMeta implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GZipWrapper < ChatProto >>>
 abstract class GZipWrapperChatProto implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GZipWrapper < MessageProto >>>
-abstract class GZipWrapperMessageProto implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GZipWrapper < MessageProto2 >>>
-abstract class GZipWrapperMessageProto2 implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GZipWrapper < MessageProto3 >>>
-abstract class GZipWrapperMessageProto3 implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<GZipWrapper < MessageProto4 >>>
-abstract class GZipWrapperMessageProto4 implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IDSNGMIdentity>>
 abstract class IdsngmIdentity implements RustOpaqueInterface {}
@@ -1620,7 +1572,7 @@ sealed class AttachmentType with _$AttachmentType {
     Uint8List field0,
   ) = AttachmentType_Inline;
   const factory AttachmentType.mmcs(
-    MMCSFile field0,
+    List<MMCSFile> field0,
   ) = AttachmentType_MMCS;
 }
 
@@ -1805,21 +1757,26 @@ class ChangeParticipantMessage {
 }
 
 class ChatProto {
-  final int? unk1;
+  final int? version;
+
+  /// always 0
+  final int? isRecovered;
 
   const ChatProto({
-    this.unk1,
+    this.version,
+    this.isRecovered,
   });
 
   @override
-  int get hashCode => unk1.hashCode;
+  int get hashCode => version.hashCode ^ isRecovered.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ChatProto &&
           runtimeType == other.runtimeType &&
-          unk1 == other.unk1;
+          version == other.version &&
+          isRecovered == other.isRecovered;
 }
 
 class CloudAttachment {
@@ -1932,53 +1889,41 @@ class CloudChat {
 
 class CloudMessage {
   final SystemTime? utm;
-  final PlatformInt64 type;
   final PlatformInt64 error;
   final String chatId;
   final String sender;
   final PlatformInt64 time;
-  final GZipWrapperMessageProto2? msgProto2;
   final String destinationCallerId;
-  final GZipWrapperMessageProto msgProto;
   final MessageFlags flags;
   final String guid;
-  final GZipWrapperMessageProto3? msgProto3;
   final String service;
-  final GZipWrapperMessageProto4? msgProto4;
+  final CloudMessageType message;
 
   const CloudMessage({
     this.utm,
-    required this.type,
     required this.error,
     required this.chatId,
     required this.sender,
     required this.time,
-    this.msgProto2,
     required this.destinationCallerId,
-    required this.msgProto,
     required this.flags,
     required this.guid,
-    this.msgProto3,
     required this.service,
-    this.msgProto4,
+    required this.message,
   });
 
   @override
   int get hashCode =>
       utm.hashCode ^
-      type.hashCode ^
       error.hashCode ^
       chatId.hashCode ^
       sender.hashCode ^
       time.hashCode ^
-      msgProto2.hashCode ^
       destinationCallerId.hashCode ^
-      msgProto.hashCode ^
       flags.hashCode ^
       guid.hashCode ^
-      msgProto3.hashCode ^
       service.hashCode ^
-      msgProto4.hashCode;
+      message.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1986,19 +1931,15 @@ class CloudMessage {
       other is CloudMessage &&
           runtimeType == other.runtimeType &&
           utm == other.utm &&
-          type == other.type &&
           error == other.error &&
           chatId == other.chatId &&
           sender == other.sender &&
           time == other.time &&
-          msgProto2 == other.msgProto2 &&
           destinationCallerId == other.destinationCallerId &&
-          msgProto == other.msgProto &&
           flags == other.flags &&
           guid == other.guid &&
-          msgProto3 == other.msgProto3 &&
           service == other.service &&
-          msgProto4 == other.msgProto4;
+          message == other.message;
 }
 
 class CloudMessageSummary {
@@ -2026,6 +1967,36 @@ class CloudMessageSummary {
           messagesSummary == other.messagesSummary &&
           chatSummary == other.chatSummary &&
           attachmentSummary == other.attachmentSummary;
+}
+
+@freezed
+sealed class CloudMessageType with _$CloudMessageType {
+  const CloudMessageType._();
+
+  const factory CloudMessageType.message({
+    required bool reaction,
+    required MessageProto proto,
+    MessageProto2? proto2,
+    MessageProto3? proto3,
+    MessageProto4? proto4,
+  }) = CloudMessageType_Message;
+  const factory CloudMessageType.groupTitleChange({
+    required GroupTitleChange proto,
+  }) = CloudMessageType_GroupTitleChange;
+  const factory CloudMessageType.locationShareStatusChange({
+    required LocationShareStatusChange proto,
+  }) = CloudMessageType_LocationShareStatusChange;
+  const factory CloudMessageType.messageAction({
+    required MessageAction proto,
+  }) = CloudMessageType_MessageAction;
+  const factory CloudMessageType.participantChange({
+    required ParticipantChange proto,
+    ExtraSummaryInfo? proto2,
+  }) = CloudMessageType_ParticipantChange;
+  const factory CloudMessageType.groupAction({
+    required GroupAction proto,
+  }) = CloudMessageType_GroupAction;
+  const factory CloudMessageType.unknown() = CloudMessageType_Unknown;
 }
 
 class CloudParticipant {
@@ -2340,6 +2311,27 @@ class ExtensionApp {
           appId == other.appId &&
           bundleId == other.bundleId &&
           balloon == other.balloon;
+}
+
+class ExtraSummaryInfo {
+  final Uint8List? messageSummaryInfo;
+  final Uint8List? padding;
+
+  const ExtraSummaryInfo({
+    this.messageSummaryInfo,
+    this.padding,
+  });
+
+  @override
+  int get hashCode => messageSummaryInfo.hashCode ^ padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExtraSummaryInfo &&
+          runtimeType == other.runtimeType &&
+          messageSummaryInfo == other.messageSummaryInfo &&
+          padding == other.padding;
 }
 
 class FFIFilePackager {
@@ -2660,6 +2652,12 @@ sealed class FTMessage with _$FTMessage {
   const factory FTMessage.respondedElsewhere({
     required String guid,
   }) = FTMessage_RespondedElsewhere;
+  const factory FTMessage.connected({
+    required String guid,
+  }) = FTMessage_Connected;
+  const factory FTMessage.disconnected({
+    required String guid,
+  }) = FTMessage_Disconnected;
 }
 
 enum FTMode {
@@ -2705,33 +2703,25 @@ class FTParticipant {
           active == other.active;
 }
 
-class FTSession {
+class FTSessionInfo {
   final String groupId;
   final List<String> myHandles;
   final Map<String, FTParticipant> participants;
-  final ConversationLink? link;
   final Set<FTMember> members;
-  final String reportId;
   final int? startTime;
   final int? lastRekey;
-  final bool isPropped;
-  final bool isRingingInaccurate;
   final FTMode? mode;
-  final Map<String, int> recentMemberAdds;
+  final bool isVideo;
 
-  const FTSession({
+  const FTSessionInfo({
     required this.groupId,
     required this.myHandles,
     required this.participants,
-    this.link,
     required this.members,
-    required this.reportId,
     this.startTime,
     this.lastRekey,
-    required this.isPropped,
-    required this.isRingingInaccurate,
     this.mode,
-    required this.recentMemberAdds,
+    required this.isVideo,
   });
 
   @override
@@ -2739,33 +2729,56 @@ class FTSession {
       groupId.hashCode ^
       myHandles.hashCode ^
       participants.hashCode ^
-      link.hashCode ^
       members.hashCode ^
-      reportId.hashCode ^
       startTime.hashCode ^
       lastRekey.hashCode ^
-      isPropped.hashCode ^
-      isRingingInaccurate.hashCode ^
       mode.hashCode ^
-      recentMemberAdds.hashCode;
+      isVideo.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FTSession &&
+      other is FTSessionInfo &&
           runtimeType == other.runtimeType &&
           groupId == other.groupId &&
           myHandles == other.myHandles &&
           participants == other.participants &&
-          link == other.link &&
           members == other.members &&
-          reportId == other.reportId &&
           startTime == other.startTime &&
           lastRekey == other.lastRekey &&
-          isPropped == other.isPropped &&
-          isRingingInaccurate == other.isRingingInaccurate &&
           mode == other.mode &&
-          recentMemberAdds == other.recentMemberAdds;
+          isVideo == other.isVideo;
+}
+
+class GroupAction {
+  final int? version;
+  final int? groupActionType;
+  final String? otherHandle;
+  final Uint8List? padding;
+
+  const GroupAction({
+    this.version,
+    this.groupActionType,
+    this.otherHandle,
+    this.padding,
+  });
+
+  @override
+  int get hashCode =>
+      version.hashCode ^
+      groupActionType.hashCode ^
+      otherHandle.hashCode ^
+      padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GroupAction &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          groupActionType == other.groupActionType &&
+          otherHandle == other.otherHandle &&
+          padding == other.padding;
 }
 
 class GroupSummary {
@@ -2819,6 +2832,37 @@ class GroupSummaryMember {
           handle == other.handle &&
           userId == other.userId &&
           isJoined == other.isJoined;
+}
+
+class GroupTitleChange {
+  final int? version;
+  final String? groupTitle;
+  final String? otherHandle;
+  final Uint8List? padding;
+
+  const GroupTitleChange({
+    this.version,
+    this.groupTitle,
+    this.otherHandle,
+    this.padding,
+  });
+
+  @override
+  int get hashCode =>
+      version.hashCode ^
+      groupTitle.hashCode ^
+      otherHandle.hashCode ^
+      padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GroupTitleChange &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          groupTitle == other.groupTitle &&
+          otherHandle == other.otherHandle &&
+          padding == other.padding;
 }
 
 class HwExtra {
@@ -3191,6 +3235,41 @@ class Location {
           locationFinished == other.locationFinished;
 }
 
+class LocationShareStatusChange {
+  final int? version;
+  final int? shareStatus;
+  final int? shareDirection;
+  final String? otherHandle;
+  final Uint8List? padding;
+
+  const LocationShareStatusChange({
+    this.version,
+    this.shareStatus,
+    this.shareDirection,
+    this.otherHandle,
+    this.padding,
+  });
+
+  @override
+  int get hashCode =>
+      version.hashCode ^
+      shareStatus.hashCode ^
+      shareDirection.hashCode ^
+      otherHandle.hashCode ^
+      padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationShareStatusChange &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          shareStatus == other.shareStatus &&
+          shareDirection == other.shareDirection &&
+          otherHandle == other.otherHandle &&
+          padding == other.padding;
+}
+
 @freezed
 sealed class LoginState with _$LoginState {
   const LoginState._();
@@ -3447,6 +3526,42 @@ sealed class Message with _$Message {
   const factory Message.setTranscriptBackground(
     SetTranscriptBackgroundMessage field0,
   ) = Message_SetTranscriptBackground;
+  const factory Message.recoverProfile() = Message_RecoverProfile;
+}
+
+class MessageAction {
+  final int? version;
+  final int? messageActionType;
+  final String? otherHandle;
+  final String? originalMessageGuid;
+  final Uint8List? padding;
+
+  const MessageAction({
+    this.version,
+    this.messageActionType,
+    this.otherHandle,
+    this.originalMessageGuid,
+    this.padding,
+  });
+
+  @override
+  int get hashCode =>
+      version.hashCode ^
+      messageActionType.hashCode ^
+      otherHandle.hashCode ^
+      originalMessageGuid.hashCode ^
+      padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MessageAction &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          messageActionType == other.messageActionType &&
+          otherHandle == other.otherHandle &&
+          originalMessageGuid == other.originalMessageGuid &&
+          padding == other.padding;
 }
 
 class MessageEdit {
@@ -3590,7 +3705,7 @@ class MessageParts {
 
 class MessageProto {
   /// always 1, is finished or ck sync state
-  final int unk1;
+  final int version;
   final String? subject;
   final String? text;
   final Uint8List? attributedBody;
@@ -3599,17 +3714,23 @@ class MessageProto {
   final Uint8List? messageSummaryInfo;
   final String? effect;
   final int? dateRead;
-  final int? unk10;
-  final int? unk11;
+
+  /// default 0
+  final int? timePlayed;
+
+  /// default 0
+  final int? timeExpressiveSentPlayed;
   final int? dateDelivered;
-  final int? unk14;
+
+  /// default 0
+  final int? expireState;
   final int? associatedMessageType;
   final String? associatedMessageGuid;
   final int? associatedMessageRangeLocation;
   final int? associatedMessageRangeLength;
 
   const MessageProto({
-    required this.unk1,
+    required this.version,
     this.subject,
     this.text,
     this.attributedBody,
@@ -3618,10 +3739,10 @@ class MessageProto {
     this.messageSummaryInfo,
     this.effect,
     this.dateRead,
-    this.unk10,
-    this.unk11,
+    this.timePlayed,
+    this.timeExpressiveSentPlayed,
     this.dateDelivered,
-    this.unk14,
+    this.expireState,
     this.associatedMessageType,
     this.associatedMessageGuid,
     this.associatedMessageRangeLocation,
@@ -3630,7 +3751,7 @@ class MessageProto {
 
   @override
   int get hashCode =>
-      unk1.hashCode ^
+      version.hashCode ^
       subject.hashCode ^
       text.hashCode ^
       attributedBody.hashCode ^
@@ -3639,10 +3760,10 @@ class MessageProto {
       messageSummaryInfo.hashCode ^
       effect.hashCode ^
       dateRead.hashCode ^
-      unk10.hashCode ^
-      unk11.hashCode ^
+      timePlayed.hashCode ^
+      timeExpressiveSentPlayed.hashCode ^
       dateDelivered.hashCode ^
-      unk14.hashCode ^
+      expireState.hashCode ^
       associatedMessageType.hashCode ^
       associatedMessageGuid.hashCode ^
       associatedMessageRangeLocation.hashCode ^
@@ -3653,7 +3774,7 @@ class MessageProto {
       identical(this, other) ||
       other is MessageProto &&
           runtimeType == other.runtimeType &&
-          unk1 == other.unk1 &&
+          version == other.version &&
           subject == other.subject &&
           text == other.text &&
           attributedBody == other.attributedBody &&
@@ -3662,10 +3783,10 @@ class MessageProto {
           messageSummaryInfo == other.messageSummaryInfo &&
           effect == other.effect &&
           dateRead == other.dateRead &&
-          unk10 == other.unk10 &&
-          unk11 == other.unk11 &&
+          timePlayed == other.timePlayed &&
+          timeExpressiveSentPlayed == other.timeExpressiveSentPlayed &&
           dateDelivered == other.dateDelivered &&
-          unk14 == other.unk14 &&
+          expireState == other.expireState &&
           associatedMessageType == other.associatedMessageType &&
           associatedMessageGuid == other.associatedMessageGuid &&
           associatedMessageRangeLocation ==
@@ -3674,49 +3795,68 @@ class MessageProto {
 }
 
 class MessageProto2 {
+  final int? version;
   final String? reply;
+  final Uint8List? padding;
 
   const MessageProto2({
+    this.version,
     this.reply,
+    this.padding,
   });
 
   @override
-  int get hashCode => reply.hashCode;
+  int get hashCode => version.hashCode ^ reply.hashCode ^ padding.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is MessageProto2 &&
           runtimeType == other.runtimeType &&
-          reply == other.reply;
+          version == other.version &&
+          reply == other.reply &&
+          padding == other.padding;
 }
 
 class MessageProto3 {
-  /// always 0
-  final int? unk2;
+  final int? version;
 
   /// always 0
-  final int? unk3;
+  final int? cmmState;
+
+  /// always 0
+  final int? cmmAssetOffset;
+  final Uint8List? padding;
 
   const MessageProto3({
-    this.unk2,
-    this.unk3,
+    this.version,
+    this.cmmState,
+    this.cmmAssetOffset,
+    this.padding,
   });
 
   @override
-  int get hashCode => unk2.hashCode ^ unk3.hashCode;
+  int get hashCode =>
+      version.hashCode ^
+      cmmState.hashCode ^
+      cmmAssetOffset.hashCode ^
+      padding.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is MessageProto3 &&
           runtimeType == other.runtimeType &&
-          unk2 == other.unk2 &&
-          unk3 == other.unk3;
+          version == other.version &&
+          cmmState == other.cmmState &&
+          cmmAssetOffset == other.cmmAssetOffset &&
+          padding == other.padding;
 }
 
 class MessageProto4 {
+  final int? version;
   final String? associatedMessageEmoji;
+  final Uint8List? padding;
   final String? service;
 
   /// test is 0, unconfirmed
@@ -3728,7 +3868,9 @@ class MessageProto4 {
   final int? sentOrReceivedOffGrid;
 
   const MessageProto4({
+    this.version,
     this.associatedMessageEmoji,
+    this.padding,
     this.service,
     this.scheduleType,
     this.scheduleState,
@@ -3738,7 +3880,9 @@ class MessageProto4 {
 
   @override
   int get hashCode =>
+      version.hashCode ^
       associatedMessageEmoji.hashCode ^
+      padding.hashCode ^
       service.hashCode ^
       scheduleType.hashCode ^
       scheduleState.hashCode ^
@@ -3750,7 +3894,9 @@ class MessageProto4 {
       identical(this, other) ||
       other is MessageProto4 &&
           runtimeType == other.runtimeType &&
+          version == other.version &&
           associatedMessageEmoji == other.associatedMessageEmoji &&
+          padding == other.padding &&
           service == other.service &&
           scheduleType == other.scheduleType &&
           scheduleState == other.scheduleState &&
@@ -3854,10 +4000,7 @@ sealed class MessageType with _$MessageType {
 }
 
 class MMCSAttachmentMeta {
-  final String? mmcsSignatureHex;
-  final String? mmcsOwner;
-  final String? mmcsUrl;
-  final String? decryptionKey;
+  final List<MMCSFile> files;
   final String? inlineAttachment;
   final String? messagePart;
   final NumOrString? fileSize;
@@ -3866,10 +4009,7 @@ class MMCSAttachmentMeta {
   final String? name;
 
   const MMCSAttachmentMeta({
-    this.mmcsSignatureHex,
-    this.mmcsOwner,
-    this.mmcsUrl,
-    this.decryptionKey,
+    required this.files,
     this.inlineAttachment,
     this.messagePart,
     this.fileSize,
@@ -3880,10 +4020,7 @@ class MMCSAttachmentMeta {
 
   @override
   int get hashCode =>
-      mmcsSignatureHex.hashCode ^
-      mmcsOwner.hashCode ^
-      mmcsUrl.hashCode ^
-      decryptionKey.hashCode ^
+      files.hashCode ^
       inlineAttachment.hashCode ^
       messagePart.hashCode ^
       fileSize.hashCode ^
@@ -3896,10 +4033,7 @@ class MMCSAttachmentMeta {
       identical(this, other) ||
       other is MMCSAttachmentMeta &&
           runtimeType == other.runtimeType &&
-          mmcsSignatureHex == other.mmcsSignatureHex &&
-          mmcsOwner == other.mmcsOwner &&
-          mmcsUrl == other.mmcsUrl &&
-          decryptionKey == other.decryptionKey &&
+          files == other.files &&
           inlineAttachment == other.inlineAttachment &&
           messagePart == other.messagePart &&
           fileSize == other.fileSize &&
@@ -4287,6 +4421,37 @@ sealed class PartExtension with _$PartExtension {
     required PlatformInt64 effectType,
     required String stickerId,
   }) = PartExtension_Sticker;
+}
+
+class ParticipantChange {
+  final int? version;
+  final int? participantChangeType;
+  final String? otherHandle;
+  final Uint8List? padding;
+
+  const ParticipantChange({
+    this.version,
+    this.participantChangeType,
+    this.otherHandle,
+    this.padding,
+  });
+
+  @override
+  int get hashCode =>
+      version.hashCode ^
+      participantChangeType.hashCode ^
+      otherHandle.hashCode ^
+      padding.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ParticipantChange &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          participantChangeType == other.participantChangeType &&
+          otherHandle == other.otherHandle &&
+          padding == other.padding;
 }
 
 class Passkey {

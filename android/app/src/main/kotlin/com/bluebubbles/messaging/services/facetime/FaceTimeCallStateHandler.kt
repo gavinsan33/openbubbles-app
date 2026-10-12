@@ -19,25 +19,13 @@ class FaceTimeCallStateHandler: MethodCallHandlerImpl() {
     ) {
         val state = call.argument<String>("state")
 
-        if (state == "ringing") {
-            if (FaceTimeActivity.activeFaceTimeActivity == null && FaceTimeActivity.cachedWebview == null) {
-                val name = call.argument<String>("name")
-                val desc = call.argument<String>("desc")!!
-                val url = call.argument<String>("url")!!
-                // start preloading the FT web UI now so if they pick up the call we're ready
-                FaceTimeActivity.cachedWebview = CachedWebview(context, name, desc, url)
-            }
-        } else if (state == "timeout") {
+        // "ringing" used to preload the FaceTime web client; calls are native now
+        if (state == "timeout") {
             // finish any still ringing activity
             FaceTimeActivity.activeFaceTimeActivity?.let {
                 if (!it.answered && it.isCall) {
                     it.finishAndRemoveTask()
                 }
-            }
-            // cancel any unused webview
-            FaceTimeActivity.cachedWebview?.let {
-                it.webView.destroy()
-                FaceTimeActivity.cachedWebview = null
             }
         }
 

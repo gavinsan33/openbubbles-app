@@ -2072,22 +2072,22 @@ class RustPushService extends GetxService {
     return await Chat.findByRust(conversation, chat.guid.startsWith("iMessage") ? "iMessage" : "SMS");
   }
 
-  bool isSessionActive(api.FTSession session) {
+  bool isSessionActive(api.FTSessionInfo session) {
     var anHourAgo = DateTime.now().millisecondsSinceEpoch - 3600000;
     return session.participants.values.any((value) => value.active != null) && (session.lastRekey ?? session.startTime) != null && (session.lastRekey ?? session.startTime)! > anHourAgo;
   }
 
   
-  RxList<api.FTSession> sessions = <api.FTSession>[].obs;
-  RxList<api.FTSession> activeSessions = <api.FTSession>[].obs;
+  RxList<api.FTSessionInfo> sessions = <api.FTSessionInfo>[].obs;
+  RxList<api.FTSessionInfo> activeSessions = <api.FTSessionInfo>[].obs;
   Future<void> updateState() async {
     var ftSessions = (await api.ftSessions(facetime: pushService.state!.ftClient)).filter((a) => a.startTime != null).toList();
     ftSessions.sort((a, b) {
       return b.startTime! - a.startTime!;
     });
 
-    List<api.FTSession> othersessions = [];
-    List<api.FTSession> activesessions = [];
+    List<api.FTSessionInfo> othersessions = [];
+    List<api.FTSessionInfo> activesessions = [];
     for (var session in ftSessions) {
       if (isSessionActive(session)) {
         activesessions.add(session);

@@ -48,10 +48,6 @@ class InternalIntentReceiver: BroadcastReceiver() {
                 val callUuid: String? = intent.getStringExtra("callUuid")
                 val notificationId: Int = intent.getIntExtra("notificationId", 0)
                 DeleteNotificationHandler().deleteNotification(context, notificationId, null)
-                FaceTimeActivity.cachedWebview?.let {
-                    it.webView.destroy()
-                    FaceTimeActivity.cachedWebview = null
-                }
                 callUuid?.let { callUuid ->
                     val service = (peekService(context, Intent(context, APNService::class.java)) as APNService.APNBinder).getService()
                     service.pushState?.declineFacetime(callUuid)

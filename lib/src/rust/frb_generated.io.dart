@@ -109,10 +109,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCircleClientSessionDefaultAnisetteProviderPtr;
 
   CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_ConversationLinkPtr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLinkPtr;
-
-  CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_ConversationParticipantPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipantPtr;
 
@@ -137,22 +133,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_GZipWrapperChatProtoPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProtoPtr;
-
-  CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_GZipWrapperMessageProtoPtr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProtoPtr;
-
-  CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_GZipWrapperMessageProto2Ptr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2Ptr;
-
-  CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_GZipWrapperMessageProto3Ptr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3Ptr;
-
-  CrossPlatformFinalizerArg
-      get rust_arc_decrement_strong_count_GZipWrapperMessageProto4Ptr => wire
-          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4Ptr;
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_IdsngmIdentityPtr => wire
@@ -332,11 +312,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ConversationLink
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          dynamic raw);
-
-  @protected
   ConversationParticipant
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           dynamic raw);
@@ -369,26 +344,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto2
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto3
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto4
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           dynamic raw);
 
   @protected
@@ -622,26 +577,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  GZipWrapperMessageProto
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto2
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto3
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto4
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          dynamic raw);
-
-  @protected
   IdsngmIdentity
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSNGMIdentity(
           dynamic raw);
@@ -722,9 +657,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<String, StCollapsedValue>
       dco_decode_Map_String_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerStCollapsedValue(
           dynamic raw);
-
-  @protected
-  Map<String, int> dco_decode_Map_String_CastedPrimitive_u_64(dynamic raw);
 
   @protected
   Map<String, String> dco_decode_Map_String_String(dynamic raw);
@@ -920,11 +852,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ConversationLink
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          dynamic raw);
-
-  @protected
   ConversationParticipant
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           dynamic raw);
@@ -957,26 +884,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto2
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto3
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto4
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           dynamic raw);
 
   @protected
@@ -1163,11 +1070,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ConversationLink
-      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          dynamic raw);
-
-  @protected
   ConversationParticipant
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           dynamic raw);
@@ -1180,21 +1082,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto2
-      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto3
-      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto4
-      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           dynamic raw);
 
   @protected
@@ -1303,6 +1190,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp dco_decode_box_autoadd_extension_app(dynamic raw);
 
   @protected
+  ExtraSummaryInfo dco_decode_box_autoadd_extra_summary_info(dynamic raw);
+
+  @protected
   double dco_decode_box_autoadd_f_64(dynamic raw);
 
   @protected
@@ -1310,6 +1200,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FTMode dco_decode_box_autoadd_ft_mode(dynamic raw);
+
+  @protected
+  GroupAction dco_decode_box_autoadd_group_action(dynamic raw);
+
+  @protected
+  GroupTitleChange dco_decode_box_autoadd_group_title_change(dynamic raw);
 
   @protected
   HwExtra dco_decode_box_autoadd_hw_extra(dynamic raw);
@@ -1351,6 +1247,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Location dco_decode_box_autoadd_location(dynamic raw);
 
   @protected
+  LocationShareStatusChange dco_decode_box_autoadd_location_share_status_change(
+      dynamic raw);
+
+  @protected
   LoginState dco_decode_box_autoadd_login_state(dynamic raw);
 
   @protected
@@ -1368,6 +1268,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Message dco_decode_box_autoadd_message(dynamic raw);
+
+  @protected
+  MessageAction dco_decode_box_autoadd_message_action(dynamic raw);
 
   @protected
   MessageInst dco_decode_box_autoadd_message_inst(dynamic raw);
@@ -1426,6 +1329,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension dco_decode_box_autoadd_part_extension(dynamic raw);
+
+  @protected
+  ParticipantChange dco_decode_box_autoadd_participant_change(dynamic raw);
 
   @protected
   Passkey dco_decode_box_autoadd_passkey(dynamic raw);
@@ -1596,6 +1502,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   CloudMessageSummary dco_decode_cloud_message_summary(dynamic raw);
 
   @protected
+  CloudMessageType dco_decode_cloud_message_type(dynamic raw);
+
+  @protected
   CloudParticipant dco_decode_cloud_participant(dynamic raw);
 
   @protected
@@ -1629,6 +1538,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp dco_decode_extension_app(dynamic raw);
 
   @protected
+  ExtraSummaryInfo dco_decode_extra_summary_info(dynamic raw);
+
+  @protected
   double dco_decode_f_32(dynamic raw);
 
   @protected
@@ -1656,13 +1568,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   FTParticipant dco_decode_ft_participant(dynamic raw);
 
   @protected
-  FTSession dco_decode_ft_session(dynamic raw);
+  FTSessionInfo dco_decode_ft_session_info(dynamic raw);
+
+  @protected
+  GroupAction dco_decode_group_action(dynamic raw);
 
   @protected
   GroupSummary dco_decode_group_summary(dynamic raw);
 
   @protected
   GroupSummaryMember dco_decode_group_summary_member(dynamic raw);
+
+  @protected
+  GroupTitleChange dco_decode_group_title_change(dynamic raw);
 
   @protected
   HwExtra dco_decode_hw_extra(dynamic raw);
@@ -1737,7 +1655,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<FTMember> dco_decode_list_ft_member(dynamic raw);
 
   @protected
-  List<FTSession> dco_decode_list_ft_session(dynamic raw);
+  List<FTSessionInfo> dco_decode_list_ft_session_info(dynamic raw);
 
   @protected
   List<GroupSummaryMember> dco_decode_list_group_summary_member(dynamic raw);
@@ -1753,6 +1671,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<MessageTarget> dco_decode_list_message_target(dynamic raw);
+
+  @protected
+  List<MMCSFile> dco_decode_list_mmcs_file(dynamic raw);
 
   @protected
   List<PasswordManagerAltDomain> dco_decode_list_password_manager_alt_domain(
@@ -1801,10 +1722,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw);
-
-  @protected
-  List<(String, int)> dco_decode_list_record_string_casted_primitive_u_64(
-      dynamic raw);
 
   @protected
   List<(String, CloudAttachment)>
@@ -1909,6 +1826,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Location dco_decode_location(dynamic raw);
 
   @protected
+  LocationShareStatusChange dco_decode_location_share_status_change(
+      dynamic raw);
+
+  @protected
   LoginState dco_decode_login_state(dynamic raw);
 
   @protected
@@ -1928,6 +1849,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Message dco_decode_message(dynamic raw);
+
+  @protected
+  MessageAction dco_decode_message_action(dynamic raw);
 
   @protected
   MessageEdit dco_decode_message_edit(dynamic raw);
@@ -2073,11 +1997,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  ConversationLink?
-      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          dynamic raw);
-
-  @protected
   ConversationParticipant?
       dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           dynamic raw);
@@ -2090,21 +2009,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto?
       dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto2?
-      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto3?
-      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          dynamic raw);
-
-  @protected
-  GZipWrapperMessageProto4?
-      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           dynamic raw);
 
   @protected
@@ -2192,6 +2096,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp? dco_decode_opt_box_autoadd_extension_app(dynamic raw);
 
   @protected
+  ExtraSummaryInfo? dco_decode_opt_box_autoadd_extra_summary_info(dynamic raw);
+
+  @protected
   double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
 
   @protected
@@ -2229,6 +2136,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   LPSpecializationMetadata?
       dco_decode_opt_box_autoadd_lp_specialization_metadata(dynamic raw);
+
+  @protected
+  MessageProto2? dco_decode_opt_box_autoadd_message_proto_2(dynamic raw);
+
+  @protected
+  MessageProto3? dco_decode_opt_box_autoadd_message_proto_3(dynamic raw);
+
+  @protected
+  MessageProto4? dco_decode_opt_box_autoadd_message_proto_4(dynamic raw);
 
   @protected
   MMCSAttachmentMeta? dco_decode_opt_box_autoadd_mmcs_attachment_meta(
@@ -2336,6 +2252,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension dco_decode_part_extension(dynamic raw);
+
+  @protected
+  ParticipantChange dco_decode_participant_change(dynamic raw);
 
   @protected
   Passkey dco_decode_passkey(dynamic raw);
@@ -2573,9 +2492,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, bool) dco_decode_record_string_bool(dynamic raw);
-
-  @protected
-  (String, int) dco_decode_record_string_casted_primitive_u_64(dynamic raw);
 
   @protected
   (String, CloudAttachment) dco_decode_record_string_cloud_attachment(
@@ -2931,11 +2847,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ConversationLink
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          SseDeserializer deserializer);
-
-  @protected
   ConversationParticipant
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           SseDeserializer deserializer);
@@ -2968,26 +2879,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto2
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto3
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto4
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           SseDeserializer deserializer);
 
   @protected
@@ -3221,26 +3112,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  GZipWrapperMessageProto
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto2
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto3
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto4
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          SseDeserializer deserializer);
-
-  @protected
   IdsngmIdentity
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSNGMIdentity(
           SseDeserializer deserializer);
@@ -3316,10 +3187,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<String, StCollapsedValue>
       sse_decode_Map_String_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerStCollapsedValue(
           SseDeserializer deserializer);
-
-  @protected
-  Map<String, int> sse_decode_Map_String_CastedPrimitive_u_64(
-      SseDeserializer deserializer);
 
   @protected
   Map<String, String> sse_decode_Map_String_String(
@@ -3529,11 +3396,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ConversationLink
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          SseDeserializer deserializer);
-
-  @protected
   ConversationParticipant
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           SseDeserializer deserializer);
@@ -3566,26 +3428,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto2
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto3
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto4
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           SseDeserializer deserializer);
 
   @protected
@@ -3775,11 +3617,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ConversationLink
-      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          SseDeserializer deserializer);
-
-  @protected
   ConversationParticipant
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           SseDeserializer deserializer);
@@ -3792,21 +3629,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto
       sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto2
-      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto3
-      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto4
-      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           SseDeserializer deserializer);
 
   @protected
@@ -3926,6 +3748,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ExtraSummaryInfo sse_decode_box_autoadd_extra_summary_info(
+      SseDeserializer deserializer);
+
+  @protected
   double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
@@ -3933,6 +3759,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   FTMode sse_decode_box_autoadd_ft_mode(SseDeserializer deserializer);
+
+  @protected
+  GroupAction sse_decode_box_autoadd_group_action(SseDeserializer deserializer);
+
+  @protected
+  GroupTitleChange sse_decode_box_autoadd_group_title_change(
+      SseDeserializer deserializer);
 
   @protected
   HwExtra sse_decode_box_autoadd_hw_extra(SseDeserializer deserializer);
@@ -3977,6 +3810,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Location sse_decode_box_autoadd_location(SseDeserializer deserializer);
 
   @protected
+  LocationShareStatusChange sse_decode_box_autoadd_location_share_status_change(
+      SseDeserializer deserializer);
+
+  @protected
   LoginState sse_decode_box_autoadd_login_state(SseDeserializer deserializer);
 
   @protected
@@ -3996,6 +3833,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Message sse_decode_box_autoadd_message(SseDeserializer deserializer);
+
+  @protected
+  MessageAction sse_decode_box_autoadd_message_action(
+      SseDeserializer deserializer);
 
   @protected
   MessageInst sse_decode_box_autoadd_message_inst(SseDeserializer deserializer);
@@ -4066,6 +3907,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension sse_decode_box_autoadd_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
+  ParticipantChange sse_decode_box_autoadd_participant_change(
       SseDeserializer deserializer);
 
   @protected
@@ -4264,6 +4109,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  CloudMessageType sse_decode_cloud_message_type(SseDeserializer deserializer);
+
+  @protected
   CloudParticipant sse_decode_cloud_participant(SseDeserializer deserializer);
 
   @protected
@@ -4298,6 +4146,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp sse_decode_extension_app(SseDeserializer deserializer);
 
   @protected
+  ExtraSummaryInfo sse_decode_extra_summary_info(SseDeserializer deserializer);
+
+  @protected
   double sse_decode_f_32(SseDeserializer deserializer);
 
   @protected
@@ -4325,7 +4176,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   FTParticipant sse_decode_ft_participant(SseDeserializer deserializer);
 
   @protected
-  FTSession sse_decode_ft_session(SseDeserializer deserializer);
+  FTSessionInfo sse_decode_ft_session_info(SseDeserializer deserializer);
+
+  @protected
+  GroupAction sse_decode_group_action(SseDeserializer deserializer);
 
   @protected
   GroupSummary sse_decode_group_summary(SseDeserializer deserializer);
@@ -4333,6 +4187,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GroupSummaryMember sse_decode_group_summary_member(
       SseDeserializer deserializer);
+
+  @protected
+  GroupTitleChange sse_decode_group_title_change(SseDeserializer deserializer);
 
   @protected
   HwExtra sse_decode_hw_extra(SseDeserializer deserializer);
@@ -4415,7 +4272,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<FTMember> sse_decode_list_ft_member(SseDeserializer deserializer);
 
   @protected
-  List<FTSession> sse_decode_list_ft_session(SseDeserializer deserializer);
+  List<FTSessionInfo> sse_decode_list_ft_session_info(
+      SseDeserializer deserializer);
 
   @protected
   List<GroupSummaryMember> sse_decode_list_group_summary_member(
@@ -4435,6 +4293,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   List<MessageTarget> sse_decode_list_message_target(
       SseDeserializer deserializer);
+
+  @protected
+  List<MMCSFile> sse_decode_list_mmcs_file(SseDeserializer deserializer);
 
   @protected
   List<PasswordManagerAltDomain> sse_decode_list_password_manager_alt_domain(
@@ -4485,10 +4346,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(String, bool)> sse_decode_list_record_string_bool(
-      SseDeserializer deserializer);
-
-  @protected
-  List<(String, int)> sse_decode_list_record_string_casted_primitive_u_64(
       SseDeserializer deserializer);
 
   @protected
@@ -4607,6 +4464,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Location sse_decode_location(SseDeserializer deserializer);
 
   @protected
+  LocationShareStatusChange sse_decode_location_share_status_change(
+      SseDeserializer deserializer);
+
+  @protected
   LoginState sse_decode_login_state(SseDeserializer deserializer);
 
   @protected
@@ -4627,6 +4488,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Message sse_decode_message(SseDeserializer deserializer);
+
+  @protected
+  MessageAction sse_decode_message_action(SseDeserializer deserializer);
 
   @protected
   MessageEdit sse_decode_message_edit(SseDeserializer deserializer);
@@ -4779,11 +4643,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  ConversationLink?
-      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          SseDeserializer deserializer);
-
-  @protected
   ConversationParticipant?
       sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           SseDeserializer deserializer);
@@ -4796,21 +4655,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   GZipWrapperChatProto?
       sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto2?
-      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto3?
-      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          SseDeserializer deserializer);
-
-  @protected
-  GZipWrapperMessageProto4?
-      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
           SseDeserializer deserializer);
 
   @protected
@@ -4907,6 +4751,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ExtraSummaryInfo? sse_decode_opt_box_autoadd_extra_summary_info(
+      SseDeserializer deserializer);
+
+  @protected
   double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
 
   @protected
@@ -4948,6 +4796,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LPSpecializationMetadata?
       sse_decode_opt_box_autoadd_lp_specialization_metadata(
           SseDeserializer deserializer);
+
+  @protected
+  MessageProto2? sse_decode_opt_box_autoadd_message_proto_2(
+      SseDeserializer deserializer);
+
+  @protected
+  MessageProto3? sse_decode_opt_box_autoadd_message_proto_3(
+      SseDeserializer deserializer);
+
+  @protected
+  MessageProto4? sse_decode_opt_box_autoadd_message_proto_4(
+      SseDeserializer deserializer);
 
   @protected
   MMCSAttachmentMeta? sse_decode_opt_box_autoadd_mmcs_attachment_meta(
@@ -5068,6 +4928,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension sse_decode_part_extension(SseDeserializer deserializer);
+
+  @protected
+  ParticipantChange sse_decode_participant_change(SseDeserializer deserializer);
 
   @protected
   Passkey sse_decode_passkey(SseDeserializer deserializer);
@@ -5322,10 +5185,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer);
-
-  @protected
-  (String, int) sse_decode_record_string_casted_primitive_u_64(
-      SseDeserializer deserializer);
 
   @protected
   (String, CloudAttachment) sse_decode_record_string_cloud_attachment(
@@ -5717,11 +5576,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          ConversationLink self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           ConversationParticipant self, SseSerializer serializer);
 
@@ -5756,26 +5610,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
           GZipWrapperChatProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          GZipWrapperMessageProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          GZipWrapperMessageProto2 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          GZipWrapperMessageProto3 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          GZipWrapperMessageProto4 self, SseSerializer serializer);
 
   @protected
   void
@@ -6024,26 +5858,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          GZipWrapperMessageProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          GZipWrapperMessageProto2 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          GZipWrapperMessageProto3 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          GZipWrapperMessageProto4 self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSNGMIdentity(
           IdsngmIdentity self, SseSerializer serializer);
 
@@ -6123,10 +5937,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Map_String_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerStCollapsedValue(
           Map<String, StCollapsedValue> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_Map_String_CastedPrimitive_u_64(
-      Map<String, int> self, SseSerializer serializer);
 
   @protected
   void sse_encode_Map_String_String(
@@ -6342,11 +6152,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          ConversationLink self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           ConversationParticipant self, SseSerializer serializer);
 
@@ -6381,26 +6186,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
           GZipWrapperChatProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-          GZipWrapperMessageProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          GZipWrapperMessageProto2 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          GZipWrapperMessageProto3 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          GZipWrapperMessageProto4 self, SseSerializer serializer);
 
   @protected
   void
@@ -6600,11 +6385,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          ConversationLink self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           ConversationParticipant self, SseSerializer serializer);
 
@@ -6617,21 +6397,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
           GZipWrapperChatProto self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          GZipWrapperMessageProto2 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          GZipWrapperMessageProto3 self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          GZipWrapperMessageProto4 self, SseSerializer serializer);
 
   @protected
   void
@@ -6756,6 +6521,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionApp self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_extra_summary_info(
+      ExtraSummaryInfo self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
 
   @protected
@@ -6764,6 +6533,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_ft_mode(FTMode self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_group_action(
+      GroupAction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_group_title_change(
+      GroupTitleChange self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_hw_extra(HwExtra self, SseSerializer serializer);
@@ -6811,6 +6588,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_location(Location self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_location_share_status_change(
+      LocationShareStatusChange self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_login_state(
       LoginState self, SseSerializer serializer);
 
@@ -6832,6 +6613,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_message(Message self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_message_action(
+      MessageAction self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_message_inst(
@@ -6907,6 +6692,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_part_extension(
       PartExtension self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_participant_change(
+      ParticipantChange self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_passkey(Passkey self, SseSerializer serializer);
@@ -7103,6 +6892,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       CloudMessageSummary self, SseSerializer serializer);
 
   @protected
+  void sse_encode_cloud_message_type(
+      CloudMessageType self, SseSerializer serializer);
+
+  @protected
   void sse_encode_cloud_participant(
       CloudParticipant self, SseSerializer serializer);
 
@@ -7139,6 +6932,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_extension_app(ExtensionApp self, SseSerializer serializer);
 
   @protected
+  void sse_encode_extra_summary_info(
+      ExtraSummaryInfo self, SseSerializer serializer);
+
+  @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
 
   @protected
@@ -7167,7 +6964,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_ft_participant(FTParticipant self, SseSerializer serializer);
 
   @protected
-  void sse_encode_ft_session(FTSession self, SseSerializer serializer);
+  void sse_encode_ft_session_info(FTSessionInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_group_action(GroupAction self, SseSerializer serializer);
 
   @protected
   void sse_encode_group_summary(GroupSummary self, SseSerializer serializer);
@@ -7175,6 +6975,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_group_summary_member(
       GroupSummaryMember self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_group_title_change(
+      GroupTitleChange self, SseSerializer serializer);
 
   @protected
   void sse_encode_hw_extra(HwExtra self, SseSerializer serializer);
@@ -7260,8 +7064,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_ft_member(List<FTMember> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_ft_session(
-      List<FTSession> self, SseSerializer serializer);
+  void sse_encode_list_ft_session_info(
+      List<FTSessionInfo> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_group_summary_member(
@@ -7282,6 +7086,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_message_target(
       List<MessageTarget> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_mmcs_file(List<MMCSFile> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_password_manager_alt_domain(
@@ -7339,10 +7146,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_record_string_bool(
       List<(String, bool)> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_record_string_casted_primitive_u_64(
-      List<(String, int)> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_record_string_cloud_attachment(
@@ -7450,6 +7253,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_location(Location self, SseSerializer serializer);
 
   @protected
+  void sse_encode_location_share_status_change(
+      LocationShareStatusChange self, SseSerializer serializer);
+
+  @protected
   void sse_encode_login_state(LoginState self, SseSerializer serializer);
 
   @protected
@@ -7473,6 +7280,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_message(Message self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_action(MessageAction self, SseSerializer serializer);
 
   @protected
   void sse_encode_message_edit(MessageEdit self, SseSerializer serializer);
@@ -7636,11 +7446,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-          ConversationLink? self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
           ConversationParticipant? self, SseSerializer serializer);
 
@@ -7653,21 +7458,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto(
           GZipWrapperChatProto? self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-          GZipWrapperMessageProto2? self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-          GZipWrapperMessageProto3? self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-          GZipWrapperMessageProto4? self, SseSerializer serializer);
 
   @protected
   void
@@ -7766,6 +7556,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionApp? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_extra_summary_info(
+      ExtraSummaryInfo? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
 
   @protected
@@ -7810,6 +7604,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_lp_specialization_metadata(
       LPSpecializationMetadata? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_message_proto_2(
+      MessageProto2? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_message_proto_3(
+      MessageProto3? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_message_proto_4(
+      MessageProto4? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_mmcs_attachment_meta(
@@ -7927,6 +7733,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_part_extension(PartExtension self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_participant_change(
+      ParticipantChange self, SseSerializer serializer);
 
   @protected
   void sse_encode_passkey(Passkey self, SseSerializer serializer);
@@ -8157,10 +7967,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_bool(
       (String, bool) self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_record_string_casted_primitive_u_64(
-      (String, int) self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_cloud_attachment(
@@ -9171,38 +8977,6 @@ class RustLibWire implements BaseWire {
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLinkPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLinkPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLinkPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLink =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationLinkPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerConversationParticipant(
     ffi.Pointer<ffi.Void> ptr,
   ) {
@@ -9424,134 +9198,6 @@ class RustLibWire implements BaseWire {
           'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProto =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperChatProtoPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProtoPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProtoPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProtoPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProtoPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2 =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2Ptr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2 =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto2Ptr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3 =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3Ptr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3 =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto3Ptr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4 =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4Ptr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4 =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerGZipWrapperMessageProto4Ptr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void

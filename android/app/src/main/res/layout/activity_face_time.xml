@@ -16,6 +16,104 @@
         android:fitsSystemWindows="true"
         android:visibility="invisible">
 
+        <TextureView
+            android:id="@+id/remoteVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextureView
+            android:id="@+id/localVideo"
+            android:layout_width="96dp"
+            android:layout_height="136dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="12dp" />
+
+        <TextView
+            android:id="@+id/callStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/callControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="24dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/muteButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
+                android:text="Mute"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/cameraButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
+                android:text="Cam off"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/flipButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
+                android:text="Flip"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/speakerButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:minWidth="0dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:textSize="12sp"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
+                android:text="Speaker"
+                android:textColor="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/endButton"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/reject_call_bg"
+                android:outlineProvider="none"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/call_end" />
+        </LinearLayout>
     </FrameLayout>
 
     <FrameLayout

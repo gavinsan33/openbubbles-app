@@ -660,6 +660,24 @@ internal interface UniffiCallbackInterfaceAvailableGroupsCallbackMethod0 : com.s
 internal interface UniffiCallbackInterfaceCarrierHandlerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`gateway`: RustBuffer.ByValue,`error`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod0 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`participant`: Long,`codec`: RustBuffer.ByValue,`csd`: RustBuffer.ByValue,`width`: Int,`height`: Int,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod1 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`participant`: Long,`data`: RustBuffer.ByValue,`timestampUs`: Long,`rotation`: Int,`mirrored`: Byte,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod2 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`participant`: Long,`pcm`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod3 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod4 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`bps`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
+internal interface UniffiCallbackInterfaceFtMediaSinkMethod5 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
 internal interface UniffiCallbackInterfaceHandleWifiNetworksCallbackMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`networks`: RustBuffer.ByValue,`userApprove`: Byte,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
@@ -757,6 +775,37 @@ internal open class UniffiVTableCallbackInterfaceCarrierHandler(
 
    internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceCarrierHandler) {
         `gotGateway` = other.`gotGateway`
+        `uniffiFree` = other.`uniffiFree`
+    }
+
+}
+@Structure.FieldOrder("videoConfig", "videoFrame", "audioFrame", "requestKeyframe", "setBitrate", "ended", "uniffiFree")
+internal open class UniffiVTableCallbackInterfaceFtMediaSink(
+    @JvmField internal var `videoConfig`: UniffiCallbackInterfaceFtMediaSinkMethod0? = null,
+    @JvmField internal var `videoFrame`: UniffiCallbackInterfaceFtMediaSinkMethod1? = null,
+    @JvmField internal var `audioFrame`: UniffiCallbackInterfaceFtMediaSinkMethod2? = null,
+    @JvmField internal var `requestKeyframe`: UniffiCallbackInterfaceFtMediaSinkMethod3? = null,
+    @JvmField internal var `setBitrate`: UniffiCallbackInterfaceFtMediaSinkMethod4? = null,
+    @JvmField internal var `ended`: UniffiCallbackInterfaceFtMediaSinkMethod5? = null,
+    @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+) : Structure() {
+    class UniffiByValue(
+        `videoConfig`: UniffiCallbackInterfaceFtMediaSinkMethod0? = null,
+        `videoFrame`: UniffiCallbackInterfaceFtMediaSinkMethod1? = null,
+        `audioFrame`: UniffiCallbackInterfaceFtMediaSinkMethod2? = null,
+        `requestKeyframe`: UniffiCallbackInterfaceFtMediaSinkMethod3? = null,
+        `setBitrate`: UniffiCallbackInterfaceFtMediaSinkMethod4? = null,
+        `ended`: UniffiCallbackInterfaceFtMediaSinkMethod5? = null,
+        `uniffiFree`: UniffiCallbackInterfaceFree? = null,
+    ): UniffiVTableCallbackInterfaceFtMediaSink(`videoConfig`,`videoFrame`,`audioFrame`,`requestKeyframe`,`setBitrate`,`ended`,`uniffiFree`,), Structure.ByValue
+
+   internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceFtMediaSink) {
+        `videoConfig` = other.`videoConfig`
+        `videoFrame` = other.`videoFrame`
+        `audioFrame` = other.`audioFrame`
+        `requestKeyframe` = other.`requestKeyframe`
+        `setBitrate` = other.`setBitrate`
+        `ended` = other.`ended`
         `uniffiFree` = other.`uniffiFree`
     }
 
@@ -1096,6 +1145,35 @@ internal open class UniffiVTableCallbackInterfaceSpecialAppleAuthCallback(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // For large crates we prevent `MethodTooLargeException` (see #2340)
 // N.B. the name of the extension is very misleading, since it is 
 // rather `InterfaceTooLargeException`, caused by too many methods 
@@ -1130,6 +1208,28 @@ fun uniffi_rust_lib_bluebubbles_checksum_func_start(
 fun uniffi_rust_lib_bluebubbles_checksum_method_availablegroupscallback_groups(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_leave(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_send_audio(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_send_video(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_set_video_config(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftcall_set_video_enabled(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_video_config(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_video_frame(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_audio_frame(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_request_keyframe(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_set_bitrate(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_ended(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_handlewifinetworkscallback_handle_wifi_networks(
 ): Short
@@ -1191,6 +1291,8 @@ fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_keychain_passwor
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_publish_status(
 ): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_facetime(
+): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_teardown_2fa(
@@ -1239,6 +1341,7 @@ internal interface UniffiLib : Library {
             // we already did that with `IntegrityCheckingUniffiLib` above.
             uniffiCallbackInterfaceAvailableGroupsCallback.register(lib)
             uniffiCallbackInterfaceCarrierHandler.register(lib)
+            uniffiCallbackInterfaceFtMediaSink.register(lib)
             uniffiCallbackInterfaceHandleWifiNetworksCallback.register(lib)
             uniffiCallbackInterfaceInsertKeychainCallback.register(lib)
             uniffiCallbackInterfaceKotlinFilePackager.register(lib)
@@ -1272,6 +1375,38 @@ fun uniffi_rust_lib_bluebubbles_fn_free_carrierhandler(`ptr`: Pointer,uniffi_out
 fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_carrierhandler(`vtable`: UniffiVTableCallbackInterfaceCarrierHandler,
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_carrierhandler_got_gateway(`ptr`: Pointer,`gateway`: RustBuffer.ByValue,`error`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_clone_ftcall(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_ftcall(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_leave(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_send_audio(`ptr`: Pointer,`pcm`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_send_video(`ptr`: Pointer,`data`: RustBuffer.ByValue,`keyframe`: Byte,`timestampUs`: Long,`rotation`: Int,`mirrored`: Byte,`back`: Byte,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_set_video_config(`ptr`: Pointer,`csd`: RustBuffer.ByValue,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftcall_set_video_enabled(`ptr`: Pointer,`enabled`: Byte,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_clone_ftmediasink(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_ftmediasink(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_ftmediasink(`vtable`: UniffiVTableCallbackInterfaceFtMediaSink,
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_video_config(`ptr`: Pointer,`participant`: Long,`codec`: RustBuffer.ByValue,`csd`: RustBuffer.ByValue,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_video_frame(`ptr`: Pointer,`participant`: Long,`data`: RustBuffer.ByValue,`timestampUs`: Long,`rotation`: Int,`mirrored`: Byte,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_audio_frame(`ptr`: Pointer,`participant`: Long,`pcm`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_request_keyframe(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_set_bitrate(`ptr`: Pointer,`bps`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_ended(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_clone_handlewifinetworkscallback(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Pointer
@@ -1367,6 +1502,8 @@ fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_keychain_password_inse
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_publish_status(`ptr`: Pointer,`guid`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_facetime(`ptr`: Pointer,`guid`: RustBuffer.ByValue,`sink`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(`ptr`: Pointer,`handler`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_teardown_2fa(`ptr`: Pointer,`action`: RustBuffer.ByValue,`txnid`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -1560,6 +1697,39 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway() != 11467.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_leave() != 55566.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_send_audio() != 56530.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_send_video() != 52132.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_set_video_config() != 24331.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftcall_set_video_enabled() != 45722.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_video_config() != 24925.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_video_frame() != 414.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_audio_frame() != 9939.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_request_keyframe() != 18580.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_set_bitrate() != 47187.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_ftmediasink_ended() != 50825.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_handlewifinetworkscallback_handle_wifi_networks() != 42968.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1648,6 +1818,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_publish_status() != 57426.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_facetime() != 9838.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop() != 19847.toShort()) {
@@ -1759,6 +1932,29 @@ public object FfiConverterUInt: FfiConverter<UInt, Int> {
 
     override fun write(value: UInt, buf: ByteBuffer) {
         buf.putInt(value.toInt())
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterInt: FfiConverter<Int, Int> {
+    override fun lift(value: Int): Int {
+        return value
+    }
+
+    override fun read(buf: ByteBuffer): Int {
+        return buf.getInt()
+    }
+
+    override fun lower(value: Int): Int {
+        return value
+    }
+
+    override fun allocationSize(value: Int) = 4UL
+
+    override fun write(value: Int, buf: ByteBuffer) {
+        buf.putInt(value)
     }
 }
 
@@ -2536,6 +2732,736 @@ public object FfiConverterTypeCarrierHandler: FfiConverter<CarrierHandler, Point
     override fun allocationSize(value: CarrierHandler) = 8UL
 
     override fun write(value: CarrierHandler, buf: ByteBuffer) {
+        // The Rust code always expects pointers written as 8 bytes,
+        // and will fail to compile if they don't fit.
+        buf.putLong(Pointer.nativeValue(lower(value)))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a Pointer/Arc<T>
+// to the live Rust struct on the other side of the FFI.
+//
+// Each instance implements core operations for working with the Rust `Arc<T>` and the
+// Kotlin Pointer to work with the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque pointer to the underlying Rust struct.
+//     Method calls need to read this pointer from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its pointer should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the pointer, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the pointer, but is interrupted
+//      before it can pass the pointer over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read pointer value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+public interface FtCallInterface {
+    
+    fun `leave`()
+    
+    /**
+     * 480 samples of 24kHz mono PCM16 (20ms), little endian
+     */
+    fun `sendAudio`(`pcm`: kotlin.ByteArray)
+    
+    /**
+     * one HEVC access unit in Annex-B, as MediaCodec outputs it
+     */
+    fun `sendVideo`(`data`: kotlin.ByteArray, `keyframe`: kotlin.Boolean, `timestampUs`: kotlin.ULong, `rotation`: kotlin.Int, `mirrored`: kotlin.Boolean, `back`: kotlin.Boolean)
+    
+    /**
+     * encoder output with BUFFER_FLAG_CODEC_CONFIG (Annex-B VPS/SPS/PPS)
+     */
+    fun `setVideoConfig`(`csd`: kotlin.ByteArray, `width`: kotlin.UInt, `height`: kotlin.UInt)
+    
+    fun `setVideoEnabled`(`enabled`: kotlin.Boolean)
+    
+    companion object
+}
+
+open class FtCall: Disposable, AutoCloseable, FtCallInterface
+{
+
+    constructor(pointer: Pointer) {
+        this.pointer = pointer
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    /**
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noPointer: NoPointer) {
+        this.pointer = null
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    protected val pointer: Pointer?
+    protected val cleanable: UniffiCleaner.Cleanable
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithPointer(block: (ptr: Pointer) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the pointer being freed concurrently.
+        try {
+            return block(this.uniffiClonePointer())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val pointer: Pointer?) : Runnable {
+        override fun run() {
+            pointer?.let { ptr ->
+                uniffiRustCall { status ->
+                    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_free_ftcall(ptr, status)
+                }
+            }
+        }
+    }
+
+    fun uniffiClonePointer(): Pointer {
+        return uniffiRustCall() { status ->
+            UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_clone_ftcall(pointer!!, status)
+        }
+    }
+
+    override fun `leave`()
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_leave(
+        it, _status)
+}
+    }
+    
+    
+
+    
+    /**
+     * 480 samples of 24kHz mono PCM16 (20ms), little endian
+     */override fun `sendAudio`(`pcm`: kotlin.ByteArray)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_send_audio(
+        it, FfiConverterByteArray.lower(`pcm`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * one HEVC access unit in Annex-B, as MediaCodec outputs it
+     */override fun `sendVideo`(`data`: kotlin.ByteArray, `keyframe`: kotlin.Boolean, `timestampUs`: kotlin.ULong, `rotation`: kotlin.Int, `mirrored`: kotlin.Boolean, `back`: kotlin.Boolean)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_send_video(
+        it, FfiConverterByteArray.lower(`data`),FfiConverterBoolean.lower(`keyframe`),FfiConverterULong.lower(`timestampUs`),FfiConverterInt.lower(`rotation`),FfiConverterBoolean.lower(`mirrored`),FfiConverterBoolean.lower(`back`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * encoder output with BUFFER_FLAG_CODEC_CONFIG (Annex-B VPS/SPS/PPS)
+     */override fun `setVideoConfig`(`csd`: kotlin.ByteArray, `width`: kotlin.UInt, `height`: kotlin.UInt)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_set_video_config(
+        it, FfiConverterByteArray.lower(`csd`),FfiConverterUInt.lower(`width`),FfiConverterUInt.lower(`height`),_status)
+}
+    }
+    
+    
+
+    override fun `setVideoEnabled`(`enabled`: kotlin.Boolean)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftcall_set_video_enabled(
+        it, FfiConverterBoolean.lower(`enabled`),_status)
+}
+    }
+    
+    
+
+    
+
+    
+    
+    companion object
+    
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeFtCall: FfiConverter<FtCall, Pointer> {
+
+    override fun lower(value: FtCall): Pointer {
+        return value.uniffiClonePointer()
+    }
+
+    override fun lift(value: Pointer): FtCall {
+        return FtCall(value)
+    }
+
+    override fun read(buf: ByteBuffer): FtCall {
+        // The Rust code always writes pointers as 8 bytes, and will
+        // fail to compile if they don't fit.
+        return lift(Pointer(buf.getLong()))
+    }
+
+    override fun allocationSize(value: FtCall) = 8UL
+
+    override fun write(value: FtCall, buf: ByteBuffer) {
+        // The Rust code always expects pointers written as 8 bytes,
+        // and will fail to compile if they don't fit.
+        buf.putLong(Pointer.nativeValue(lower(value)))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a Pointer/Arc<T>
+// to the live Rust struct on the other side of the FFI.
+//
+// Each instance implements core operations for working with the Rust `Arc<T>` and the
+// Kotlin Pointer to work with the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque pointer to the underlying Rust struct.
+//     Method calls need to read this pointer from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its pointer should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the pointer, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the pointer, but is interrupted
+//      before it can pass the pointer over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read pointer value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+public interface FtMediaSink {
+    
+    /**
+     * (re)configure the decoder for a participant's video; csd is Annex-B parameter sets
+     */
+    fun `videoConfig`(`participant`: kotlin.ULong, `codec`: FtVideoCodec, `csd`: kotlin.ByteArray, `width`: kotlin.Int, `height`: kotlin.Int)
+    
+    /**
+     * one Annex-B access unit. rotation is clockwise degrees to display it upright
+     */
+    fun `videoFrame`(`participant`: kotlin.ULong, `data`: kotlin.ByteArray, `timestampUs`: kotlin.ULong, `rotation`: kotlin.Int, `mirrored`: kotlin.Boolean)
+    
+    /**
+     * 480 samples of 24kHz mono PCM16, little endian
+     */
+    fun `audioFrame`(`participant`: kotlin.ULong, `pcm`: kotlin.ByteArray)
+    
+    fun `requestKeyframe`()
+    
+    fun `setBitrate`(`bps`: kotlin.ULong)
+    
+    fun `ended`()
+    
+    companion object
+}
+
+open class FtMediaSinkImpl: Disposable, AutoCloseable, FtMediaSink
+{
+
+    constructor(pointer: Pointer) {
+        this.pointer = pointer
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    /**
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noPointer: NoPointer) {
+        this.pointer = null
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(pointer))
+    }
+
+    protected val pointer: Pointer?
+    protected val cleanable: UniffiCleaner.Cleanable
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithPointer(block: (ptr: Pointer) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the pointer being freed concurrently.
+        try {
+            return block(this.uniffiClonePointer())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val pointer: Pointer?) : Runnable {
+        override fun run() {
+            pointer?.let { ptr ->
+                uniffiRustCall { status ->
+                    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_free_ftmediasink(ptr, status)
+                }
+            }
+        }
+    }
+
+    fun uniffiClonePointer(): Pointer {
+        return uniffiRustCall() { status ->
+            UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_clone_ftmediasink(pointer!!, status)
+        }
+    }
+
+    
+    /**
+     * (re)configure the decoder for a participant's video; csd is Annex-B parameter sets
+     */override fun `videoConfig`(`participant`: kotlin.ULong, `codec`: FtVideoCodec, `csd`: kotlin.ByteArray, `width`: kotlin.Int, `height`: kotlin.Int)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_video_config(
+        it, FfiConverterULong.lower(`participant`),FfiConverterTypeFtVideoCodec.lower(`codec`),FfiConverterByteArray.lower(`csd`),FfiConverterInt.lower(`width`),FfiConverterInt.lower(`height`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * one Annex-B access unit. rotation is clockwise degrees to display it upright
+     */override fun `videoFrame`(`participant`: kotlin.ULong, `data`: kotlin.ByteArray, `timestampUs`: kotlin.ULong, `rotation`: kotlin.Int, `mirrored`: kotlin.Boolean)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_video_frame(
+        it, FfiConverterULong.lower(`participant`),FfiConverterByteArray.lower(`data`),FfiConverterULong.lower(`timestampUs`),FfiConverterInt.lower(`rotation`),FfiConverterBoolean.lower(`mirrored`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * 480 samples of 24kHz mono PCM16, little endian
+     */override fun `audioFrame`(`participant`: kotlin.ULong, `pcm`: kotlin.ByteArray)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_audio_frame(
+        it, FfiConverterULong.lower(`participant`),FfiConverterByteArray.lower(`pcm`),_status)
+}
+    }
+    
+    
+
+    override fun `requestKeyframe`()
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_request_keyframe(
+        it, _status)
+}
+    }
+    
+    
+
+    override fun `setBitrate`(`bps`: kotlin.ULong)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_set_bitrate(
+        it, FfiConverterULong.lower(`bps`),_status)
+}
+    }
+    
+    
+
+    override fun `ended`()
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_ftmediasink_ended(
+        it, _status)
+}
+    }
+    
+    
+
+    
+
+    
+    
+    companion object
+    
+}
+
+
+// Put the implementation in an object so we don't pollute the top-level namespace
+internal object uniffiCallbackInterfaceFtMediaSink {
+    internal object `videoConfig`: UniffiCallbackInterfaceFtMediaSinkMethod0 {
+        override fun callback(`uniffiHandle`: Long,`participant`: Long,`codec`: RustBuffer.ByValue,`csd`: RustBuffer.ByValue,`width`: Int,`height`: Int,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`videoConfig`(
+                    FfiConverterULong.lift(`participant`),
+                    FfiConverterTypeFtVideoCodec.lift(`codec`),
+                    FfiConverterByteArray.lift(`csd`),
+                    FfiConverterInt.lift(`width`),
+                    FfiConverterInt.lift(`height`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+    internal object `videoFrame`: UniffiCallbackInterfaceFtMediaSinkMethod1 {
+        override fun callback(`uniffiHandle`: Long,`participant`: Long,`data`: RustBuffer.ByValue,`timestampUs`: Long,`rotation`: Int,`mirrored`: Byte,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`videoFrame`(
+                    FfiConverterULong.lift(`participant`),
+                    FfiConverterByteArray.lift(`data`),
+                    FfiConverterULong.lift(`timestampUs`),
+                    FfiConverterInt.lift(`rotation`),
+                    FfiConverterBoolean.lift(`mirrored`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+    internal object `audioFrame`: UniffiCallbackInterfaceFtMediaSinkMethod2 {
+        override fun callback(`uniffiHandle`: Long,`participant`: Long,`pcm`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`audioFrame`(
+                    FfiConverterULong.lift(`participant`),
+                    FfiConverterByteArray.lift(`pcm`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+    internal object `requestKeyframe`: UniffiCallbackInterfaceFtMediaSinkMethod3 {
+        override fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`requestKeyframe`(
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+    internal object `setBitrate`: UniffiCallbackInterfaceFtMediaSinkMethod4 {
+        override fun callback(`uniffiHandle`: Long,`bps`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`setBitrate`(
+                    FfiConverterULong.lift(`bps`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+    internal object `ended`: UniffiCallbackInterfaceFtMediaSinkMethod5 {
+        override fun callback(`uniffiHandle`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeFtMediaSink.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`ended`(
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
+
+    internal object uniffiFree: UniffiCallbackInterfaceFree {
+        override fun callback(handle: Long) {
+            FfiConverterTypeFtMediaSink.handleMap.remove(handle)
+        }
+    }
+
+    internal var vtable = UniffiVTableCallbackInterfaceFtMediaSink.UniffiByValue(
+        `videoConfig`,
+        `videoFrame`,
+        `audioFrame`,
+        `requestKeyframe`,
+        `setBitrate`,
+        `ended`,
+        uniffiFree,
+    )
+
+    // Registers the foreign callback with the Rust side.
+    // This method is generated for each callback interface.
+    internal fun register(lib: UniffiLib) {
+        lib.uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_ftmediasink(vtable)
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeFtMediaSink: FfiConverter<FtMediaSink, Pointer> {
+    internal val handleMap = UniffiHandleMap<FtMediaSink>()
+
+    override fun lower(value: FtMediaSink): Pointer {
+        return Pointer(handleMap.insert(value))
+    }
+
+    override fun lift(value: Pointer): FtMediaSink {
+        return FtMediaSinkImpl(value)
+    }
+
+    override fun read(buf: ByteBuffer): FtMediaSink {
+        // The Rust code always writes pointers as 8 bytes, and will
+        // fail to compile if they don't fit.
+        return lift(Pointer(buf.getLong()))
+    }
+
+    override fun allocationSize(value: FtMediaSink) = 8UL
+
+    override fun write(value: FtMediaSink, buf: ByteBuffer) {
         // The Rust code always expects pointers written as 8 bytes,
         // and will fail to compile if they don't fit.
         buf.putLong(Pointer.nativeValue(lower(value)))
@@ -4531,6 +5457,11 @@ public interface NativePushStateInterface {
     
     fun `publishStatus`(`guid`: kotlin.String?)
     
+    /**
+     * joins the call if needed and attaches native media. Blocks, call off the main thread.
+     */
+    fun `startFacetime`(`guid`: kotlin.String, `sink`: FtMediaSink): FtCall?
+    
     fun `startLoop`(`handler`: MsgReceiver)
     
     fun `teardown2fa`(`action`: kotlin.String, `txnid`: kotlin.String)
@@ -4719,6 +5650,21 @@ open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface
 }
     }
     
+    
+
+    
+    /**
+     * joins the call if needed and attaches native media. Blocks, call off the main thread.
+     */override fun `startFacetime`(`guid`: kotlin.String, `sink`: FtMediaSink): FtCall? {
+            return FfiConverterOptionalTypeFtCall.lift(
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_facetime(
+        it, FfiConverterString.lower(`guid`),FfiConverterTypeFtMediaSink.lower(`sink`),_status)
+}
+    }
+    )
+    }
     
 
     override fun `startLoop`(`handler`: MsgReceiver)
@@ -5601,6 +6547,36 @@ public object FfiConverterTypeEncryptMode : FfiConverterRustBuffer<EncryptMode>{
 
 
 
+
+enum class FtVideoCodec {
+    
+    H264,
+    H265;
+    companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeFtVideoCodec: FfiConverterRustBuffer<FtVideoCodec> {
+    override fun read(buf: ByteBuffer) = try {
+        FtVideoCodec.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: FtVideoCodec) = 4UL
+
+    override fun write(value: FtVideoCodec, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
 sealed class KeyType {
     
     data class Rsa(
@@ -6055,6 +7031,38 @@ public object FfiConverterOptionalByteArray: FfiConverterRustBuffer<kotlin.ByteA
         } else {
             buf.put(1)
             FfiConverterByteArray.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterOptionalTypeFtCall: FfiConverterRustBuffer<FtCall?> {
+    override fun read(buf: ByteBuffer): FtCall? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeFtCall.read(buf)
+    }
+
+    override fun allocationSize(value: FtCall?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeFtCall.allocationSize(value)
+        }
+    }
+
+    override fun write(value: FtCall?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeFtCall.write(value, buf)
         }
     }
 }

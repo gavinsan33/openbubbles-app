@@ -8,29 +8,20 @@ import android.app.RemoteAction
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.database.ContentObserver
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.SurfaceTexture
 import android.graphics.drawable.Icon
-import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.util.Rational
+import android.view.Surface
+import android.view.TextureView
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.webkit.PermissionRequest
-import android.webkit.WebView
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginTop
-import androidx.core.view.updateLayoutParams
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.databinding.ActivityFaceTimeBinding
@@ -38,53 +29,39 @@ import com.bluebubbles.messaging.services.notifications.CreateIncomingFaceTimeNo
 import com.bluebubbles.messaging.services.notifications.DeleteNotificationHandler
 import com.bluebubbles.messaging.services.rustpush.APNClient
 import com.bluebubbles.messaging.services.rustpush.APNService
-import com.bluebubbles.messaging.utils.getStreamMinVolumeCompat
-import com.google.android.material.math.MathUtils
-import kotlin.math.roundToInt
+import kotlin.concurrent.thread
 
 class FaceTimeActivity : Activity() {
     private lateinit var binding: ActivityFaceTimeBinding
 
-    private var permissionRequests = ArrayList<PermissionRequest>()
-    private val permissionMap = mapOf(
-        PermissionRequest.RESOURCE_VIDEO_CAPTURE to listOf(Manifest.permission.CAMERA),
-        PermissionRequest.RESOURCE_AUDIO_CAPTURE to listOf(Manifest.permission.RECORD_AUDIO),
-    )
     var isCall = false
     var answered = false
-    private var mirrorReady = false
     private var notificationId = 0
     var callUuid: String? = null
-    private lateinit var cached: CachedWebview
 
-    private lateinit var webView: WebView
-    private var initialMediaVolume: Int? = null;
+    private var media: FaceTimeMedia? = null
+    private var ended = false
 
     companion object {
         var activeFaceTimeActivity: FaceTimeActivity? = null
-        var cachedWebview: CachedWebview? = null
+        private val callPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
     }
 
     fun endCall() {
-        webView.loadUrl("javascript:document.getElementById(\"callcontrols-leave-button-session-banner\").click()")
+        if (ended) return
+        ended = true
+        media?.call?.leave()
+        finishAndRemoveTask()
     }
 
-    private fun hideControlsForPIP() {
-        webView.loadUrl("javascript:if (document.querySelector(\".session-banner\").style.opacity == 1) { document.getElementById(\"canvas-layout-container\").click() }")
-    }
-
-    override fun onPictureInPictureModeChanged(
-        isInPictureInPictureMode: Boolean,
-        newConfig: Configuration?
-    ) {
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
-        if (isInPictureInPictureMode) {
-            hideControlsForPIP()
-        }
+        val visibility = if (isInPictureInPictureMode) View.GONE else View.VISIBLE
+        binding.callControls.visibility = visibility
+        binding.localVideo.visibility = visibility
     }
 
     private fun decline() {
-        // delete notification
         if (notificationId != 0) {
             DeleteNotificationHandler().deleteNotification(this, notificationId, Constants.newFaceTimeNotificationTag)
         }
@@ -101,91 +78,110 @@ class FaceTimeActivity : Activity() {
         finishAndRemoveTask()
     }
 
-    private fun invLerp(a: Int, b: Int, x: Int): Float {
-        return (x - a).toFloat() / (b - a).toFloat()
-    }
-
-    private fun updateMediaVolume(audioManager: AudioManager) {
-        try {
-            val progress = invLerp(
-                audioManager.getStreamMinVolumeCompat(AudioManager.STREAM_VOICE_CALL),
-                audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL),
-                audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL),
-            )
-            val volume = MathUtils.lerp(
-                audioManager.getStreamMinVolumeCompat(AudioManager.STREAM_MUSIC).toFloat(),
-                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat(),
-                progress
-            ).roundToInt()
-            audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                volume,
-                0
-            )
-        } catch (e: SecurityException) {
-            Log.w("FaceTime", "Unable to set stream volume!")
-        }
-
-    }
-
-    var contentObserver: ContentObserver? = null
-
-    private fun handlePermissionRequests() {
-        for (request in cached.deferredRequests) {
-            handlePermissionRequest(request)
-        }
-        cached.deferredRequests.clear()
-        cached.deferredRequestsUpdated = {
-            for (request in cached.deferredRequests) {
-                handlePermissionRequest(request)
-            }
-            cached.deferredRequests.clear()
-        }
-
-        // weird bug where it uses the Music stream but the default stream is set to call
-        // you want it maxed. Trust me. And if you don't the UI will open so you know :)
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        initialMediaVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        updateMediaVolume(audioManager)
-        val observer = object : ContentObserver(
-            Handler(Looper.getMainLooper())
-        ) {
-            override fun deliverSelfNotifications(): Boolean {
-                return false
-            }
-
-            override fun onChange(selfChange: Boolean) {
-                updateMediaVolume(audioManager)
-            }
-        }
-        applicationContext.contentResolver.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, observer)
-        contentObserver = observer
-    }
-
     private fun answerCall() {
         answered = true
-
-        handlePermissionRequests()
-
         if (notificationId != 0) {
             DeleteNotificationHandler().deleteNotification(this, notificationId, Constants.newFaceTimeNotificationTag)
         }
+        binding.mainFrame.visibility = View.VISIBLE
+        binding.splashLayout.visibility = View.GONE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.setBackgroundBlurRadius(0)
+        }
+        binding.callStatus.text = "Connecting..."
 
-        if (mirrorReady) {
-            binding.mainFrame.visibility = View.VISIBLE
-            binding.splashLayout.visibility = View.GONE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
-            webView.loadUrl("javascript:document.getElementById(\"callcontrols-join-button-session-banner\").click()")
+        if (callPermissions.all { checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED }) {
+            startMedia()
         } else {
-            connecting()
+            requestPermissions(callPermissions, 1)
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode != 1) return
+        if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            startMedia()
+        } else {
+            binding.callStatus.text = "Camera and microphone access are needed for FaceTime"
+        }
+    }
 
+    private fun whenTextureReady(view: TextureView, cb: () -> Unit) {
+        if (view.isAvailable) return cb()
+        view.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+            override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) = cb()
+            override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureDestroyed(surface: SurfaceTexture) = true
+            override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {}
+        }
+    }
+
+    private fun startMedia() {
+        if (media != null) return
+        startService()
+        // decoders and the camera preview need their surfaces before rust starts sending
+        whenTextureReady(binding.remoteVideo) {
+            whenTextureReady(binding.localVideo) {
+                val guid = callUuid ?: return@whenTextureReady
+                val m = FaceTimeMedia(this, binding.remoteVideo, binding.localVideo, ::displayRotationDegrees) { endCall() }
+                media = m
+                val client = APNClient(applicationContext)
+                client.bind { service: APNService ->
+                    thread(name = "FaceTimeStart") {
+                        // blocks while joining the call
+                        val call = service.pushState?.startFacetime(guid, m)
+                        client.destroy()
+                        runOnUiThread {
+                            if (ended) {
+                                call?.leave()
+                                return@runOnUiThread
+                            }
+                            if (call == null) {
+                                binding.callStatus.text = "Couldn't connect"
+                                binding.root.postDelayed({ endCall() }, 2000)
+                                return@runOnUiThread
+                            }
+                            binding.callStatus.text = ""
+                            m.call = call
+                            m.onAudioRouteChanged = { binding.speakerButton.text = it.label }
+                            m.startAudio()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun displayRotationDegrees(): Int {
+        @Suppress("DEPRECATION")
+        val rotation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display?.rotation else windowManager.defaultDisplay.rotation
+        return when (rotation) {
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> 0
+        }
+    }
+
+    private fun setupControls() {
+        // rotating, folding and unfolding all resize the preview without recreating us
+        binding.localVideo.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> media?.fitLocalPreview() }
+
+        binding.endButton.setOnClickListener { endCall() }
+        binding.muteButton.setOnClickListener {
+            val m = media ?: return@setOnClickListener
+            m.micMuted = !m.micMuted
+            binding.muteButton.text = if (m.micMuted) "Unmute" else "Mute"
+        }
+        binding.cameraButton.setOnClickListener {
+            val m = media ?: return@setOnClickListener
+            m.cameraOff = !m.cameraOff
+            binding.cameraButton.text = if (m.cameraOff) "Cam on" else "Cam off"
+            binding.localVideo.visibility = if (m.cameraOff) View.INVISIBLE else View.VISIBLE
+        }
+        binding.flipButton.setOnClickListener { media?.flipCamera() }
+        // cycles Bluetooth / headset / speaker / earpiece, whichever are connected
+        binding.speakerButton.setOnClickListener { media?.nextAudioRoute() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -196,9 +192,7 @@ class FaceTimeActivity : Activity() {
 
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
 
         // show when locked
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -211,175 +205,64 @@ class FaceTimeActivity : Activity() {
             )
         }
 
-        handleConfig(intent.extras!!)
-        binding.mainFrame.addView(webView)
-
-        binding.accept.setOnClickListener {
-            answerCall()
-        }
-
-        binding.reject.setOnClickListener {
-            decline()
-        }
-
-
+        binding.accept.setOnClickListener { answerCall() }
+        binding.reject.setOnClickListener { decline() }
+        setupControls()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val sourceRectHint = Rect()
-            webView.getGlobalVisibleRect(sourceRectHint)
-
-            val intentWithData = Intent(
-                this,
-                FaceTimeActionReceiver::class.java
-            )
-
+            val endIntent = Intent(this, FaceTimeActionReceiver::class.java)
             setPictureInPictureParams(
                 PictureInPictureParams.Builder()
-                    .setAspectRatio(Rational(1, 1))
+                    .setAspectRatio(Rational(2, 3))
                     .setActions(listOf(
                         RemoteAction(
                             Icon.createWithResource(this, R.drawable.call_end),
                             "End Call",
                             "End this FaceTime Call",
-                            PendingIntent.getBroadcast(this, 1, intentWithData,
-                                PendingIntent.FLAG_IMMUTABLE)
+                            PendingIntent.getBroadcast(this, 1, endIntent, PendingIntent.FLAG_IMMUTABLE)
                         )
                     ))
-                    .setSourceRectHint(sourceRectHint)
                     .setAutoEnterEnabled(true)
                     .build())
 
-            val mOnLayoutChangeListener =
-                View.OnLayoutChangeListener { v: View?, oldLeft: Int,
-                                              oldTop: Int, oldRight: Int, oldBottom: Int, newLeft: Int, newTop:
-                                              Int, newRight: Int, newBottom: Int ->
-                    val sourceRectHint = Rect()
-                    webView.getGlobalVisibleRect(sourceRectHint)
-                    val builder = PictureInPictureParams.Builder()
-                        .setSourceRectHint(sourceRectHint)
-                    setPictureInPictureParams(builder.build())
-                }
-
-            webView.addOnLayoutChangeListener(mOnLayoutChangeListener)
+            binding.remoteVideo.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+                val sourceRectHint = Rect()
+                v.getGlobalVisibleRect(sourceRectHint)
+                setPictureInPictureParams(PictureInPictureParams.Builder().setSourceRectHint(sourceRectHint).build())
+            }
         }
 
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+        handleConfig(intent.extras!!)
     }
 
-    var serviceStarted: Boolean = false
+    private var serviceStarted: Boolean = false
 
-    fun startService() {
+    private fun startService() {
         if (serviceStarted) return
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val intent = Intent(this, FaceTimeInCallService::class.java)
-            startForegroundService(intent)
+            startForegroundService(Intent(this, FaceTimeInCallService::class.java))
         }
         serviceStarted = true
     }
 
-    fun handlePermissionRequest(request: PermissionRequest) {
-        val permissions = request.resources.flatMap { i -> permissionMap[i] ?: listOf() }
-        if (permissions.all { checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED }) {
-            request.grant(request.resources)
-            startService()
-            return
-        }
-        permissionRequests.add(request)
-        requestPermissions(permissions.toTypedArray(), 1)
-    }
-
     override fun onDestroy() {
-        webView.destroy()
         activeFaceTimeActivity = null
+        if (!ended) {
+            ended = true
+            media?.call?.leave()
+        }
+        media?.release()
+        media = null
 
-        val intent = Intent(this, FaceTimeInCallService::class.java)
-        stopService(intent)
+        stopService(Intent(this, FaceTimeInCallService::class.java))
         serviceStarted = false
-
-        // restore default media volume
-        initialMediaVolume?.let {
-            try {
-                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC,
-                    it,
-                    0
-                )
-            } catch (e: SecurityException) {
-                Log.w("FaceTime", "Unable to set stream volume!")
-            }
-        }
-
-        contentObserver?.let {
-            applicationContext.contentResolver.unregisterContentObserver(it)
-        }
-
         super.onDestroy()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode != 1) return
-        for (request in permissionRequests) {
-            request.grant(request.resources.filter { i ->
-                (permissionMap[i] ?: listOf()).all {
-                    val permissionIdx = permissions.indexOf(it)
-                    grantResults[permissionIdx] == PackageManager.PERMISSION_GRANTED
-                }
-            }.toTypedArray())
-        }
-        permissionRequests = arrayListOf()
-        startService()
-    }
-
-    private fun connecting() {
-        binding.acceptButtons.visibility = View.GONE
-        binding.loadingBanner.text = "Connecting..."
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.mainFrame.visibility = View.VISIBLE
-            binding.splashLayout.visibility = View.GONE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
-        }, 15000)
-    }
-
     private fun handleConfig(extras: Bundle) {
-        val link = extras.getString("link")!!
-        val name = extras.getString("name")
         // sanitize desc
         val desc = extras.getString("desc")?.replace("[^a-zA-Z0-9, +.@:&]+".toRegex(), "") ?: "FaceTime Call"
-        if (cachedWebview != null) {
-            // take control of a pre-rendered webview
-            cached = cachedWebview!!
-            cachedWebview = null
-        } else {
-            cached = CachedWebview(this, name, desc, link)
-        }
-
-        cached.endTask = {
-            finishAndRemoveTask()
-        }
-        mirrorReady = cached.mirrorReady
-        cached.mirrorReadyCall = {
-            mirrorReady = true
-            if (answered) {
-                binding.mainFrame.visibility = View.VISIBLE
-                binding.splashLayout.visibility = View.GONE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    window.setBackgroundBlurRadius(0)
-                }
-                webView.loadUrl("javascript:document.getElementById(\"callcontrols-join-button-session-banner\").click()")
-            }
-        }
-
-        webView = cached.webView
-
         val isAnsweringCall = extras.containsKey("answer")
         notificationId = extras.getString("notificationId")?.toInt() ?: 0
         callUuid = extras.getString("callUuid")
@@ -411,12 +294,8 @@ class FaceTimeActivity : Activity() {
                 answerCall()
             }
         } else {
-            binding.splashLayout.visibility = View.GONE
-            binding.mainFrame.visibility = View.VISIBLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
-            handlePermissionRequests()
+            // joining a call that's already going
+            answerCall()
         }
     }
 }
