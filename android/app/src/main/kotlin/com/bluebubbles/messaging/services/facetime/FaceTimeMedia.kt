@@ -75,42 +75,25 @@ class FaceTimeMedia(
             call?.setVideoEnabled(!value)
             if (value) stopCamera() else openCamera()
         }
-    // foldables have several front cameras (cover and inner screen), so flip cycles through all of them
-    private val cameraIds: List<String> by lazy {
-        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        manager.cameraIdList.sortedBy {
-            if (manager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT) 0 else 1
-        }.also { ids ->
-            ids.forEach {
-                val c = manager.getCameraCharacteristics(it)
-                Log.i(TAG, "camera $it facing ${c.get(CameraCharacteristics.LENS_FACING)} sensor ${c.get(CameraCharacteristics.SENSOR_ORIENTATION)}")
-            }
-        }
-    }
-    private var cameraIndex = -1 // pick a default for the current fold state when the camera opens
-
-    private val prefs get() = context.getSharedPreferences("facetime", Context.MODE_PRIVATE)
-    private fun postureKey() = if (isUnfolded()) "camera_unfolded" else "camera_folded"
-
-    // the camera last flipped to in this fold state, else the first front camera folded and the
-    // second (usually the inner screen's) unfolded
-    private fun defaultCameraIndex(): Int {
-        prefs.getString(postureKey(), null)?.let { saved -> cameraIds.indexOf(saved).takeIf { it >= 0 }?.let { return it } }
-        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val fronts = cameraIds.filter { manager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT }
-        val pick = fronts.getOrNull(if (isUnfolded() && fronts.size > 1) 1 else 0) ?: return 0
-        return cameraIds.indexOf(pick)
+    private val cameraManager get() = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    private fun camerasFacing(facing: Int) = cameraManager.cameraIdList.filter {
+        cameraManager.getCameraCharacteristics(it).get(CameraCharacteristics.LENS_FACING) == facing
     }
 
-    /** Fold state changed mid-call: move to that posture's camera. */
+    // foldables have two selfie cameras: the cover screen's (listed first) and the inner screen's
+    private fun currentCameraId(): String? =
+        if (frontCamera) camerasFacing(CameraCharacteristics.LENS_FACING_FRONT).let { it.getOrNull(if (isUnfolded() && it.size > 1) 1 else 0) }
+        else camerasFacing(CameraCharacteristics.LENS_FACING_BACK).firstOrNull() // main lens, not the ultra-wide
+
+    /** Fold state changed mid-call: the selfie camera follows the screen in use. */
     fun postureChanged() {
         handler.post {
-            cameraIndex = defaultCameraIndex()
+            if (!frontCamera) return@post
             stopCamera()
             if (!cameraOff) openCamera()
         }
     }
-    var frontCamera = true
+    @Volatile var frontCamera = true
         private set
     private var videoWidth = 1280
     private var videoHeight = 720
@@ -133,6 +116,7 @@ class FaceTimeMedia(
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
     private var sensorOrientation = 0
+    private var opening = false // handler thread only
 
     private fun startEncoder() {
         handler.post {
@@ -141,9 +125,15 @@ class FaceTimeMedia(
         }
     }
 
-    // runs on handler thread; (re)creates the encoder when the camera's size changes
+    // set when the camera changes: each camera has its own timestamp clock and an encoder fed
+    // timestamps that jump backwards stops producing output
+    private var encoderStale = false
+    @Volatile private var bitrate = VIDEO_INITIAL_BITRATE // carried over when the encoder is recreated
+
+    // runs on handler thread; (re)creates the encoder when the camera or its size changes
     private fun ensureEncoder(width: Int, height: Int) {
-        if (encoder != null && width == videoWidth && height == videoHeight) return
+        if (encoder != null && !encoderStale && width == videoWidth && height == videoHeight) return
+        encoderStale = false
         encoder?.let { runCatching { it.stop() }; it.release() }
         encoderSurface?.release()
         encoder = null
@@ -152,7 +142,7 @@ class FaceTimeMedia(
         run {
             val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_HEVC, width, height).apply {
                 setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
-                setInteger(MediaFormat.KEY_BIT_RATE, VIDEO_INITIAL_BITRATE)
+                setInteger(MediaFormat.KEY_BIT_RATE, bitrate)
                 setInteger(MediaFormat.KEY_FRAME_RATE, 30)
                 setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2)
                 setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR)
@@ -188,15 +178,15 @@ class FaceTimeMedia(
         }
     }
 
-    // clockwise degrees the receiver must rotate our frames to be upright
+    // rotation metadata for the receiver. The back camera gets an extra 180: receivers compensate for
+    // is_back themselves, and without it the rear camera showed up upside down.
     private fun outgoingRotation(): Int =
         if (frontCamera) (sensorOrientation + deviceRotation) % 360
-        else (sensorOrientation - deviceRotation + 360) % 360
+        else (sensorOrientation - deviceRotation + 180 + 360) % 360
 
     fun flipCamera() {
         handler.post {
-            cameraIndex = (cameraIndex + 1) % maxOf(cameraIds.size, 1)
-            cameraIds.getOrNull(cameraIndex)?.let { prefs.edit().putString(postureKey(), it).apply() }
+            frontCamera = !frontCamera
             stopCamera()
             if (!cameraOff) openCamera()
         }
@@ -205,12 +195,10 @@ class FaceTimeMedia(
     @SuppressLint("MissingPermission") // granted before the call starts
     private fun openCamera() {
         handler.post {
-            if (camera != null || cameraOff) return@post
+            if (camera != null || opening || cameraOff) return@post
             val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-            if (cameraIndex < 0) cameraIndex = defaultCameraIndex()
-            val id = cameraIds.getOrNull(cameraIndex) ?: return@post
+            val id = currentCameraId() ?: return@post
             val chars = manager.getCameraCharacteristics(id)
-            frontCamera = chars.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT
             sensorOrientation = chars.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
             // a size the camera really outputs, so nothing gets squashed into 16:9
             val sizes = chars.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
@@ -219,14 +207,24 @@ class FaceTimeMedia(
                 ?: sizes.filter { it.width <= VIDEO_MAX_WIDTH }.maxByOrNull { it.width * it.height }
             ensureEncoder(size?.width ?: 1280, size?.height ?: 720)
             Log.i(TAG, "opening camera $id front=$frontCamera sensor=$sensorOrientation size=${videoWidth}x$videoHeight")
+            val openedFront = frontCamera
+            opening = true
             manager.openCamera(id, object : CameraDevice.StateCallback() {
                 override fun onOpened(device: CameraDevice) {
+                    opening = false
+                    // flipped (or turned off) while this was opening: go to the camera wanted now
+                    if (cameraOff || openedFront != frontCamera) {
+                        device.close()
+                        openCamera()
+                        return
+                    }
                     camera = device
                     startCapture(device)
                 }
-                override fun onDisconnected(device: CameraDevice) { device.close(); camera = null }
+                override fun onDisconnected(device: CameraDevice) { opening = false; device.close(); camera = null }
                 override fun onError(device: CameraDevice, error: Int) {
                     Log.e(TAG, "camera error $error")
+                    opening = false
                     device.close(); camera = null
                 }
             }, handler)
@@ -264,6 +262,7 @@ class FaceTimeMedia(
 
     private fun stopCamera() {
         handler.post {
+            if (camera != null) encoderStale = true
             session?.close(); session = null
             camera?.close(); camera = null
         }
@@ -488,6 +487,7 @@ class FaceTimeMedia(
     override fun setBitrate(bps: ULong) {
         handler.post {
             val capped = minOf(bps.toLong(), VIDEO_MAX_BITRATE.toLong()).toInt()
+            bitrate = capped
             Log.i(TAG, "bitrate $bps -> $capped")
             encoder?.setParameters(Bundle().apply { putInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE, capped) })
         }

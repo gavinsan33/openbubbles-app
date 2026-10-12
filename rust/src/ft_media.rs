@@ -65,8 +65,6 @@ pub struct FtCall {
     clock_start: Instant,
     ts_base: u32,
     audio_ts: Mutex<Option<u32>>,
-    // camera pts (us) -> call clock (us), fixed at the first frame
-    video_pts_offset: Mutex<Option<i64>>,
     ended: AtomicBool,
     video_sent: AtomicU64,
     video_received: AtomicU64,
@@ -119,7 +117,6 @@ pub async fn start_call(ft: Arc<FTClient>, guid: String, sink: Arc<dyn FtMediaSi
         clock_start: Instant::now(),
         ts_base: rand::random(),
         audio_ts: Mutex::new(None),
-        video_pts_offset: Mutex::new(None),
         ended: AtomicBool::new(false),
         video_sent: AtomicU64::new(0),
         video_received: AtomicU64::new(0),
@@ -366,9 +363,10 @@ impl FtCall {
         frames.extend(AnnexB::new(&data).filter(|nal| !nal.is_empty() && !(32..=34).contains(&((nal[0] >> 1) & 0x3f))).map(|nal| ChannelFrame::Sample(nal.to_vec())));
 
         video.camera_source = FTVideoCameraStatus { orientation: rotation_from_degrees(rotation), is_mirrored: mirrored, is_back: back, source: 0 };
-        let elapsed_us = self.clock_start.elapsed().as_micros() as i64;
-        let offset = *self.video_pts_offset.lock().unwrap().get_or_insert(elapsed_us - timestamp_us as i64);
-        let call_us = (timestamp_us as i64 + offset).max(0) as u64;
+        // send time on the call clock, not the camera's pts: each camera has its own clock, so pts
+        // jump when flipping (the encoder adds only a few ms, well within the receiver's jitter)
+        let _ = timestamp_us;
+        let call_us = self.clock_start.elapsed().as_micros() as u64;
         let timestamp = self.ts_base.wrapping_add((call_us * RTP_CLOCK / 1_000_000) as u32);
         match video.send_video_frame(frames, timestamp) {
             Ok(()) => {
