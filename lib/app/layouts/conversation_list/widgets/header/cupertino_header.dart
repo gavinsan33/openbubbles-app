@@ -76,6 +76,20 @@ class CupertinoHeader extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10.0),
+                      ClipOval(
+                        child: Material(
+                          color: context.theme.colorScheme.properSurface, // button color
+                          child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: InkWell(
+                              child: Icon(CupertinoIcons.video_camera, color: context.theme.colorScheme.properOnSurface, size: 20),
+                              onTap: () => goToFaceTime(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
                       if (ss.settings.moveChatCreatorToHeader.value)
                         ClipOval(
                           child: Material(

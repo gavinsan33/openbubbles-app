@@ -141,6 +141,13 @@ class _SamsungHeaderState extends CustomState<SamsungHeader, void, ConversationL
                                     color: context.theme.colorScheme.properOnSurface,
                                   )),
                               if (!showArchived && !showUnknown && !showDeleted)
+                                IconButton(
+                                  onPressed: () => goToFaceTime(context),
+                                  icon: Icon(
+                                    Icons.videocam_outlined,
+                                    color: context.theme.colorScheme.properOnSurface,
+                                  )),
+                              if (!showArchived && !showUnknown && !showDeleted)
                                 const Padding(
                                   padding: EdgeInsets.only(right: 8.0),
                                   child: Material(

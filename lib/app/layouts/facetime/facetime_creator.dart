@@ -194,6 +194,20 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
     }
   }
 
+  Future<void> startCall(bool video) async {
+    if (selectedContacts.any((s) => s.iMessage.value == false)) {
+      showSnackbar("Error", "At least one selected user doesn't have FaceTime!");
+      return;
+    }
+    Get.back();
+    var handle = await (backend as RustPushBackend).getDefaultHandle();
+    List<String> targets = [];
+    for (var user in selectedContacts) {
+      targets.add(await RustPushBBUtils.formatAndAddPrefix(user.address));
+    }
+    await pushService.placeOutgoingCall(handle, targets, video: video);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -223,36 +237,38 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
             backgroundColor: Colors.transparent,
             centerTitle: ss.settings.skin.value == Skins.iOS,
             title: Text(
-              "New Video Call",
+              "New Call",
               style: context.theme.textTheme.titleLarge,
             ),
             actions: [],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: context.theme.colorScheme.bubble(context, false),
-          shape: const CircleBorder(),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 2),
-            child: Icon(
-              CupertinoIcons.video_camera_solid,
-              color: context.theme.colorScheme.onBubble(context, false),
-              size: 30,
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FloatingActionButton(
+              heroTag: "ft-audio",
+              backgroundColor: context.theme.colorScheme.bubble(context, false),
+              shape: const CircleBorder(),
+              child: Icon(CupertinoIcons.phone_solid, color: context.theme.colorScheme.onBubble(context, false), size: 26),
+              onPressed: () => startCall(false),
             ),
-          ),
-          onPressed: () async {
-            if (selectedContacts.any((s) => s.iMessage.value == false)) {
-              showSnackbar("Error", "At least one selected user doesn't have FaceTime!");
-              return;
-            }
-            Get.back();
-            var handle = await (backend as RustPushBackend).getDefaultHandle();
-            List<String> targets = [];
-            for (var user in selectedContacts) {
-              targets.add(await RustPushBBUtils.formatAndAddPrefix(user.address));
-            }
-            await pushService.placeOutgoingCall(handle, targets);
-          },
+            const SizedBox(height: 12),
+            FloatingActionButton(
+              heroTag: "ft-video",
+              backgroundColor: context.theme.colorScheme.bubble(context, false),
+              shape: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 2),
+                child: Icon(
+                  CupertinoIcons.video_camera_solid,
+                  color: context.theme.colorScheme.onBubble(context, false),
+                  size: 30,
+                ),
+              ),
+              onPressed: () => startCall(true),
+            ),
+          ],
         ),
         body: FocusScope(
           child: Column(

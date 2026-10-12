@@ -106,6 +106,13 @@ class _MaterialHeaderState extends CustomState<MaterialHeader, void, Conversatio
                                               color: context.theme.colorScheme.properOnSurface,
                                             ),
                                           )),
+                                          IconButton(
+                                            onPressed: () => goToFaceTime(context),
+                                            icon: Icon(
+                                              Icons.videocam_outlined,
+                                              color: context.theme.colorScheme.properOnSurface,
+                                            ),
+                                          ),
                                           const OverflowMenu(),
                                         ],
                                       ),

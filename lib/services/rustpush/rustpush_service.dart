@@ -2074,7 +2074,8 @@ class RustPushService extends GetxService {
 
   bool isSessionActive(api.FTSessionInfo session) {
     var anHourAgo = DateTime.now().millisecondsSinceEpoch - 3600000;
-    return session.participants.values.any((value) => value.active != null) && (session.lastRekey ?? session.startTime) != null && (session.lastRekey ?? session.startTime)! > anHourAgo;
+    // only someone else being in it counts: our own participant can linger as active after we hang up
+    return session.participants.values.any((p) => p.active != null && !session.myHandles.contains(p.handle)) && (session.lastRekey ?? session.startTime) != null && (session.lastRekey ?? session.startTime)! > anHourAgo;
   }
 
   

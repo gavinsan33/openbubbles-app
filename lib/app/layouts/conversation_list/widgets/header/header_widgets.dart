@@ -181,10 +181,11 @@ class MaterialOverflowMenu extends StatelessWidget {
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
+          if (extraItems)
             PopupMenuItem(
               value: 10,
               child: Text(
-                'Video Calls',
+                'Calls',
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
@@ -329,8 +330,9 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.photo,
             onTap: () => goToSharedStreams(context),
           ),
+        if (extraItems)
         PullDownMenuItem(
-          title: 'Video Calls',
+          title: 'Calls',
           icon: CupertinoIcons.video_camera,
           onTap: () => goToFaceTime(context),
         ),

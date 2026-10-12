@@ -45,6 +45,13 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
     super.dispose();
   }
 
+  // a past call can't be rejoined, so ring everyone in it again
+  Future<void> callAgain(api.FTSessionInfo session, bool video) async {
+    var targets = session.members.map((m) => m.handle).where((h) => !session.myHandles.contains(h)).toList();
+    if (targets.isEmpty) return;
+    await pushService.placeOutgoingCall(session.myHandles.first, targets, video: video);
+  }
+
   Widget buildSession(api.FTSessionInfo session, bool active) {
     var participants = session.members.where((a) => !session.myHandles.contains(a.handle)).map((a) {
       if (a.nickname != null) {
@@ -56,7 +63,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
     return SettingsTile(
       key: ValueKey(session.groupId),
       title: participants.isEmpty ? "Empty" : participants.map((a) => a.displayName).join(", "),
-      subtitle: active ? "Tap to Join" : "FaceTime",
+      subtitle: active ? "Tap to Join" : session.isVideo ? "FaceTime Video" : "FaceTime Audio",
       leading: ContactAvatarGroupWidget(
               chat: Chat(guid: "", participants: participants),
               size: 40,
@@ -87,12 +94,21 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
             buildDate(DateTime.fromMillisecondsSinceEpoch(session.startTime!)),
             style: context.theme.textTheme.bodyMedium!.apply(color: context.theme.colorScheme.outline.withOpacity(0.85)),
           ),
+          IconButton(
+            visualDensity: VisualDensity.compact,
+            icon: Icon(iOS ? CupertinoIcons.phone : Icons.call_outlined, color: context.theme.colorScheme.primary, size: 22),
+            onPressed: () => callAgain(session, false),
+          ),
+          IconButton(
+            visualDensity: VisualDensity.compact,
+            icon: Icon(iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined, color: context.theme.colorScheme.primary, size: 24),
+            onPressed: () => callAgain(session, true),
+          ),
         ]
       ),
       onTap: () async {
-        if (session.members.length == 2 && !active) {
-          // 1-1 facetime, call again
-          await pushService.placeOutgoingCall(session.myHandles.first, [session.members.firstWhere((a) => !session.myHandles.contains(a.handle)).handle], video: session.isVideo);
+        if (!active) {
+          await callAgain(session, session.isVideo);
           return;
         }
         pushService.chosenFTRoomGuid = session.groupId;
@@ -119,7 +135,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => SettingsScaffold(
-        title: "Video Calls",
+        title: "Calls",
         initialHeader: pushService.activeSessions.isEmpty ? "Calls" : "Active",
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,
