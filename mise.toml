@@ -1,0 +1,6 @@
+[tools]
+flutter = "3.24.0-stable"
+java = "temurin-21"
+rust = "stable"
+protoc = "latest"
+"cargo:flutter_rust_bridge_codegen" = "2.3.0"
