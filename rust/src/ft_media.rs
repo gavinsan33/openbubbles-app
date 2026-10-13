@@ -58,6 +58,9 @@ pub struct FtCall {
     av: Arc<AVSession>,
     sink: Arc<dyn FtMediaSink>,
     senders: Mutex<Senders>,
+    // one rebuild at a time: a new sender continues its SSRC's sequence numbers from the shared
+    // packet history, so two senders alive at once reuse a number and rustpush panics
+    rebuilding: tokio::sync::Mutex<()>,
     mode: Mutex<(StreamMode, bool /* has peer */)>,
     video_csd: Mutex<Option<Vec<u8>>>,
     dims: Mutex<(u16, u16)>,
@@ -114,6 +117,7 @@ pub async fn start_call(ft: Arc<FTClient>, guid: String, sink: Arc<dyn FtMediaSi
         av: av.clone(),
         sink,
         senders: Mutex::new(Senders { video: None, audio: None, send_config: true }),
+        rebuilding: tokio::sync::Mutex::new(()),
         mode: Mutex::new((None, false)),
         video_csd: Mutex::new(None),
         dims: Mutex::new((1280, 720)),
@@ -207,7 +211,14 @@ fn rotation_from_degrees(degrees: i32) -> VideoRotation {
 
 impl FtCall {
     async fn rebuild_senders(&self) {
+        let _rebuilding = self.rebuilding.lock().await;
         let (Some(mode), has_peer) = self.mode.lock().unwrap().clone() else { return };
+        // retire the old senders before the new ones read where their sequence numbers left off
+        {
+            let mut senders = self.senders.lock().unwrap();
+            senders.video = None;
+            senders.audio = None;
+        }
         let (w, h) = *self.dims.lock().unwrap();
         let (video, audio) = match mode {
             // 1:1 senders address the peer directly and need it to be present
@@ -246,15 +257,15 @@ impl FtCall {
     fn attach_incoming(self: &Arc<Self>) {
         let weak = Arc::downgrade(self);
         let decoders: Mutex<HashMap<u64, Decoder>> = Mutex::new(HashMap::new());
-        // participants whose video we can't decode yet, and when we last asked them for a keyframe
-        let awaiting_config: Mutex<HashMap<u64, Option<Instant>>> = Mutex::new(HashMap::new());
+        // each participant's video stream, and whether we're still waiting for its keyframe
+        let video_streams: Mutex<HashMap<u64, VideoGate>> = Mutex::new(HashMap::new());
         let asc = self.encoder.lock().unwrap().asc.clone();
         self.av.frame_handler.configure_handler(Box::new(move |msg: ChannelMessage| {
             let Some(call) = weak.upgrade() else { return };
             let participant = msg.stream.participant;
             match (msg.r#type, msg.frame) {
                 (ChannelType::H264 | ChannelType::H265, ChannelFrame::Configuration(config)) => {
-                    awaiting_config.lock().unwrap().insert(participant, None);
+                    video_streams.lock().unwrap().insert(participant, VideoGate::configured(msg.control_stream_id));
                     let (w, h) = config.get_dimens();
                     let codec = if matches!(msg.r#type, ChannelType::H264) { FtVideoCodec::H264 } else { FtVideoCodec::H265 };
                     call.sink.video_config(participant, codec, config.annex_b(), w, h);
@@ -263,22 +274,22 @@ impl FtCall {
                     let received = call.video_received.fetch_add(1, Ordering::Relaxed) + 1;
                     if received % 300 == 1 { info!("FT video frames received {received}") }
                     {
-                        // frames without a config are undecodable (we missed their keyframe); ask again, at most every second
-                        let mut awaiting = awaiting_config.lock().unwrap();
-                        let entry = awaiting.entry(participant).or_insert(Some(Instant::now() - Duration::from_secs(2)));
-                        if let Some(last) = entry {
-                            if last.elapsed() > Duration::from_secs(1) {
-                                *last = Instant::now();
-                                let av = call.av.clone();
-                                let request = VCGenerateKeyFrame { stream_id: msg.control_stream_id, stream_group_id: 1, fir_type: 1 };
-                                info!("FT requesting keyframe from {participant} {request:?}");
-                                RUNTIME.spawn(async move {
-                                    if let Err(e) = av.send_control_message(participant, VCControlData::GenerateKeyFrame(request)).await {
-                                        warn!("FT keyframe request failed {e}");
-                                    }
-                                });
-                            }
+                        let mut streams = video_streams.lock().unwrap();
+                        let gate = streams.entry(participant).or_insert_with(|| VideoGate::waiting(msg.control_stream_id));
+                        let (forward, ask) = gate.on_sample(msg.control_stream_id, Instant::now());
+                        drop(streams);
+                        if ask {
+                            let av = call.av.clone();
+                            let request = VCGenerateKeyFrame { stream_id: msg.control_stream_id, stream_group_id: 1, fir_type: 1 };
+                            info!("FT requesting keyframe from {participant} {request:?}");
+                            RUNTIME.spawn(async move {
+                                if let Err(e) = av.send_control_message(participant, VCControlData::GenerateKeyFrame(request)).await {
+                                    warn!("FT keyframe request failed {e}");
+                                }
+                            });
                         }
+                        // frames without their keyframe only smear the decoder; hold them until it comes
+                        if !forward { return }
                     }
                     if received % 300 == 1 {
                         // what a real Apple sender puts in the trailer, to compare with what we send
@@ -328,6 +339,32 @@ impl FtCall {
         }
         drop(state);
         self.sink.ended();
+    }
+}
+
+/// Whether a participant's video frames are decodable. Group calls move us between a sender's
+/// quality layers (separate streams); frames of a new layer need that layer's keyframe and config.
+struct VideoGate {
+    stream: u32,
+    // waiting for a config; when we last asked for a keyframe
+    waiting: Option<Instant>,
+}
+
+impl VideoGate {
+    fn configured(stream: u32) -> Self { Self { stream, waiting: None } }
+    fn waiting(stream: u32) -> Self { Self { stream, waiting: Some(Instant::now() - Duration::from_secs(2)) } }
+
+    /// (forward the frame, ask the sender for a keyframe); asks at most once a second
+    fn on_sample(&mut self, stream: u32, now: Instant) -> (bool, bool) {
+        if stream != self.stream {
+            info!("FT video stream changed {} -> {stream}", self.stream);
+            *self = Self::waiting(stream);
+        }
+        match &mut self.waiting {
+            None => (true, false),
+            Some(last) if now.duration_since(*last) > Duration::from_secs(1) => { *last = now; (false, true) },
+            Some(_) => (false, false),
+        }
     }
 }
 
@@ -502,6 +539,21 @@ impl AacEncoder {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // a new quality layer is held back and asked for (once a second) until its config arrives
+    #[test]
+    fn video_gate_waits_for_new_layer() {
+        let t = Instant::now();
+        let mut gate = VideoGate::configured(7);
+        assert_eq!(gate.on_sample(7, t), (true, false));
+        assert_eq!(gate.on_sample(9, t), (false, true));
+        assert_eq!(gate.on_sample(9, t + Duration::from_millis(500)), (false, false));
+        assert_eq!(gate.on_sample(9, t + Duration::from_millis(1500)), (false, true));
+        gate = VideoGate::configured(9);
+        assert_eq!(gate.on_sample(9, t), (true, false));
+        // a participant first seen mid-stream asks right away
+        assert_eq!(VideoGate::waiting(3).on_sample(3, t), (false, true));
+    }
 
     // a 480-sample ELD frame round-trips through our encoder config and decodes to 480 samples
     #[test]
