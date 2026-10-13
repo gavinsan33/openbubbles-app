@@ -9,6 +9,7 @@ import 'package:bluebubbles/services/network/http_overrides.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -117,7 +118,7 @@ Future<List<List<int>>> incrementalSyncIsolate(List? items) async {
       http.originOverride = address;
     }
 
-    if (usingRustPush) {
+    if (usingRustPush && !isPhoneClient) {
       // just do contacts
       final refreshedItems = await cs.refreshContacts();
       Logger.info('Finished contact refresh, shouldRefresh $refreshedItems');

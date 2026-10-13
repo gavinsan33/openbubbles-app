@@ -150,6 +150,8 @@ class FaceTimeBtnState extends OptimizedState<FaceTimeBtn> {
   void initState() {
     super.initState();
     (() async {
+      // FaceTime needs this device's own Apple registration
+      if (pushService.state == null) return;
       var data = await chat.getConversationData();
       ftSupportedParticipants = await api.validateTargetsFacetime(state: pushService.state!.client, targets: data.participants, sender: await chat.ensureHandle());
       setState(() { });

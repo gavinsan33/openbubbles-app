@@ -8,6 +8,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_events.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -696,6 +697,7 @@ class Chat {
         }
       } on UniqueViolationException catch (_) {}
     });
+    LanRelayEvents.chatSaved(guid, iconChanged: updateCustomAvatarPath);
     return this;
   }
 
@@ -1204,6 +1206,7 @@ class Chat {
       Database.messages.removeMany(messages.map((e) => e.id!).toList());
       Database.attachments.removeMany(attachments.map((e) => e.id!).toList());
     });
+    LanRelayEvents.chatDeleted(chat.guid);
     if (chat.ckRecordId != null && !pushService.syncStopDelete) {
       var list = ss.prefs.getStringList("chatDeletionIds-1") ?? [];
       list.add(chat.ckRecordId!);

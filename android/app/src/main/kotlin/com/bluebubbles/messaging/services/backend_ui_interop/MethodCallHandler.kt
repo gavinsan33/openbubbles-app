@@ -38,6 +38,8 @@ import com.bluebubbles.messaging.services.system.PushShareTargetsHandler
 import com.bluebubbles.messaging.services.system.StartGoogleDuoRequestHandler
 import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandler
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
+import com.bluebubbles.messaging.services.lanrelay.LanRelayChangedHandler
+import com.bluebubbles.messaging.services.lanrelay.LanRelayNsdHandler
 import com.bluebubbles.messaging.services.notifications.CreateMissedFaceTimeNotification
 import com.bluebubbles.messaging.services.rustpush.AppleAccountLoginHandler
 import com.bluebubbles.messaging.services.rustpush.EAPAKAGateway
@@ -143,6 +145,8 @@ class MethodCallHandler {
             ProvisionNative.tag -> ProvisionNative().handleMethodCall(call, result, context)
             EAPAKAGateway.tag -> EAPAKAGateway().handleMethodCall(call, result, context)
             KeystoreUnlockHandler.tag -> KeystoreUnlockHandler().handleMethodCall(call, result, context)
+            LanRelayNsdHandler.tag -> LanRelayNsdHandler().handleMethodCall(call, result, context)
+            LanRelayChangedHandler.tag -> LanRelayChangedHandler().handleMethodCall(call, result, context)
             "ready" -> { MainActivity.engine_ready = true }
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"

@@ -7,6 +7,7 @@ import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_server.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/foundation.dart';
@@ -419,6 +420,12 @@ class MethodChannelService extends GetxService {
         }
 
         return Future.value(true);
+      case "lan-relay-ensure":
+        // sent periodically by the foreground service so a server exists
+        // whenever the relay is enabled, whichever engine is alive
+        await Database.waitForInit();
+        await lanRelay.ensureRunning();
+        return true;
       case "socket-event":
         Map<String, dynamic>? data = arguments;
         if (data == null) return Future.value(true);

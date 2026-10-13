@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -16,6 +17,11 @@ import 'package:network_tools/network_tools.dart'
 
 class NetworkTasks {
   static Future<void> onConnect() async {
+    if (ss.settings.finishedSetup.value && isPhoneClient) {
+      // catch up on anything missed while away from the phone
+      await sync.startIncrementalSync();
+      return;
+    }
     if (ss.settings.finishedSetup.value) {
       
       // Separate functionality for android vs. other

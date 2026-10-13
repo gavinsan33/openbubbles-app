@@ -135,7 +135,7 @@ packages:
     source: hosted
     version: "2.6.0"
   asn1lib:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: asn1lib
       sha256: "4bae5ae63e6d6dd17c4aac8086f3dec26c0236f6a0f03416c6c19d830c367cf5"
@@ -2210,7 +2210,7 @@ packages:
     source: hosted
     version: "0.0.2"
   multicast_dns:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: multicast_dns
       sha256: "982c4cc4cda5f98dd477bddfd623e8e4bd1014e7dbf9e7b05052e14a5b550b99"
@@ -2563,7 +2563,7 @@ packages:
     source: hosted
     version: "2.1.8"
   pointycastle:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pointycastle
       sha256: "4be0097fcf3fd3e8449e53730c631200ebc7b88016acecab2b0da2f0149222fe"

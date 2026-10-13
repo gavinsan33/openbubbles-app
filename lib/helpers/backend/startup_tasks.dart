@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_server.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/src/rust/frb_generated.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
@@ -94,6 +95,10 @@ class StartupTasks {
 
   static Future<void> onStartup() async {
     if (!ss.settings.finishedSetup.value) return;
+
+    if (LanRelayServer.supported && ss.settings.lanRelayEnabled.value) {
+      lanRelay.ensureRunning();
+    }
 
     if (!kIsDesktop) {
       chats.init();

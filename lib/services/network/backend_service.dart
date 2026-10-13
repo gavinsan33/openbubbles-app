@@ -1,11 +1,16 @@
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_backend.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-BackendService backend = Get.isRegistered<BackendService>() ? Get.find<BackendService>() : Get.put(RustPushBackend());
+BackendService backend = Get.isRegistered<BackendService>()
+    ? Get.find<BackendService>()
+    : ss.settings.phoneRelayClient.value
+        ? PhoneRelayBackend()
+        : Get.put(RustPushBackend());
 enum ParticipantOp { Add, Remove }
 
 abstract class BackendService {

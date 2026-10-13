@@ -3,6 +3,8 @@ import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/notification_providers_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/advanced/tasker_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/system/lan_relay_panel.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/message_reminders_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/backup_restore_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/system/device_panel.dart';
@@ -84,6 +86,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
     
     (() async {
       await pushService.initFuture;
+      if (pushService.state == null) return;
       var value = await api.getDeviceInfo(config: pushService.state!.osConfig);
       setState(() {
         deviceInfo = value;
@@ -335,6 +338,30 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                               SettingsSection(
                                 backgroundColor: tileColor,
                                 children: [
+                                  if (isPhoneClient || Platform.isAndroid)
+                                    SettingsTile(
+                                      backgroundColor: tileColor,
+                                      title: isPhoneClient ? "Paired Phone" : "Use on Computers",
+                                      subtitle: isPhoneClient
+                                          ? ss.settings.phoneRelayName.value
+                                          : "Send and receive on computers through this phone",
+                                      onTap: () {
+                                        ns.pushAndRemoveSettingsUntil(
+                                          context,
+                                          const LanRelayPanel(),
+                                          (route) => route.isFirst,
+                                        );
+                                      },
+                                      trailing: const NextButton(),
+                                      leading: const SettingsLeadingIcon(
+                                        iosIcon: CupertinoIcons.device_desktop,
+                                        materialIcon: Icons.devices,
+                                        containerColor: Colors.green,
+                                      ),
+                                    ),
+                                  if (!isPhoneClient && Platform.isAndroid)
+                                    const SettingsDivider(),
+                                  if (!isPhoneClient)
                                   Obx(() {
 
                                     return Skeletonizer(
@@ -1252,7 +1279,9 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                     Navigator.of(context).pop();
                                                     fs.deleteDB();
                                                     socket.forgetConnection();
-                                                    await pushService.markFailedToLogin(hw: true, logout: true, ui: true);
+                                                    if (!isPhoneClient) {
+                                                      await pushService.markFailedToLogin(hw: true, logout: true, ui: true);
+                                                    }
                                                     ss.settings = Settings();
                                                     await ss.settings.saveAsync();
 

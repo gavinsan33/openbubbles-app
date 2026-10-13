@@ -19,6 +19,12 @@ class Settings {
   final RxString iCloudAccount = "".obs;
   final RxString guidAuthKey = "".obs;
   final RxString serverAddress = "".obs;
+  // LAN relay: this device is a client of an Android phone running OpenBubbles
+  final RxBool phoneRelayClient = false.obs;
+  final RxString phoneRelayFingerprint = "".obs;
+  final RxString phoneRelayName = "".obs;
+  // LAN relay: this phone serves paired computers
+  final RxBool lanRelayEnabled = false.obs;
   final RxMap<String, String> customHeaders = <String, String>{}.obs;
   final RxBool finishedSetup = false.obs;
   final RxBool reachedConversationList = false.obs;
@@ -452,6 +458,10 @@ class Settings {
         'iCloudAccount': iCloudAccount.value,
         'guidAuthKey': guidAuthKey.value,
         'serverAddress': serverAddress.value,
+        'phoneRelayClient': phoneRelayClient.value,
+        'phoneRelayFingerprint': phoneRelayFingerprint.value,
+        'phoneRelayName': phoneRelayName.value,
+        'lanRelayEnabled': lanRelayEnabled.value,
         'customHeaders': customHeaders,
         'finishedSetup': finishedSetup.value,
         'reachedConversationList': reachedConversationList.value,
@@ -639,6 +649,10 @@ class Settings {
     s.iCloudAccount.value = map['iCloudAccount'] ?? "";
     s.guidAuthKey.value = map['guidAuthKey'] ?? "";
     s.serverAddress.value = map['serverAddress'] ?? "";
+    s.phoneRelayClient.value = map['phoneRelayClient'] ?? false;
+    s.phoneRelayFingerprint.value = map['phoneRelayFingerprint'] ?? "";
+    s.phoneRelayName.value = map['phoneRelayName'] ?? "";
+    s.lanRelayEnabled.value = map['lanRelayEnabled'] ?? false;
     s.customHeaders.value = _processCustomHeaders(map['customHeaders']);
     s.finishedSetup.value = map['finishedSetup'] ?? false;
     s.autoDownload.value = map['autoDownload'] ?? true;

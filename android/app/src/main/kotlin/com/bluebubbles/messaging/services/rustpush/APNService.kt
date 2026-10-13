@@ -26,6 +26,7 @@ import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.services.backend_ui_interop.DartWorkManager
 import com.bluebubbles.messaging.services.backend_ui_interop.DartWorker
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
+import com.bluebubbles.messaging.services.lanrelay.LanRelayKeeper
 import com.bluebubbles.messaging.services.system.GetZenMode
 import com.bluebubbles.messaging.services.system.ZenModeUUIDHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
@@ -284,6 +285,7 @@ class APNService : Service(), MsgReceiver {
             }
             launchAgent()
             markStarted()
+            LanRelayKeeper.start(this)
         }
         return super.onStartCommand(intent, flags, startId)
     }

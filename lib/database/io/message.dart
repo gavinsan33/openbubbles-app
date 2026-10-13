@@ -6,6 +6,8 @@ import 'dart:math';
 import 'package:async_task/async_task.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_events.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
@@ -386,6 +388,8 @@ class Message {
 
 
   Future<void> forwardIfNessesary(Chat chat, {bool markFailed = false}) async {
+    // the paired phone does any forwarding
+    if (isPhoneClient) return;
     if (hasBeenForwarded || !chat.isTextForwarding || !(isFromMe ?? true)) return;
     if (!await chat.shouldRoute()) return;
 
@@ -752,8 +756,10 @@ class Message {
   /// than iterating through them
   Message save({Chat? chat, bool updateIsBookmarked = false, bool updateSendingServiceId = false}) {
     if (kIsWeb || temp) return this;
+    var isNew = false;
     Database.runInTransaction(TxMode.write, () {
       Message? existing = Message.findOne(guid: guid);
+      isNew = existing == null;
       if (existing != null) {
         id = existing.id;
         text ??= existing.text;
@@ -796,6 +802,7 @@ class Message {
         id = Database.messages.put(this);
       } on UniqueViolationException catch (_) {}
     });
+    LanRelayEvents.messageSaved(guid, isNew: isNew);
     return this;
   }
 
@@ -862,6 +869,7 @@ class Message {
         }
       } on UniqueViolationException catch (_) {}
     });
+    LanRelayEvents.messagesSaved(messages.map((e) => e.guid));
     return messages;
   }
 
@@ -904,6 +912,8 @@ class Message {
     } catch (ex, stack) {
       Logger.error('Failed to replace message! This is likely due to a unique constraint being violated.', error: ex, trace: stack);
     }
+    // a temp message becoming real is new as far as relay clients are concerned
+    LanRelayEvents.messageSaved(existing.guid, isNew: oldGuid != existing.guid);
     return existing;
   }
 
@@ -1262,6 +1272,7 @@ class Message {
         Database.messages.remove(result!.id!);
       }
     });
+    LanRelayEvents.messageDeleted(guid);
   }
 
   static void softDelete(String guid) async {

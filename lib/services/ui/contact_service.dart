@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:bluebubbles/services/network/lan/lan_relay_client.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
@@ -296,6 +298,10 @@ class ContactsService extends GetxService {
 
   Future<List<Contact>> fetchNetworkContacts({Function(String)? logger}) async {
     final networkContacts = <Contact>[];
+
+    if (isPhoneClient) {
+      return await phoneRelay.fetchContacts();
+    }
 
     if (usingRustPush) {
       final CardDavClient client;

@@ -6,6 +6,8 @@ import 'package:bluebubbles/helpers/backend/settings_helpers.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_client.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -24,6 +26,7 @@ enum SocketState {
 class SocketService extends GetxService {
   final Rx<SocketState> state = SocketState.disconnected.obs;
   SocketState _lastState = SocketState.disconnected;
+  Worker? _relayState;
   RxString lastError = "".obs;
   Timer? _reconnectTimer;
   late Socket socket;
@@ -66,6 +69,18 @@ class SocketService extends GetxService {
     // placed here so that [socket] is still initialized
     if (isNullOrEmpty(serverAddress)) return;
 
+    if (isPhoneClient) {
+      _relayState ??= ever(phoneRelay.state, (LanRelayState s) {
+        handleStatusUpdate(switch (s) {
+          LanRelayState.connected => SocketState.connected,
+          LanRelayState.connecting => SocketState.connecting,
+          LanRelayState.disconnected => SocketState.disconnected,
+        }, null);
+      });
+      phoneRelay.start();
+      return;
+    }
+
     socket.onConnect((data) => handleStatusUpdate(SocketState.connected, data));
     socket.onReconnect((data) => handleStatusUpdate(SocketState.connected, data));
 
@@ -101,18 +116,27 @@ class SocketService extends GetxService {
 
   void disconnect() {
     if (isNullOrEmpty(serverAddress)) return;
+    if (isPhoneClient) {
+      phoneRelay.stop();
+      return;
+    }
     socket.disconnect();
     state.value = SocketState.disconnected;
   }
 
   void reconnect() {
     if (state.value == SocketState.connected || isNullOrEmpty(serverAddress)) return;
+    if (isPhoneClient) {
+      phoneRelay.reconnectNow();
+      return;
+    }
     state.value = SocketState.connecting;
     socket.connect();
   }
 
   void closeSocket() {
     if (isNullOrEmpty(serverAddress)) return;
+    if (isPhoneClient) phoneRelay.stop();
     socket.dispose();
     state.value = SocketState.disconnected;
   }
@@ -165,6 +189,7 @@ class SocketService extends GetxService {
         state.value = SocketState.connecting;
         return;
       case SocketState.error:
+        if (isPhoneClient) return;
         Logger.info("Socket connect error, fetching new URL...");
 
         if (data is SocketException) {

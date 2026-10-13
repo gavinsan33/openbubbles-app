@@ -3,6 +3,8 @@ import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/backend/sync/sync_manager_impl.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_client.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -232,6 +234,14 @@ class FullSyncManager extends SyncManager {
     // Use reset because it's after the full-sync so all the
     // handles and contacts are assumed new.
     await cs.refreshContacts();
+    if (isPhoneClient) {
+      addToOutput("Fetching group chat icons...");
+      try {
+        await phoneRelay.syncChatIcons();
+      } catch (e, s) {
+        Logger.warn("Failed to fetch chat icons", error: e, trace: s);
+      }
+    }
     addToOutput("Reloading your chats...");
     Get.reload<ChatsService>(force: true);
     await chats.init(force: true);

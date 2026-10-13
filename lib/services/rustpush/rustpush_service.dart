@@ -39,6 +39,8 @@ import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../network/backend_service.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_events.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart';
@@ -3742,6 +3744,7 @@ class RustPushService extends GetxService {
       }
 
       var typing = myMsg.message as api.Message_Typing;
+      LanRelayEvents.typing(chat.guid, handle.address, typing.field0);
       if (typing.field0) {
         if (!controller.showTypingIndicatorFor.any((h) => handle.address == h.address)) {
           controller.showTypingIndicatorFor.add(handle);
@@ -3776,6 +3779,7 @@ class RustPushService extends GetxService {
       var existing = controller.showTypingIndicatorFor.firstWhereOrNull((h) => handle.address == h.address);
       if (existing != null) {
         controller.showTypingIndicatorFor.remove(existing);
+        LanRelayEvents.typing(chat.guid, handle.address, false);
       }
       if (controller.typingIndicatorData[handle.address] != null) {
         controller.typingIndicatorData[handle.address]?.$1.cancel();
@@ -4799,6 +4803,11 @@ class RustPushService extends GetxService {
   Future<void> onInit() async {
     super.onInit();
     api.doFirstTimeInit(path: fs.appDocDir.path);
+    if (isPhoneClient) {
+      // the paired phone talks to Apple for us; this install has no state
+      initFuture = Future.value();
+      return;
+    }
     initFuture = (() async {
       statePath = (await getApplicationSupportDirectory()).path;
       final vpnDetector = VpnConnectionDetector();

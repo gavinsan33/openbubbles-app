@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/misc/tail_clipper.dart';
+import 'package:bluebubbles/app/layouts/setup/pages/lan/phone_pairing_page.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/page_template.dart';
+import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
@@ -228,6 +230,21 @@ class _WelcomePageState extends OptimizedState<WelcomePage> with TickerProviderS
       buttonWrapper: (child) => FadeTransition(
         opacity: opacitySubtitle,
         child: child,
+      ),
+      belowSubtitle: !kIsDesktop ? null : FadeTransition(
+        opacity: opacitySubtitle,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: TextButton.icon(
+            icon: const Icon(Icons.phone_android),
+            label: const Text("Use my Android phone instead"),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => TitleBarWrapper(child: const PhonePairingPage()),
+              ));
+            },
+          ),
+        ),
       ),
       onNextPressed: () async {
         if ((fs.androidInfo?.version.sdkInt ?? 0) >= 33) {

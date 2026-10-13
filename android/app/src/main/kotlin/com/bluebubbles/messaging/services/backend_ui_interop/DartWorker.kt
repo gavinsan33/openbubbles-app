@@ -43,6 +43,8 @@ class DartWorker(context: Context, workerParams: WorkerParameters): ListenableWo
     companion object {
         var workerEngine: FlutterEngine? = null
         var engineReady = Mutex()
+        // set while the LAN relay is enabled, so the engine hosting it stays up
+        @Volatile var keepAlive = false
 
 
 
@@ -96,7 +98,7 @@ class DartWorker(context: Context, workerParams: WorkerParameters): ListenableWo
             currentCancelTask = Timer().schedule(30000) {
                 currentCancelTask = null
                 Log.d(Constants.logTag, "$currentJobs worker(s) still queued")
-                if (currentJobs.get() == 0 && workerEngine != null) {
+                if (currentJobs.get() == 0 && workerEngine != null && !keepAlive) {
                     Log.d(Constants.logTag, "Closing ${Constants.dartWorkerTag} engine")
                     // This must be run on main thread
                     CoroutineScope(Dispatchers.Main).launch {

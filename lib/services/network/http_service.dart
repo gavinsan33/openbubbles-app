@@ -3,6 +3,10 @@ import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_crypto.dart';
+import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
+import 'package:universal_io/io.dart';
 import 'package:bluebubbles/utils/file_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -363,11 +367,27 @@ class HttpService extends GetxService {
       sendTimeout: Duration(milliseconds: ss.settings.apiTimeout.value),
       headers: headers,
     ));
+    if (!kIsWeb) {
+      bool pinned(X509Certificate? cert) =>
+          cert != null && lanSecureEquals(lanFingerprint(cert.der), ss.settings.phoneRelayFingerprint.value);
+      dio.httpClientAdapter = IOHttpClientAdapter(
+        // a paired phone uses a self-signed certificate, pinned to the
+        // fingerprint learned during pairing
+        createHttpClient: () {
+          final client = HttpClient();
+          if (isPhoneClient) client.badCertificateCallback = (cert, host, port) => _isPhoneHost(host) && pinned(cert);
+          return client;
+        },
+        validateCertificate: (cert, host, port) => !isPhoneClient || !_isPhoneHost(host) || pinned(cert),
+      );
+    }
     dio.interceptors.add(ApiInterceptor());
     // Uncomment to run tests on most API requests
     // testAPI();
     super.onInit();
   }
+
+  bool _isPhoneHost(String host) => Uri.tryParse(origin)?.host == host;
 
   /// Check ping time for server
   Future<Response> ping({String? customUrl, CancelToken? cancelToken}) async {
