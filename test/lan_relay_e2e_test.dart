@@ -16,6 +16,7 @@ import 'package:bluebubbles/services/network/lan/lan_relay_server.dart';
 import 'package:bluebubbles/services/network/lan/lan_relay_store.dart';
 import 'package:bluebubbles/services/network/lan/lan_relay_wire.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:dio/dio.dart' show Response, RequestOptions;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
@@ -67,6 +68,9 @@ void main() {
     Contact(id: "c1", displayName: "Test Person", phones: ["+15551234567"]).save();
 
     await lanRelay.ensureRunning();
+    // like a real setup, the HTTP client gets created before pairing
+    ss.settings.serverAddress.value = origin;
+    await http.ping().catchError((_) => Response(requestOptions: RequestOptions()));
     final identity = await LanRelayStore.instance.identity();
     fingerprint = identity.fingerprint;
     token = await LanRelayStore.instance.addClient("Test PC");

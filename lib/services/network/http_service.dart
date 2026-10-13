@@ -371,13 +371,9 @@ class HttpService extends GetxService {
       bool pinned(X509Certificate? cert) =>
           cert != null && lanSecureEquals(lanFingerprint(cert.der), ss.settings.phoneRelayFingerprint.value);
       dio.httpClientAdapter = IOHttpClientAdapter(
-        // a paired phone uses a self-signed certificate, pinned to the
-        // fingerprint learned during pairing
-        createHttpClient: () {
-          final client = HttpClient();
-          if (isPhoneClient) client.badCertificateCallback = (cert, host, port) => _isPhoneHost(host) && pinned(cert);
-          return client;
-        },
+        // BadCertOverride lets the paired phone's self-signed certificate
+        // through only if it is the pinned one; this also rejects any other
+        // certificate presented for the phone's address
         validateCertificate: (cert, host, port) => !isPhoneClient || !_isPhoneHost(host) || pinned(cert),
       );
     }
