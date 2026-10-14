@@ -29,6 +29,9 @@ class SendAnimation extends CustomStateful<ConversationViewController> {
 class _SendAnimationState
     extends CustomState<SendAnimation, Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?>, ConversationViewController> {
   Message? message;
+  // worked out once per send rather than on every animation frame
+  bool bigEmoji = false;
+  MessagePart? sendPart;
   Tween<double> tween = Tween<double>(begin: 1, end: 0);
   Control control = Control.stop;
   double textFieldSize = 0;
@@ -160,6 +163,8 @@ class _SendAnimationState
         );
         control = Control.play;
         message = _message;
+        bigEmoji = _message.isBigEmoji;
+        sendPart = _message.buildMessageParts().firstOrNull ?? MessagePart(part: 0, text: _message.text, subject: _message.subject);
       });
     }
     super.updateWidget(tuple);
@@ -167,7 +172,7 @@ class _SendAnimationState
 
   @override
   Widget build(BuildContext context) {
-    final typicalWidth = message?.isBigEmoji ?? false ? ns.width(context) : ns.width(context) * MessageWidgetController.maxBubbleSizeFactor - 40;
+    final typicalWidth = bigEmoji ? ns.width(context) : ns.width(context) * MessageWidgetController.maxBubbleSizeFactor - 40;
     const duration = 500;
     const curve = Curves.easeInOut;
     const buttonSize = 44;
@@ -203,34 +208,33 @@ class _SendAnimationState
                   connectLower: false,
                   connectUpper: false,
                 ),
-                child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: max(messageBoxSize * exp, typicalWidth) - (message?.dateScheduled != null ? 4 : 0),
-                        minWidth: max(messageBoxSize * exp - (message?.dateScheduled != null ? 4 : 0), 0),
-                        minHeight: 40 - (message?.dateScheduled != null ? 4 : 0),
-                      ),
-                      color: !message!.isBigEmoji && message?.dateScheduled == null ? context.theme.colorScheme.primary.withAlpha(((1-value) * 255).toInt()) : null,
-                      padding: EdgeInsets.symmetric(vertical: 10 - (message?.dateScheduled != null ? 4 : 0), horizontal: 15 - (message?.dateScheduled != null ? 4 : 0)).add(EdgeInsets.only(
-                        left: message?.dateScheduled != null && message!.isBigEmoji ? -8 : message!.isFromMe! || message!.isBigEmoji ? 0 : 10, right: message!.isFromMe! && !message!.isBigEmoji ? 10 : 0)),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: 1,
-                        child: Padding(
-                          padding: message!.fullText.length == 1 ? const EdgeInsets.only(left: 3, right: 3) : EdgeInsets.zero,
-                          child: RichText(
-                            text: TextSpan(
-                              children: buildMessageSpans(
-                                context,
-                                message!.buildMessageParts().firstOrNull ?? MessagePart(part: 0, text: message!.text, subject: message!.subject),
-                                message!,
-                                colorOverride: Color.lerp(context.theme.colorScheme.properOnSurface, message?.dateScheduled != null ? context.theme.colorScheme.primary : context.theme.colorScheme.onPrimary, 1 - value)
-                              ),
-                            ),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: max(messageBoxSize * exp, typicalWidth) - (message?.dateScheduled != null ? 4 : 0),
+                    minWidth: max(messageBoxSize * exp - (message?.dateScheduled != null ? 4 : 0), 0),
+                    minHeight: 40 - (message?.dateScheduled != null ? 4 : 0),
+                  ),
+                  color: !bigEmoji && message?.dateScheduled == null ? context.theme.colorScheme.primary.withAlpha(((1-value) * 255).toInt()) : null,
+                  padding: EdgeInsets.symmetric(vertical: 10 - (message?.dateScheduled != null ? 4 : 0), horizontal: 15 - (message?.dateScheduled != null ? 4 : 0)).add(EdgeInsets.only(
+                    left: message?.dateScheduled != null && bigEmoji ? -8 : message!.isFromMe! || bigEmoji ? 0 : 10, right: message!.isFromMe! && !bigEmoji ? 10 : 0)),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: 1,
+                    child: Padding(
+                      padding: message!.fullText.length == 1 ? const EdgeInsets.only(left: 3, right: 3) : EdgeInsets.zero,
+                      child: RichText(
+                        text: TextSpan(
+                          children: buildMessageSpans(
+                            context,
+                            sendPart!,
+                            message!,
+                            colorOverride: Color.lerp(context.theme.colorScheme.properOnSurface, message?.dateScheduled != null ? context.theme.colorScheme.primary : context.theme.colorScheme.onPrimary, 1 - value)
                           ),
                         ),
-                      )
-                    ),),
+                      ),
+                    ),
+                  )
+                ),
               );
             return Transform.scale(
               scale: (1-value) < .5 ? lerpDouble(1.1, .9, (1-value) / .5) : lerpDouble(.9, 1, (.5-value) / .5),
