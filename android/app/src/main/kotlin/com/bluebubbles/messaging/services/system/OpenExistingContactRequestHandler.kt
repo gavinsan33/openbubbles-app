@@ -22,7 +22,7 @@ class OpenExistingContactRequestHandler: MethodCallHandlerImpl() {
     ) {
         val contactId: String = call.argument("id")!!
         // perform a manual lookup even though we have a contact ID because there is no guarantee the actual content URI will be based off the ID
-        val cursor = ContentResolverCompat.query(
+        val uri = ContentResolverCompat.query(
             context.contentResolver,
             ContactsContract.Contacts.CONTENT_URI,
             null,
@@ -30,12 +30,13 @@ class OpenExistingContactRequestHandler: MethodCallHandlerImpl() {
             arrayOf(contactId),
             null,
             null as android.os.CancellationSignal?
-        )
-        if (cursor != null) {
-            cursor.moveToFirst()
+        )?.use { cursor ->
+            if (!cursor.moveToFirst()) return@use null
             val contactIdLong: Long = cursor.getLong(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
             val lookupId: String = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.LOOKUP_KEY))
-            val uri = ContactsContract.Contacts.getLookupUri(contactIdLong, lookupId)
+            ContactsContract.Contacts.getLookupUri(contactIdLong, lookupId)
+        }
+        if (uri != null) {
             val intent = Intent(Intent.ACTION_VIEW)
                 .setDataAndType(uri, ContactsContract.Contacts.CONTENT_ITEM_TYPE)
                 // Problem in Android 4.0+ (https://developer.android.com/training/contacts-provider/modify-data#add-the-navigation-flag)
