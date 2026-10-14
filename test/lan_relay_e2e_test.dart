@@ -96,6 +96,14 @@ void main() {
     expect(res.statusCode, 401);
   });
 
+  test("renaming a computer keeps it paired", () async {
+    final id = LanRelayStore.instance.clientForToken(token)!.id;
+    await LanRelayStore.instance.renameClient(id, "Work Laptop");
+    expect(LanRelayStore.instance.clientForToken(token)?.name, "Work Laptop");
+    expect(await LanRelayClient.pingPhone(origin, token, fingerprint), true);
+    await LanRelayStore.instance.renameClient(id, "Test PC");
+  });
+
   test("pinned client accepts the phone and rejects a different certificate", () async {
     expect(await LanRelayClient.pingPhone(origin, token, fingerprint), true);
     expect(await LanRelayClient.pingPhone(origin, token, "0" * 64), false);

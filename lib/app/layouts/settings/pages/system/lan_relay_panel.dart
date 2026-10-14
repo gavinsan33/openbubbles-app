@@ -111,6 +111,43 @@ class _LanRelayPanelState extends OptimizedState<LanRelayPanel> {
     await refresh();
   }
 
+  Future<String?> askName(String title, String current) async {
+    final controller = TextEditingController(text: current);
+    final name = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: context.theme.colorScheme.properSurface,
+        title: Text(title, style: context.theme.textTheme.titleLarge),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          textCapitalization: TextCapitalization.words,
+          onSubmitted: (value) => Navigator.of(context).pop(value),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Cancel")),
+          TextButton(onPressed: () => Navigator.of(context).pop(controller.text), child: const Text("Rename")),
+        ],
+      ),
+    );
+    final trimmed = name?.trim();
+    return trimmed == null || trimmed.isEmpty || trimmed == current ? null : trimmed;
+  }
+
+  Future<void> renameClient(LanRelayClientInfo client) async {
+    final name = await askName("Rename computer", client.name);
+    if (name == null) return;
+    await LanRelayStore.instance.renameClient(client.id, name);
+    await refresh();
+  }
+
+  Future<void> renamePhone() async {
+    final name = await askName("Rename phone", ss.settings.phoneRelayName.value);
+    if (name == null) return;
+    ss.settings.phoneRelayName.value = name;
+    await ss.settings.saveOne("phoneRelayName");
+  }
+
   Future<void> removeClient(LanRelayClientInfo client) async {
     await LanRelayStore.instance.removeClient(client.id);
     await lanRelay.kick(client.id);
@@ -147,6 +184,7 @@ class _LanRelayPanelState extends OptimizedState<LanRelayPanel> {
                   LanRelayState.connecting => "Connecting...",
                   LanRelayState.disconnected => "Not connected. Make sure the phone is on the same network.",
                 },
+                onTap: renamePhone,
                 leading: const SettingsLeadingIcon(
                   iosIcon: CupertinoIcons.device_phone_portrait,
                   materialIcon: Icons.phone_android,
@@ -264,10 +302,21 @@ class _LanRelayPanelState extends OptimizedState<LanRelayPanel> {
                   subtitle: lanRelay.connectedCount.value > 0 && lanRelay.peers.any((p) => p.client.id == client.id)
                       ? "Connected"
                       : "Paired ${buildDate(DateTime.fromMillisecondsSinceEpoch(client.created))}",
-                  trailing: IconButton(
-                    icon: Icon(iOS ? CupertinoIcons.trash : Icons.delete_outline),
-                    tooltip: "Unpair",
-                    onPressed: () => removeClient(client),
+                  onTap: () => renameClient(client),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(iOS ? CupertinoIcons.pencil : Icons.edit_outlined),
+                        tooltip: "Rename",
+                        onPressed: () => renameClient(client),
+                      ),
+                      IconButton(
+                        icon: Icon(iOS ? CupertinoIcons.trash : Icons.delete_outline),
+                        tooltip: "Unpair",
+                        onPressed: () => removeClient(client),
+                      ),
+                    ],
                   ),
                 )),
             if (client != clients.last) const SettingsDivider(),

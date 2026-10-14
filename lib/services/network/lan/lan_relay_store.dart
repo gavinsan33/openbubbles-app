@@ -102,6 +102,12 @@ class LanRelayStore {
     return token;
   }
 
+  Future<void> renameClient(String id, String name) async {
+    await _writeClients(clients()
+        .map((c) => c.id == id ? LanRelayClientInfo(id: c.id, name: name, tokenHash: c.tokenHash, created: c.created) : c)
+        .toList());
+  }
+
   Future<void> removeClient(String id) async {
     await _writeClients(clients().where((c) => c.id != id).toList());
   }
