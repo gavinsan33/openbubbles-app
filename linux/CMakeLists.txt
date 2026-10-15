@@ -90,6 +90,12 @@ set_target_properties(${BINARY_NAME}
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# Plugin libraries are bundled as built, so give them the bundle's runpath instead of paths into
+# this build tree (which an installed copy would otherwise search, and RPM packaging rejects)
+foreach(plugin ${FLUTTER_PLUGIN_LIST})
+  set_target_properties(${plugin}_plugin PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "$ORIGIN")
+endforeach(plugin)
+
 target_link_libraries(${BINARY_NAME} PRIVATE ${MIMALLOC_LIB})
 
 # === Installation ===
