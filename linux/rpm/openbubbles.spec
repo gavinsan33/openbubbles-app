@@ -40,9 +40,9 @@ cp -a bluebubbles data lib %{buildroot}%{appdir}/
 ln -s ../../opt/openbubbles/bluebubbles %{buildroot}%{_bindir}/openbubbles
 
 install -Dm644 %{SOURCE1} %{buildroot}%{_datadir}/applications/app.openbubbles.OpenBubbles.desktop
-# the GTK application id (linux/CMakeLists.txt), so docks match the window to this entry
-sed -i -e 's|^Exec=.*|Exec=openbubbles|' -e 's|^StartupWMClass=.*|StartupWMClass=app.bluebubbles.BlueBubbles|' \
-    %{buildroot}%{_datadir}/applications/app.openbubbles.OpenBubbles.desktop
+# GTK names the window (Wayland app_id) after the command it was started as, so launching
+# `openbubbles` keeps it matching the entry's StartupWMClass=openbubbles and the dock finds the icon
+sed -i 's|^Exec=.*|Exec=openbubbles|' %{buildroot}%{_datadir}/applications/app.openbubbles.OpenBubbles.desktop
 install -Dm644 %{SOURCE2} %{buildroot}%{_metainfodir}/app.openbubbles.OpenBubbles.metainfo.xml
 install -Dm644 %{SOURCE3} %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/app.openbubbles.OpenBubbles.png
 
