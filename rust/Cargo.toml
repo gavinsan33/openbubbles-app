@@ -43,6 +43,7 @@ android_logger = "0.14.1"
 [build-dependencies]
 uniffi = { git = "https://github.com/mozilla/uniffi-rs", features = [ "build" ] }
 prost-build = { version = "0.12" }
+cc = "1"
 
 [[bin]]
 # This can be whatever name makes sense for your project, but the rest of this tutorial assumes uniffi-bindgen.

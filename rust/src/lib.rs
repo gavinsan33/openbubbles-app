@@ -58,6 +58,7 @@ pub fn init_logger(path: &Path) {
 
 mod native;
 mod ft_media;
+mod evs;
 pub mod api;
 mod keystore;
 mod frb_generated; /* AUTO INJECTED BY flutter_rust_bridge. This line may not be accurate, and you can change it according to your needs. */

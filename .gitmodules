@@ -4,3 +4,6 @@
 [submodule "telephony_plus"]
 	path = telephony_plus
 	url = https://github.com/gavinsan33/telephony_plus.git
+[submodule "rust/third_party/evs"]
+	path = rust/third_party/evs
+	url = https://github.com/gavinsan33/evs-codec.git

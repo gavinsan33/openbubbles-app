@@ -11,7 +11,7 @@ use fdk_aac_sys as sys;
 use log::{info, warn};
 use rustpush::{avconference::{AVControlCommand, AVSession, AnnexB, AudioParser, AudioSender, ChannelFrame, ChannelMessage, ChannelType, DecoderConfiguration, FTVideoCameraStatus, VCControlData, VCGenerateKeyFrame, VideoRotation, VideoSender}, facetime::{FTClient, FTMessage, FTSession}};
 
-use crate::RUNTIME;
+use crate::{evs::EvsDecoder, RUNTIME};
 
 // AAC-ELD, 24kHz mono, 480 sample (20ms) frames: one frame per RTP packet
 pub const AUDIO_SAMPLE_RATE: u32 = 24000;
@@ -257,6 +257,9 @@ impl FtCall {
     fn attach_incoming(self: &Arc<Self>) {
         let weak = Arc::downgrade(self);
         let decoders: Mutex<HashMap<u64, Decoder>> = Mutex::new(HashMap::new());
+        // peers switch to EVS on a lossy link
+        let evs_decoders: Mutex<HashMap<u64, EvsDecoder>> = Mutex::new(HashMap::new());
+        let evs_logged = AtomicU64::new(0);
         // each participant's video stream, and whether we're still waiting for its keyframe
         let video_streams: Mutex<HashMap<u64, VideoGate>> = Mutex::new(HashMap::new());
         let asc = self.encoder.lock().unwrap().asc.clone();
@@ -315,6 +318,27 @@ impl FtCall {
                         }
                     }
                 },
+                (ChannelType::Evs, ChannelFrame::Sample(data)) => {
+                    if evs_logged.fetch_add(1, Ordering::Relaxed) < 5 {
+                        info!("FT incoming evs payload len {} head {:02x?}", data.len(), &data[..data.len().min(8)]);
+                    }
+                    let mut decoders = evs_decoders.lock().unwrap();
+                    let decoder = match decoders.entry(participant) {
+                        std::collections::hash_map::Entry::Occupied(e) => e.into_mut(),
+                        std::collections::hash_map::Entry::Vacant(e) => match EvsDecoder::new() {
+                            Ok(d) => e.insert(d),
+                            Err(err) => { warn!("FT evs decoder {err}"); return },
+                        },
+                    };
+                    for payload in evs_payloads(&data) {
+                        match decoder.decode(payload) {
+                            Ok(frames) => for pcm in frames {
+                                call.sink.audio_frame(participant, pcm.iter().flat_map(|s| s.to_le_bytes()).collect());
+                            },
+                            Err(e) => warn!("FT evs decode {e} len {}", payload.len()),
+                        }
+                    }
+                },
                 (other, _) => warn!("FT ignoring incoming {other:?}"),
             }
         }));
@@ -366,6 +390,22 @@ impl VideoGate {
             Some(_) => (false, false),
         }
     }
+}
+
+// EVS compact frame sizes in bytes (TS 26.445 A.2.1.1): the size alone identifies the mode
+const EVS_COMPACT_SIZES: [usize; 22] = [6, 7, 17, 18, 20, 23, 24, 32, 33, 36, 40, 41, 46, 50, 58, 60, 61, 80, 120, 160, 240, 320];
+
+/// The EVS RTP payloads in one sample: a bare compact frame, our usual length-prefixed frames
+/// (as AAC arrives), or failing both a header-full payload the decoder parses by its ToC
+fn evs_payloads(data: &[u8]) -> Vec<&[u8]> {
+    if EVS_COMPACT_SIZES.contains(&data.len()) {
+        return vec![data]
+    }
+    let prefixed: Vec<&[u8]> = AudioParser(data).collect();
+    if !prefixed.is_empty() && prefixed.iter().map(|f| f.len() + 1).sum::<usize>() == data.len() {
+        return prefixed
+    }
+    vec![data]
 }
 
 fn decode_aac(decoder: &mut Decoder, frame: &[u8]) -> Result<Vec<i16>, DecoderError> {
@@ -553,6 +593,22 @@ mod tests {
         assert_eq!(gate.on_sample(9, t), (true, false));
         // a participant first seen mid-stream asks right away
         assert_eq!(VideoGate::waiting(3).on_sample(3, t), (false, true));
+    }
+
+    #[test]
+    fn evs_payload_framing() {
+        // a bare 13.2kbps compact frame stays whole even if its first byte reads as a length
+        let bare = [32u8; 33];
+        assert_eq!(evs_payloads(&bare), vec![&bare[..]]);
+        // length-prefixed frames are split
+        let mut prefixed = vec![33u8];
+        prefixed.extend([0xaa; 33]);
+        prefixed.push(33);
+        prefixed.extend([0xbb; 33]);
+        assert_eq!(evs_payloads(&prefixed), vec![&[0xaa; 33][..], &[0xbb; 33][..]]);
+        // anything else goes to the decoder whole, as header-full
+        let header_full = [0x04u8, 1, 2, 3, 4, 5, 6, 7, 8];
+        assert_eq!(evs_payloads(&header_full), vec![&header_full[..]]);
     }
 
     // a 480-sample ELD frame round-trips through our encoder config and decodes to 480 samples
