@@ -19,6 +19,13 @@ git clone --recurse-submodules https://github.com/gavinsan33/openbubbles-app.git
 git submodule update --init --recursive
 ```
 
+rustpush also compiles in FairPlay certificates from `rustpush/certs/fairplay/`, which isn't in
+git. Fill it with placeholder copies of the committed legacy certificate:
+
+```sh
+rust/fairplay-placeholders.sh
+```
+
 ## 2. Toolchains (mise)
 
 Tool versions are pinned in `mise.toml`: Flutter 3.24.0, Java (Temurin 21), Rust stable,
@@ -75,9 +82,22 @@ flutter build linux --release
 `linux/build.sh` does the same build, injects the version into `version.json`, and packs
 the bundle into `bluebubbles-linux-<arch>.tar`.
 
-### Releasing the RPM
+### Releasing
 
-`linux/rpm/release.sh` builds the app, packages it as a signed RPM, and publishes it to the
+Releases normally come from CI. Push a tag named after `pubspec.yaml`'s version, on a commit on
+`main`:
+
+```sh
+git tag v1.15.0+231 && git push origin v1.15.0+231
+```
+
+`.github/workflows/release.yml` then builds the RPM (in a Fedora container) and the signed
+`prod` APK. Once both build, it publishes the RPM to the dnf repo and creates a GitHub Release
+with the RPM, the Linux bundle and the APK. Running the workflow by hand (Actions → Release →
+Run workflow) builds everything without publishing. The signing keys and the
+openbubbles-rpm deploy key are repository secrets, listed at the top of the workflow.
+
+To release from your own machine instead, `linux/rpm/release.sh` builds the app, packages it as a signed RPM, and publishes it to the
 dnf repo on GitHub Pages (gavinsan33/openbubbles-rpm). Before running it:
 
 ```sh

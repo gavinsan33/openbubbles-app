@@ -6,6 +6,7 @@
 #   linux/rpm/release.sh             build, package, publish
 #   SKIP_BUILD=1 linux/rpm/release.sh    reuse bluebubbles-linux-<arch>.tar from linux/build.sh
 #   NO_PUBLISH=1 linux/rpm/release.sh    stop after building and signing the RPM
+#   RPM_FILE=path linux/rpm/release.sh   publish an RPM already built and signed (by NO_PUBLISH)
 #
 # Needs rpm-build, rpm-sign, createrepo_c and the signing key in your GPG keyring.
 set -euo pipefail
@@ -40,23 +41,28 @@ if [ -z "${NO_PUBLISH:-}" ]; then
     fi
 fi
 
-if [ -z "${SKIP_BUILD:-}" ]; then
-    linux/build.sh
-fi
-tarball=$root/bluebubbles-linux-$arch.tar
-[ -f "$tarball" ] || { echo "no $tarball; run linux/build.sh"; exit 1; }
+if [ -n "${RPM_FILE:-}" ]; then
+    rpm_path=$RPM_FILE
+    [ "$(basename "$rpm_path")" = "$rpm_name" ] || { echo "$rpm_path isn't $rpm_name; does pubspec.yaml match?"; exit 1; }
+else
+    if [ -z "${SKIP_BUILD:-}" ]; then
+        linux/build.sh
+    fi
+    tarball=$root/bluebubbles-linux-$arch.tar
+    [ -f "$tarball" ] || { echo "no $tarball; run linux/build.sh"; exit 1; }
 
-top=$root/build/rpm
-rm -rf "$top"
-mkdir -p "$top/SOURCES"
-cp "$tarball" flatpak/app.openbubbles.OpenBubbles.desktop flatpak/app.openbubbles.OpenBubbles.metainfo.xml flatpak/128x128.png "$top/SOURCES/"
-rpmbuild -bb linux/rpm/openbubbles.spec \
-    --define "_topdir $top" \
-    --define "app_version $version" \
-    --define "app_release $release"
-rpm_path=$top/RPMS/$arch/$rpm_name
-rpmsign --addsign --define "_gpg_name $KEY" "$rpm_path"
-echo "built $rpm_path"
+    top=$root/build/rpm
+    rm -rf "$top"
+    mkdir -p "$top/SOURCES"
+    cp "$tarball" flatpak/app.openbubbles.OpenBubbles.desktop flatpak/app.openbubbles.OpenBubbles.metainfo.xml flatpak/128x128.png "$top/SOURCES/"
+    rpmbuild -bb linux/rpm/openbubbles.spec \
+        --define "_topdir $top" \
+        --define "app_version $version" \
+        --define "app_release $release"
+    rpm_path=$top/RPMS/$arch/$rpm_name
+    rpmsign --addsign --define "_gpg_name $KEY" "$rpm_path"
+    echo "built $rpm_path"
+fi
 
 if [ -n "${NO_PUBLISH:-}" ]; then
     exit 0

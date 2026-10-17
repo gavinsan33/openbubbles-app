@@ -1,0 +1,238 @@
+# Builds and publishes a release when a version tag is pushed. The tag must be v<pubspec version>,
+# e.g. v1.15.0+230 for `version: 1.15.0+230`, and point at a commit on main.
+#
+# Publishes the signed RPM to the dnf repository (gavinsan33/openbubbles-rpm), then a GitHub
+# Release with the RPM, the Linux bundle and the signed prod APK. Nothing is published unless
+# both platforms build.
+#
+# Secrets:
+#   RPM_GPG_KEY                 armored private key that signs the RPM and the repo metadata
+#   RPM_DEPLOY_KEY              SSH key with write access to gavinsan33/openbubbles-rpm
+#   ANDROID_KEYSTORE_B64        base64 of the release keystore (.jks)
+#   ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
+on:
+  push:
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+\+[0-9]+' ]
+  # builds everything without publishing, to try out the pipeline
+  workflow_dispatch:
+
+name: Release
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Match the tag to pubspec.yaml
+        id: version
+        run: |
+          version_line=$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}')
+          echo "version=${version_line%%+*}" >> "$GITHUB_OUTPUT"
+          echo "release=${version_line#*+}" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF_TYPE" != tag ]; then
+              exit 0
+          fi
+          if [ "$GITHUB_REF_NAME" != "v$version_line" ]; then
+              echo "::error::tag $GITHUB_REF_NAME doesn't match pubspec.yaml's version $version_line"
+              exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+              echo "::error::$GITHUB_REF_NAME isn't on main"
+              exit 1
+          fi
+
+      - name: Make sure this version isn't published
+        if: github.ref_type == 'tag'
+        run: |
+          rpm=openbubbles-${{ steps.version.outputs.version }}-${{ steps.version.outputs.release }}.x86_64.rpm
+          if curl -sfI "https://raw.githubusercontent.com/gavinsan33/openbubbles-rpm/main/x86_64/$rpm" >/dev/null; then
+              echo "::error::$rpm is already published; bump the build number in pubspec.yaml"
+              exit 1
+          fi
+
+  linux:
+    name: Linux RPM
+    needs: check
+    runs-on: ubuntu-latest
+    # build on Fedora, which the RPM targets
+    container: fedora:44
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+              git curl unzip xz which findutils jq file \
+              gcc gcc-c++ make clang cmake ninja-build pkgconf-pkg-config perl-core protobuf-compiler \
+              gtk3-devel webkit2gtk4.1-devel mpv-devel libnotify-devel libepoxy-devel \
+              libayatana-appindicator-gtk3-devel \
+              rpm-build rpm-sign createrepo_c gnupg2
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.0
+
+      - name: Set up placeholder FairPlay keys
+        run: rust/fairplay-placeholders.sh
+
+      - name: Import the signing key
+        env:
+          RPM_GPG_KEY: ${{ secrets.RPM_GPG_KEY }}
+        run: echo "$RPM_GPG_KEY" | gpg --batch --import
+
+      - name: Build and sign the RPM
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          NO_PUBLISH=1 linux/rpm/release.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            build/rpm/RPMS/x86_64/*.rpm
+            bluebubbles-linux-x86_64.tar
+          if-no-files-found: error
+
+  android:
+    name: Android APK
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: amyu/setup-android@v5
+
+      - name: Install Protobuf compiler
+        run: sudo apt-get install -y protobuf-compiler
+
+      - name: Set up placeholder FairPlay keys
+        run: rust/fairplay-placeholders.sh
+
+      - name: Set up release signing
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          cat > android/key.properties <<EOF
+          storeFile=$RUNNER_TEMP/release.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
+      - name: Build the APK
+        run: flutter build apk --flavor prod --release --target-platform android-arm64 --split-per-abi
+
+      - name: Name the APK
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk \
+              "dist/openbubbles-${{ needs.check.outputs.version }}-${{ needs.check.outputs.release }}-arm64.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: dist/*.apk
+          if-no-files-found: error
+
+  publish:
+    name: Publish
+    needs: [ check, linux, android ]
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    container: fedora:44
+    permissions:
+      contents: write
+    steps:
+      - name: Install tools
+        run: dnf install -y --setopt=install_weak_deps=False git openssh-clients gh rpm-build rpm-sign createrepo_c gnupg2
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Import the signing key
+        env:
+          RPM_GPG_KEY: ${{ secrets.RPM_GPG_KEY }}
+        run: echo "$RPM_GPG_KEY" | gpg --batch --import
+
+      - name: Set up access to the RPM repository
+        env:
+          DEPLOY_KEY: ${{ secrets.RPM_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > ~/.ssh/known_hosts
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Publish the RPM
+        env:
+          OPENBUBBLES_RPM_REPO_URL: git@github.com:gavinsan33/openbubbles-rpm.git
+        run: RPM_FILE="$GITHUB_WORKSPACE/dist/build/rpm/RPMS/x86_64/openbubbles-${{ needs.check.outputs.version }}-${{ needs.check.outputs.release }}.x86_64.rpm" linux/rpm/release.sh
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.check.outputs.version }}
+          RELEASE: ${{ needs.check.outputs.release }}
+        run: |
+          cp dist/bluebubbles-linux-x86_64.tar "dist/openbubbles-$VERSION-$RELEASE-linux-x86_64.tar"
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --title "OpenBubbles $VERSION ($RELEASE)" --generate-notes \
+              dist/build/rpm/RPMS/x86_64/*.rpm \
+              "dist/openbubbles-$VERSION-$RELEASE-linux-x86_64.tar" \
+              dist/*.apk
