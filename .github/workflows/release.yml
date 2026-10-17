@@ -215,10 +215,13 @@ jobs:
         env:
           DEPLOY_KEY: ${{ secrets.RPM_DEPLOY_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$DEPLOY_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > ~/.ssh/known_hosts
+          # ssh reads root's own home (/root), not the container's $HOME, so name the files
+          ssh_dir=$RUNNER_TEMP/ssh
+          mkdir -p "$ssh_dir"
+          echo "$DEPLOY_KEY" > "$ssh_dir/id_ed25519"
+          chmod 600 "$ssh_dir/id_ed25519"
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$ssh_dir/known_hosts"
+          git config --global core.sshCommand "ssh -i $ssh_dir/id_ed25519 -o UserKnownHostsFile=$ssh_dir/known_hosts -o IdentitiesOnly=yes"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
