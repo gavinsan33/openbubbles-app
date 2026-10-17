@@ -75,6 +75,10 @@ jobs:
               gtk3-devel webkit2gtk4.1-devel mpv-devel libnotify-devel libepoxy-devel \
               libayatana-appindicator-gtk3-devel \
               rpm-build rpm-sign createrepo_c gnupg2
+          # Dart looks for CA certificates at this path, which Fedora no longer ships
+          ln -sf /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/pki/tls/certs/ca-bundle.crt
+          # the container runs as root, but the checkout and the Flutter SDK belong to the runner user
+          git config --global --add safe.directory '*'
 
       - uses: actions/checkout@v4
         with:

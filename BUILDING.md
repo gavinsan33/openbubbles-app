@@ -65,8 +65,8 @@ What each library is for: `webkit2gtk4.1-devel` → desktop_webview_auth, `mpv-d
 
 ### Fedora 43+: CA bundle path
 
-Fedora no longer ships `/etc/pki/tls/certs/ca-bundle.crt`, but some tools in the build still
-look for that path to verify TLS certificates. Recreate it as a symlink:
+Fedora no longer ships `/etc/pki/tls/certs/ca-bundle.crt`, but Dart (and so `flutter pub get`)
+still looks there for CA certificates and fails with TLS errors without it. Recreate it:
 
 ```sh
 sudo ln -s /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/pki/tls/certs/ca-bundle.crt
