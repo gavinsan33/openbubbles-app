@@ -25,12 +25,25 @@ class LanRelayDiscovered {
   String get url => "https://${host.contains(":") ? "[$host]" : host}:$port";
 }
 
-/// Finds phones advertising the relay over mDNS
+/// Finds phones advertising the relay over mDNS, on every interface
 Future<List<LanRelayDiscovered>> discoverRelayPhones({Duration timeout = const Duration(seconds: 3)}) async {
+  final interfaces = await NetworkInterface.list(type: InternetAddressType.IPv4);
+  final results = await Future.wait(interfaces.map((i) => _discoverOn(i, timeout)));
+  return results.expand((r) => r).toList();
+}
+
+/// multicast_dns sends IPv4 queries out the default route only, so with
+/// ethernet plugged in the wifi network would never be searched. Pin each
+/// client's socket to one interface instead.
+Future<List<LanRelayDiscovered>> _discoverOn(NetworkInterface iface, Duration timeout) async {
   final results = <LanRelayDiscovered>[];
-  final client = MDnsClient();
+  final client = MDnsClient(rawDatagramSocketFactory: (host, port, {bool reuseAddress = true, bool reusePort = false, int ttl = 1}) async {
+    final socket = await RawDatagramSocket.bind(host, port, reuseAddress: reuseAddress, reusePort: reusePort, ttl: ttl);
+    socket.setRawOption(RawSocketOption(RawSocketOption.levelIPv4, RawSocketOption.IPv4MulticastInterface, iface.addresses.first.rawAddress));
+    return socket;
+  });
   try {
-    await client.start();
+    await client.start(interfacesFactory: (_) async => [iface]);
     final ptrs = await client
         .lookup<PtrResourceRecord>(ResourceRecordQuery.serverPointer("$lanRelayServiceType.local"), timeout: timeout)
         .toList();
@@ -48,7 +61,7 @@ Future<List<LanRelayDiscovered>> discoverRelayPhones({Duration timeout = const D
     }
   } catch (e) {
     // mDNS is best effort; avahi or a firewall can get in the way
-    Logger.warn("mDNS discovery failed", error: e, tag: "LanRelay");
+    Logger.warn("mDNS discovery failed on ${iface.name}", error: e, tag: "LanRelay");
   } finally {
     client.stop();
   }
